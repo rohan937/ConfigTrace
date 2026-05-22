@@ -1,357 +1,2079 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ConfigTrace — Version control for your infrastructure config</title>
-<meta name="description" content="ConfigTrace watches your infrastructure configuration the way Git watches code. Snapshot, diff, and risk-assess every DNS, cloud, and webhook change before it takes down production.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0a0d12;
-    --bg-elev: #11161d;
-    --bg-card: #131922;
-    --line: #1f2733;
-    --line-bright: #2c3847;
-    --text: #e6edf3;
-    --text-dim: #8b97a6;
-    --text-faint: #5b6675;
-    --accent: #4ade80;
-    --accent-dim: #1a3a28;
-    --amber: #fbbf24;
-    --red: #f87171;
-    --blue: #60a5fa;
-    --mono: 'Space Mono', monospace;
-    --sans: 'Sora', sans-serif;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ConfigTrace — Know what changed before production breaks</title>
+  <meta name="description" content="ConfigTrace snapshots your Cloudflare DNS, syncs every hour, and shows you exactly what changed, when, and how risky it was. Stop debugging blind — know what changed before the next outage.">
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://configtrace.org/">
+  <meta property="og:title" content="ConfigTrace — Know what changed before production breaks">
+  <meta property="og:description" content="Cloudflare DNS monitoring is live. Baseline snapshots, hourly syncs, field-level diffs, and risk classification for the configuration that lives outside Git.">
+  <meta property="og:image" content="https://configtrace.org/og.png">
+  <meta property="og:site_name" content="ConfigTrace">
 
-  html { scroll-behavior: smooth; }
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ConfigTrace — Know what changed before production breaks">
+  <meta name="twitter:description" content="Cloudflare DNS monitoring is live. Baseline snapshots, hourly syncs, field-level diffs, and risk classification for the configuration that lives outside Git.">
+  <meta name="twitter:image" content="https://configtrace.org/og.png">
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    line-height: 1.6;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-  }
+  <link rel="canonical" href="https://configtrace.org/">
 
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 64px 64px;
-    opacity: 0.25;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
-    pointer-events: none;
-    z-index: 0;
-  }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+  <style>
+    /* =====================================================================
+       RESET
+       ===================================================================== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
-  /* NAV */
-  nav {
-    position: sticky; top: 0; z-index: 50;
-    backdrop-filter: blur(12px);
-    background: rgba(10,13,18,0.7);
-    border-bottom: 1px solid var(--line);
-  }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 18px 28px; max-width: 1120px; margin: 0 auto; }
-  .logo { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-weight: 700; font-size: 17px; letter-spacing: -0.5px; }
-  .logo .dot { width: 10px; height: 10px; border-radius: 2px; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
-  .nav-links { display: flex; gap: 30px; align-items: center; }
-  .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 14px; transition: color .2s; }
-  .nav-links a:hover { color: var(--text); }
-  .nav-cta { border: 1px solid var(--line-bright); padding: 9px 18px; border-radius: 7px; color: var(--text) !important; font-weight: 500; transition: all .2s; }
-  .nav-cta:hover { border-color: var(--accent); background: var(--accent-dim); }
-  @media (max-width: 720px){ .nav-links a:not(.nav-cta){ display:none; } }
+    /* =====================================================================
+       TOKENS
+       ===================================================================== */
+    :root {
+      --bg:        #080B14;
+      --bg-2:      #0D1021;
+      --bg-3:      #111527;
+      --bg-4:      #171C30;
 
-  /* HERO */
-  header { padding: 110px 0 90px; position: relative; }
-  .badge {
-    display: inline-flex; align-items: center; gap: 9px;
-    font-family: var(--mono); font-size: 12px; color: var(--accent);
-    border: 1px solid var(--accent-dim); background: rgba(74,222,128,0.05);
-    padding: 7px 14px; border-radius: 100px; margin-bottom: 30px;
-    animation: fade-up .6s ease both;
-  }
-  .badge .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{ opacity:1; box-shadow: 0 0 0 0 rgba(74,222,128,0.4);} 50%{ opacity:.6; box-shadow: 0 0 0 6px rgba(74,222,128,0);} }
+      --border:    #1C2238;
+      --border-2:  #252D48;
 
-  h1 {
-    font-size: clamp(40px, 6.5vw, 76px); font-weight: 800; line-height: 1.02;
-    letter-spacing: -2.5px; margin-bottom: 26px; max-width: 14ch;
-    animation: fade-up .6s ease .05s both;
-  }
-  h1 .grad { background: linear-gradient(110deg, var(--accent), #22d3ee); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .lede { font-size: clamp(17px, 2.2vw, 21px); color: var(--text-dim); max-width: 56ch; margin-bottom: 38px; font-weight: 300; animation: fade-up .6s ease .12s both; }
-  .lede b { color: var(--text); font-weight: 500; }
+      --text:      #DDE3F0;
+      --text-2:    #8590A6;
+      --text-3:    #4A5268;
 
-  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; animation: fade-up .6s ease .19s both; }
-  .btn { font-family: var(--sans); font-size: 15px; font-weight: 600; padding: 14px 26px; border-radius: 9px; text-decoration: none; cursor: pointer; transition: all .2s; border: none; display: inline-flex; align-items: center; gap: 9px; }
-  .btn-primary { background: var(--accent); color: #06120b; }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,222,128,0.3); }
-  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--line-bright); }
-  .btn-ghost:hover { border-color: var(--text-dim); background: var(--bg-elev); }
+      --blue:      #4B7CF6;
+      --blue-2:    #6B94FF;
+      --blue-dim:  rgba(75,124,246,.12);
+      --blue-glow: rgba(75,124,246,.28);
 
-  @keyframes fade-up { from { opacity: 0; transform: translateY(20px);} to { opacity:1; transform: none; } }
+      --green:     #22C55E;
+      --green-dim: rgba(34,197,94,.10);
+      --green-bdr: rgba(34,197,94,.28);
 
-  /* TERMINAL DIFF MOCK */
-  .terminal {
-    margin-top: 64px; border: 1px solid var(--line-bright); border-radius: 14px;
-    background: var(--bg-elev); overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-    animation: fade-up .8s ease .28s both;
-  }
-  .term-bar { display: flex; align-items: center; gap: 8px; padding: 13px 16px; border-bottom: 1px solid var(--line); background: var(--bg-card); }
-  .term-bar .tdot { width: 11px; height: 11px; border-radius: 50%; }
-  .term-bar .tdot.r{ background:#ff5f57;} .term-bar .tdot.y{ background:#febc2e;} .term-bar .tdot.g{ background:#28c840;}
-  .term-title { font-family: var(--mono); font-size: 12px; color: var(--text-faint); margin-left: 12px; }
-  .term-body { padding: 22px 24px; font-family: var(--mono); font-size: 13.5px; line-height: 1.9; overflow-x: auto; }
-  .tl { display: flex; gap: 14px; white-space: pre; }
-  .tl .gut { color: var(--text-faint); user-select: none; }
-  .tl.del { color: var(--red); background: rgba(248,113,113,0.07); margin: 0 -24px; padding: 0 24px; }
-  .tl.add { color: var(--accent); background: rgba(74,222,128,0.07); margin: 0 -24px; padding: 0 24px; }
-  .tl.ctx { color: var(--text-dim); }
-  .tl .key { color: var(--blue); }
-  .risk-tag { display:inline-block; font-family: var(--mono); font-size: 11px; padding: 2px 9px; border-radius: 5px; margin-left: 10px; font-weight: 700; letter-spacing: .5px; }
-  .risk-critical { background: rgba(248,113,113,0.15); color: var(--red); border: 1px solid rgba(248,113,113,0.3); }
+      --amber:     #F59E0B;
+      --amber-dim: rgba(245,158,11,.12);
 
-  /* SECTIONS */
-  section { padding: 90px 0; position: relative; }
-  .sec-label { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
-  h2 { font-size: clamp(30px, 4.5vw, 46px); font-weight: 700; letter-spacing: -1.5px; line-height: 1.08; margin-bottom: 20px; max-width: 18ch; }
-  .sec-sub { color: var(--text-dim); font-size: 18px; font-weight: 300; max-width: 60ch; margin-bottom: 56px; }
+      --orange:    #F97316;
+      --orange-dim:rgba(249,115,22,.12);
 
-  /* PROBLEM STAT */
-  .problem { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg-elev); }
-  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-  @media (max-width: 800px){ .stat-row{ grid-template-columns: 1fr; gap: 36px; } }
-  .big-stat { font-family: var(--mono); font-size: clamp(56px, 9vw, 96px); font-weight: 700; line-height: 1; letter-spacing: -3px; color: var(--text); }
-  .big-stat .unit { color: var(--accent); }
-  .stat-caption { color: var(--text-dim); font-size: 16px; margin-top: 18px; max-width: 34ch; }
-  .miss-list { list-style: none; }
-  .miss-list li { padding: 14px 0; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 14px; font-family: var(--mono); font-size: 14px; color: var(--text-dim); }
-  .miss-list li .x { color: var(--red); font-weight: 700; }
-  .miss-list li b { color: var(--text); font-weight: 400; }
+      --red:       #EF4444;
+      --red-dim:   rgba(239,68,68,.10);
+      --red-bdr:   rgba(239,68,68,.28);
 
-  /* FLOW STEPS */
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
-  @media (max-width: 800px){ .steps{ grid-template-columns: 1fr; } }
-  .step { background: var(--bg-card); padding: 32px 28px; transition: background .25s; }
-  .step:hover { background: var(--bg-elev); }
-  .step .num { font-family: var(--mono); font-size: 13px; color: var(--accent); margin-bottom: 16px; }
-  .step h3 { font-size: 19px; font-weight: 600; margin-bottom: 10px; letter-spacing: -0.3px; }
-  .step p { color: var(--text-dim); font-size: 14.5px; font-weight: 300; }
+      --mono: 'JetBrains Mono','Fira Code','Cascadia Code',monospace;
+      --sans: 'Inter',system-ui,-apple-system,sans-serif;
+    }
 
-  /* RISK ENGINE */
-  .risk-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  @media (max-width: 800px){ .risk-grid{ grid-template-columns: repeat(2,1fr); } }
-  @media (max-width: 480px){ .risk-grid{ grid-template-columns: 1fr; } }
-  .risk-card { border: 1px solid var(--line); border-radius: 12px; padding: 24px 22px; background: var(--bg-card); position: relative; overflow: hidden; }
-  .risk-card::before { content:""; position:absolute; top:0; left:0; width:100%; height:3px; }
-  .risk-card.low::before{ background: var(--text-faint);} .risk-card.med::before{ background: var(--amber);}
-  .risk-card.high::before{ background: #fb923c;} .risk-card.crit::before{ background: var(--red);}
-  .risk-card .lvl { font-family: var(--mono); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; }
-  .low .lvl{ color: var(--text-faint);} .med .lvl{ color: var(--amber);} .high .lvl{ color:#fb923c;} .crit .lvl{ color: var(--red);}
-  .risk-card .ex { font-family: var(--mono); font-size: 13.5px; color: var(--text); margin-bottom: 10px; line-height: 1.5; }
-  .risk-card .why { color: var(--text-dim); font-size: 13px; font-weight: 300; }
+    /* =====================================================================
+       BASE
+       ===================================================================== */
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
 
-  /* INTEGRATIONS */
-  .integ-wrap { display: flex; flex-wrap: wrap; gap: 12px; }
-  .chip { font-family: var(--mono); font-size: 13px; padding: 10px 18px; border: 1px solid var(--line); border-radius: 8px; color: var(--text-dim); background: var(--bg-card); }
-  .chip.live { color: var(--accent); border-color: var(--accent-dim); background: rgba(74,222,128,0.05); }
-  .chip.live::before { content: "● "; font-size: 9px; vertical-align: middle; }
-  .chip.soon { opacity: 0.6; }
-  .chip.soon::after { content: " · soon"; color: var(--text-faint); }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.28;
+      mask-image: radial-gradient(ellipse 110% 65% at 50% 0%,rgba(0,0,0,.9) 0%,transparent 68%);
+      -webkit-mask-image: radial-gradient(ellipse 110% 65% at 50% 0%,rgba(0,0,0,.9) 0%,transparent 68%);
+      pointer-events: none;
+      z-index: 0;
+    }
 
-  /* CTA */
-  .final { text-align: center; border-top: 1px solid var(--line); }
-  .final h2 { margin: 0 auto 18px; }
-  .final .sec-sub { margin: 0 auto 36px; }
+    /* =====================================================================
+       LAYOUT
+       ===================================================================== */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
 
-  footer { border-top: 1px solid var(--line); padding: 40px 0; }
-  .foot-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
-  .foot-inner .logo { font-size: 15px; }
-  .foot-meta { font-family: var(--mono); font-size: 12px; color: var(--text-faint); }
-</style>
+    section {
+      padding: 96px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    section.alt {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* =====================================================================
+       TYPOGRAPHY
+       ===================================================================== */
+    h1 {
+      font-size: clamp(38px,6vw,72px);
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: -2px;
+    }
+
+    h2 {
+      font-size: clamp(28px,4vw,46px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -1.2px;
+      margin-bottom: 20px;
+    }
+
+    h3 { font-size: 18px; font-weight: 600; line-height: 1.3; letter-spacing: -0.3px; }
+
+    .section-label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--blue);
+      margin-bottom: 14px;
+    }
+
+    .section-sub {
+      font-size: 17px;
+      color: var(--text-2);
+      font-weight: 300;
+      max-width: 58ch;
+      margin-bottom: 52px;
+      line-height: 1.68;
+    }
+
+    .section-sub strong { color: var(--text); font-weight: 500; }
+
+    /* =====================================================================
+       NAV
+       ===================================================================== */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: rgba(8,11,20,.88);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+      height: 64px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--text);
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .nav-logo-box {
+      width: 26px; height: 26px;
+      background: var(--blue);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 0 14px var(--blue-glow);
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+
+    .nav-links a {
+      color: var(--text-2);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+      padding: 6px 12px;
+      border-radius: 7px;
+      transition: color .18s, background .18s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover { color: var(--text); background: var(--bg-3); }
+
+    .nav-open-app {
+      font-size: 14px !important; font-weight: 500 !important;
+      color: var(--text) !important; background: var(--bg-3) !important;
+      border: 1px solid var(--border-2) !important;
+      padding: 7px 16px !important; border-radius: 8px !important;
+    }
+
+    .nav-open-app:hover {
+      border-color: var(--blue) !important;
+      background: var(--blue-dim) !important;
+      color: var(--blue-2) !important;
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none; border: 1px solid var(--border-2);
+      color: var(--text-2); padding: 7px 11px; border-radius: 7px;
+      cursor: pointer; font-size: 17px; line-height: 1;
+    }
+
+    .nav-mobile {
+      display: none;
+      background: var(--bg-2); border-bottom: 1px solid var(--border);
+      padding: 10px 24px 16px;
+    }
+
+    .nav-mobile.open { display: block; }
+
+    .nav-mobile a {
+      display: block; color: var(--text-2); text-decoration: none;
+      font-size: 15px; padding: 11px 0; border-bottom: 1px solid var(--border);
+      transition: color .15s;
+    }
+
+    .nav-mobile a:last-child { border-bottom: none; }
+    .nav-mobile a:hover { color: var(--text); }
+
+    @media (max-width: 780px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: block; }
+    }
+
+    /* =====================================================================
+       BUTTONS
+       ===================================================================== */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--sans); font-size: 15px; font-weight: 600;
+      padding: 13px 24px; border-radius: 10px;
+      text-decoration: none; cursor: pointer; border: none;
+      transition: all .18s; white-space: nowrap;
+    }
+
+    .btn-lg { font-size: 16px; padding: 15px 28px; border-radius: 11px; }
+
+    .btn-primary {
+      background: var(--blue); color: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,.35), 0 4px 20px var(--blue-glow);
+    }
+
+    .btn-primary:hover {
+      background: var(--blue-2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px var(--blue-glow);
+    }
+
+    .btn-ghost {
+      background: transparent; color: var(--text-2);
+      border: 1px solid var(--border-2);
+    }
+
+    .btn-ghost:hover { color: var(--text); background: var(--bg-3); }
+
+    /* =====================================================================
+       KEYFRAMES
+       ===================================================================== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(34,197,94,.45); }
+      50%      { opacity:.7; box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+    }
+
+    /* =====================================================================
+       HERO
+       ===================================================================== */
+    .hero { padding: 104px 0 80px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 12px;
+      color: var(--green); background: var(--green-dim);
+      border: 1px solid var(--green-bdr);
+      padding: 6px 14px; border-radius: 100px;
+      margin-bottom: 28px;
+      animation: fadeUp .5s ease both;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green); flex-shrink: 0;
+      animation: pulse 2.5s infinite;
+    }
+
+    .hero h1 {
+      margin-bottom: 24px; max-width: 15ch;
+      animation: fadeUp .5s ease .07s both;
+    }
+
+    .hero h1 .accent { color: var(--blue-2); }
+
+    .hero-sub {
+      font-size: clamp(17px,2.2vw,20px);
+      color: var(--text-2); max-width: 52ch;
+      margin-bottom: 36px; font-weight: 300; line-height: 1.68;
+      animation: fadeUp .5s ease .14s both;
+    }
+
+    .hero-sub strong { color: var(--text); font-weight: 500; }
+
+    .hero-ctas {
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      margin-bottom: 16px;
+      animation: fadeUp .5s ease .21s both;
+    }
+
+    /* 3-step mini breadcrumb */
+    .hero-steps {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 12px; color: var(--text-3);
+      margin-bottom: 14px; flex-wrap: wrap;
+      animation: fadeUp .5s ease .28s both;
+    }
+
+    .hero-step { color: var(--text-2); }
+    .hero-step-sep { color: var(--border-2); }
+
+    .hero-trust {
+      font-family: var(--mono); font-size: 12.5px; color: var(--text-3);
+      animation: fadeUp .5s ease .33s both;
+    }
+
+    .live-dot {
+      display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green); margin-right: 6px;
+      vertical-align: middle; position: relative; top: -1px;
+    }
+
+    /* ── Product mock ── */
+    .hero-visual {
+      margin-top: 72px;
+      animation: fadeUp .7s ease .42s both;
+    }
+
+    .product-mock {
+      max-width: 740px; margin: 0 auto;
+      background: var(--bg-2);
+      border: 1px solid var(--border-2);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.025);
+    }
+
+    /* App-level nav bar inside mock */
+    .mock-appnav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 16px; background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mock-appnav-brand {
+      font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--text-3);
+    }
+
+    .mock-appnav-tabs { display: flex; gap: 2px; }
+
+    .mock-tab {
+      font-family: var(--mono); font-size: 11px; padding: 4px 10px;
+      border-radius: 5px; color: var(--text-3); cursor: default;
+    }
+
+    .mock-tab.on { background: var(--blue-dim); color: var(--blue-2); }
+
+    /* Integration row */
+    .mock-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 18px; background: var(--bg-3);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap; gap: 8px;
+    }
+
+    .mock-topbar-left { display: flex; align-items: center; gap: 10px; }
+
+    .mock-provider-tag {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 12px; color: var(--text); font-weight: 500;
+    }
+
+    .mock-cf-icon {
+      width: 20px; height: 20px; background: #F38020; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+
+    .mock-zone { font-family: var(--mono); font-size: 11px; color: var(--text-3); }
+
+    .mock-live-badge {
+      display: flex; align-items: center; gap: 5px;
+      font-family: var(--mono); font-size: 11px; color: var(--green);
+    }
+
+    .mock-live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+
+    /* Alert bar */
+    .mock-alert {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 18px;
+      background: var(--red-dim); border-bottom: 1px solid var(--red-bdr);
+      font-family: var(--mono); font-size: 12px; color: var(--red);
+      flex-wrap: wrap;
+    }
+
+    .mock-alert-right { margin-left: auto; color: var(--text-3); font-size: 11px; }
+
+    .mock-body { padding: 18px; }
+
+    .mock-change-card {
+      background: var(--bg); border: 1px solid var(--border-2);
+      border-radius: 10px; overflow: hidden;
+    }
+
+    .mock-change-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 13px 15px; border-bottom: 1px solid var(--border); flex-wrap: wrap;
+    }
+
+    .mock-rec-type {
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      padding: 3px 8px; background: var(--blue-dim); color: var(--blue-2);
+      border-radius: 5px; letter-spacing: .5px; flex-shrink: 0;
+    }
+
+    .mock-rec-name {
+      font-family: var(--mono); font-size: 13px; color: var(--text);
+      flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+
+    .mock-risk-badge {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      padding: 3px 9px; border-radius: 5px;
+      letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0;
+    }
+
+    .mock-risk-badge.crit {
+      background: var(--red-dim); color: var(--red); border: 1px solid var(--red-bdr);
+    }
+
+    .mock-diff { font-family: var(--mono); font-size: 12.5px; padding: 4px 0; }
+
+    .mock-diff-row { display: flex; gap: 10px; padding: 7px 15px; align-items: baseline; }
+    .mock-diff-row.del { background: rgba(239,68,68,.06); color: var(--red); }
+    .mock-diff-row.add { background: rgba(34,197,94,.06); color: var(--green); }
+
+    .mock-diff-sign { width: 12px; flex-shrink: 0; font-weight: 700; }
+    .mock-diff-key { font-size: 11.5px; min-width: 60px; flex-shrink: 0; }
+    .mock-diff-row.del .mock-diff-key { color: rgba(239,68,68,.65); }
+    .mock-diff-row.add .mock-diff-key { color: rgba(34,197,94,.65); }
+    .mock-diff-val { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .mock-risk-reason {
+      display: flex; gap: 9px;
+      padding: 11px 15px; border-top: 1px solid var(--border);
+      font-size: 12.5px; color: var(--text-2); line-height: 1.5;
+    }
+
+    .mock-risk-icon { color: var(--red); flex-shrink: 0; margin-top: 1px; }
+
+    .mock-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 18px; border-top: 1px solid var(--border);
+      flex-wrap: wrap; gap: 8px;
+    }
+
+    .mock-stats { font-family: var(--mono); font-size: 11px; color: var(--text-3); }
+    .mock-stats .c { color: var(--red); }
+
+    .mock-actions { display: flex; gap: 8px; }
+
+    .mock-btn {
+      font-family: var(--mono); font-size: 11px; padding: 5px 11px;
+      border-radius: 6px; border: 1px solid var(--border-2);
+      background: var(--bg-3); color: var(--text-2);
+    }
+
+    /* =====================================================================
+       IN 3 MINUTES  (compact alt section)
+       ===================================================================== */
+    .three-min-section { padding: 52px 0 56px; }
+
+    .three-min-label {
+      font-family: var(--mono); font-size: 12px; color: var(--text-2);
+      text-transform: uppercase; letter-spacing: 2px;
+      text-align: center; margin-bottom: 28px; display: block;
+    }
+
+    .three-min-grid {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+    }
+
+    @media (max-width: 820px) { .three-min-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 480px) { .three-min-grid { grid-template-columns: 1fr; } }
+
+    .three-min-item {
+      background: var(--bg-2); padding: 26px 22px;
+      position: relative; transition: background .2s;
+    }
+
+    .three-min-item:hover { background: var(--bg-3); }
+
+    .three-min-num {
+      display: block; font-family: var(--mono); font-size: 30px; font-weight: 700;
+      color: var(--border-2); line-height: 1; margin-bottom: 14px;
+    }
+
+    .three-min-check {
+      position: absolute; top: 18px; right: 18px;
+      color: var(--green); font-size: 14px; font-weight: 700;
+    }
+
+    .three-min-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 7px; line-height: 1.3; }
+    .three-min-desc  { font-size: 13px; color: var(--text-2); line-height: 1.55; font-weight: 300; }
+
+    /* =====================================================================
+       PROBLEM
+       ===================================================================== */
+    .problem-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+    }
+
+    @media (max-width: 820px) { .problem-grid { grid-template-columns: 1fr; gap: 44px; } }
+
+    .problem-statement {
+      font-size: clamp(26px,3.8vw,40px); font-weight: 700;
+      letter-spacing: -1.1px; line-height: 1.12; margin-bottom: 20px;
+    }
+
+    .problem-body { font-size: 15.5px; color: var(--text-2); line-height: 1.72; font-weight: 300; }
+    .problem-body strong { color: var(--text); font-weight: 500; }
+
+    .blind-list { list-style: none; }
+
+    .blind-list li {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 13px 0; border-bottom: 1px solid var(--border);
+      font-size: 14px; color: var(--text-2); line-height: 1.5;
+    }
+
+    .blind-list li:last-child { border-bottom: none; }
+
+    .blind-x {
+      font-family: var(--mono); font-size: 12px; color: var(--red);
+      font-weight: 700; flex-shrink: 0; margin-top: 2px; width: 16px;
+    }
+
+    .blind-list li strong {
+      display: block; color: var(--text); font-weight: 500;
+      font-size: 14px; margin-bottom: 2px;
+    }
+
+    /* =====================================================================
+       BEFORE / AFTER
+       ===================================================================== */
+    .ba-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+
+    @media (max-width: 760px) { .ba-grid { grid-template-columns: 1fr; } }
+
+    .ba-panel { border-radius: 14px; overflow: hidden; border: 1px solid; }
+    .ba-panel.before { border-color: rgba(239,68,68,.25); }
+    .ba-panel.after  { border-color: rgba(34,197,94,.25); }
+
+    .ba-header {
+      padding: 12px 18px; font-family: var(--mono);
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.8px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .ba-panel.before .ba-header {
+      background: rgba(239,68,68,.08); border-bottom: 1px solid rgba(239,68,68,.18);
+      color: var(--red);
+    }
+
+    .ba-panel.after .ba-header {
+      background: rgba(34,197,94,.07); border-bottom: 1px solid rgba(34,197,94,.18);
+      color: var(--green);
+    }
+
+    .ba-body { padding: 24px 20px; }
+    .ba-panel.before .ba-body { background: rgba(239,68,68,.03); }
+    .ba-panel.after  .ba-body { background: rgba(34,197,94,.02); }
+
+    .ba-before-text {
+      font-size: 18px; font-weight: 500; line-height: 1.65;
+      color: var(--text); font-style: italic;
+    }
+
+    .ba-before-status {
+      margin-top: 18px; display: flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 11.5px; color: var(--text-3);
+    }
+
+    .ba-status-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--red); flex-shrink: 0;
+    }
+
+    .ba-after-time {
+      font-family: var(--mono); font-size: 11px; color: var(--text-3); margin-bottom: 10px;
+    }
+
+    .ba-after-record {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+    }
+
+    .ba-rec-type {
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      padding: 3px 8px; border-radius: 4px;
+      background: var(--blue-dim); color: var(--blue-2);
+    }
+
+    .ba-rec-name { font-family: var(--mono); font-size: 13px; color: var(--text); }
+
+    .ba-crit {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      padding: 3px 9px; border-radius: 4px; letter-spacing: 1px;
+      text-transform: uppercase; background: var(--red-dim);
+      color: var(--red); border: 1px solid var(--red-bdr);
+    }
+
+    .ba-diff { font-family: var(--mono); font-size: 12.5px; line-height: 2; }
+    .ba-del { color: var(--red); display: block; }
+    .ba-add { color: var(--green); display: block; }
+
+    .ba-after-reason {
+      margin-top: 14px; padding-top: 14px;
+      border-top: 1px solid var(--border);
+      font-size: 12.5px; color: var(--text-2); line-height: 1.55;
+      display: flex; gap: 7px;
+    }
+
+    .ba-after-icon { color: var(--green); flex-shrink: 0; }
+
+    /* =====================================================================
+       DEMO
+       ===================================================================== */
+    .demo-panels {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    }
+
+    @media (max-width: 760px) { .demo-panels { grid-template-columns: 1fr; } }
+
+    .demo-panel {
+      background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+    }
+
+    .demo-panel-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 13px 16px; border-bottom: 1px solid var(--border);
+      background: var(--bg-2);
+    }
+
+    .demo-panel-title {
+      font-family: var(--mono); font-size: 11px; color: var(--text-2);
+      font-weight: 500; text-transform: uppercase; letter-spacing: 1.2px;
+    }
+
+    .demo-panel-body { padding: 14px 16px; }
+
+    /* Timeline */
+    .tl-entry {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 12px 0; border-bottom: 1px solid var(--border);
+    }
+
+    .tl-entry:last-child { border-bottom: none; }
+
+    .tl-dot {
+      width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; margin-top: 2px;
+      border: 2px solid; display: flex; align-items: center; justify-content: center;
+    }
+
+    .tl-dot.ok   { border-color: var(--green); background: var(--green-dim); }
+    .tl-dot.warn { border-color: var(--amber); background: var(--amber-dim); }
+    .tl-dot.crit { border-color: var(--red);   background: var(--red-dim);   }
+
+    .tl-dot-inner { width: 6px; height: 6px; border-radius: 50%; }
+    .tl-dot.ok   .tl-dot-inner { background: var(--green); }
+    .tl-dot.warn .tl-dot-inner { background: var(--amber); }
+    .tl-dot.crit .tl-dot-inner { background: var(--red);   }
+
+    .tl-label { font-size: 13.5px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+    .tl-meta  { font-family: var(--mono); font-size: 11px; color: var(--text-3); }
+
+    /* Diff lines */
+    .diff-block { font-family: var(--mono); font-size: 12.5px; line-height: 1.9; }
+    .dl { display: flex; gap: 8px; padding: 2px 6px; border-radius: 3px; }
+    .dl.del { background: rgba(239,68,68,.07); color: var(--red); }
+    .dl.add { background: rgba(34,197,94,.07); color: var(--green); }
+    .dl.ctx { color: var(--text-3); }
+    .dl .s  { width: 12px; flex-shrink: 0; font-weight: 700; }
+    .dl .k  { color: var(--text-2); }
+    .dl.del .k { color: rgba(239,68,68,.6); }
+    .dl.add .k { color: rgba(34,197,94,.6); }
+
+    /* =====================================================================
+       HOW IT WORKS
+       ===================================================================== */
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+    }
+
+    @media (max-width: 820px) { .steps-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 520px) { .steps-grid { grid-template-columns: 1fr; } }
+
+    .step { background: var(--bg-2); padding: 28px 26px; transition: background .2s; }
+    .step:hover { background: var(--bg-3); }
+
+    .step-num {
+      font-family: var(--mono); font-size: 11px; color: var(--blue);
+      font-weight: 500; letter-spacing: 1px; margin-bottom: 14px;
+    }
+
+    .step h3 { font-size: 16px; margin-bottom: 8px; }
+    .step p  { font-size: 13.5px; color: var(--text-2); line-height: 1.65; font-weight: 300; }
+
+    /* =====================================================================
+       WHAT IT WATCHES
+       ===================================================================== */
+    .watches-layout {
+      display: grid; grid-template-columns: 1fr 2fr;
+      gap: 64px; align-items: start;
+    }
+
+    @media (max-width: 820px) { .watches-layout { grid-template-columns: 1fr; gap: 36px; } }
+
+    .watches-live-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--green-dim); border: 1px solid var(--green-bdr);
+      color: var(--green); font-family: var(--mono); font-size: 12px;
+      padding: 7px 13px; border-radius: 8px; margin-bottom: 18px;
+    }
+
+    .watches-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+    .watches-desc { font-size: 14px; color: var(--text-2); line-height: 1.72; font-weight: 300; }
+
+    .record-grid {
+      display: grid; grid-template-columns: repeat(auto-fill,minmax(186px,1fr)); gap: 10px;
+    }
+
+    .record-card {
+      background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: 9px; padding: 14px 15px;
+    }
+
+    .record-name { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--blue-2); margin-bottom: 6px; }
+    .record-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.5; }
+
+    /* =====================================================================
+       USE CASES
+       ===================================================================== */
+    .usecases-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 16px;
+    }
+
+    @media (max-width: 820px) { .usecases-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 520px) { .usecases-grid { grid-template-columns: 1fr; } }
+
+    .uc-card {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px 22px;
+      transition: border-color .2s, background .2s;
+    }
+
+    .uc-card:hover { border-color: var(--border-2); background: var(--bg-3); }
+
+    .uc-icon { font-size: 20px; margin-bottom: 14px; display: block; }
+    .uc-card h3 { font-size: 15px; margin-bottom: 8px; }
+    .uc-card p  { font-size: 13.5px; color: var(--text-2); line-height: 1.65; font-weight: 300; }
+
+    /* =====================================================================
+       RISK ENGINE
+       ===================================================================== */
+    .risk-grid {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 14px;
+    }
+
+    @media (max-width: 900px) { .risk-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 480px) { .risk-grid { grid-template-columns: 1fr; } }
+
+    .risk-card {
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 22px 20px; background: var(--bg-2);
+      position: relative; overflow: hidden;
+    }
+
+    .risk-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+
+    .risk-card.low::before      { background: var(--text-3); }
+    .risk-card.medium::before   { background: var(--amber);  }
+    .risk-card.high::before     { background: var(--orange); }
+    .risk-card.critical::before { background: var(--red);    }
+
+    .risk-level {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px;
+    }
+
+    .low .risk-level      { color: var(--text-3); }
+    .medium .risk-level   { color: var(--amber);  }
+    .high .risk-level     { color: var(--orange); }
+    .critical .risk-level { color: var(--red);    }
+
+    .risk-example { font-family: var(--mono); font-size: 13px; color: var(--text); margin-bottom: 10px; line-height: 1.5; }
+    .risk-why     { font-size: 13px; color: var(--text-2); font-weight: 300; line-height: 1.55; }
+
+    /* =====================================================================
+       LAUNCH STATUS
+       ===================================================================== */
+    .status-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    }
+
+    @media (max-width: 760px) { .status-grid { grid-template-columns: 1fr; } }
+
+    .status-panel {
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    }
+
+    .status-panel.live { border-color: var(--green-bdr); }
+
+    .status-panel-hdr {
+      padding: 13px 18px; border-bottom: 1px solid var(--border);
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.5px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .status-panel.live .status-panel-hdr {
+      background: var(--green-dim); border-color: rgba(34,197,94,.2); color: var(--green);
+    }
+
+    .status-panel.next .status-panel-hdr {
+      background: var(--bg-3); color: var(--text-3);
+    }
+
+    .status-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 18px; border-bottom: 1px solid var(--border);
+    }
+
+    .status-item:last-child { border-bottom: none; }
+
+    .status-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      flex-shrink: 0; margin-top: 6px;
+    }
+
+    .status-panel.live .status-dot { background: var(--green); }
+    .status-panel.next .status-dot { background: var(--text-3); }
+
+    .status-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+    .status-desc { font-size: 12.5px; color: var(--text-2); font-weight: 300; line-height: 1.4; }
+
+    /* =====================================================================
+       PAYOFF SECTION
+       ===================================================================== */
+    .payoff-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 14px;
+    }
+
+    @media (max-width: 820px) { .payoff-grid { grid-template-columns: 1fr; } }
+
+    .payoff-card {
+      border: 1px solid var(--border); border-radius: 14px;
+      padding: 28px 24px; background: var(--bg-2);
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column; gap: 0;
+    }
+
+    .payoff-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+
+    .payoff-card.chaos::before  { background: var(--red);   }
+    .payoff-card.answer::before { background: var(--blue);  }
+    .payoff-card.result::before { background: var(--green); }
+
+    .payoff-card-label {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.8px; margin-bottom: 16px;
+    }
+
+    .payoff-card.chaos  .payoff-card-label { color: var(--red);    }
+    .payoff-card.answer .payoff-card-label { color: var(--blue-2); }
+    .payoff-card.result .payoff-card-label { color: var(--green);  }
+
+    .payoff-card h3 {
+      font-size: 18px; font-weight: 700; letter-spacing: -0.4px;
+      line-height: 1.2; margin-bottom: 12px; color: var(--text);
+    }
+
+    .payoff-card p {
+      font-size: 14.5px; color: var(--text-2); line-height: 1.7; font-weight: 300;
+    }
+
+    /* Mini change entry inside the "With ConfigTrace" card */
+    .payoff-entry {
+      font-family: var(--mono); font-size: 12px;
+      background: var(--bg); border: 1px solid var(--border-2);
+      border-radius: 8px; padding: 12px 14px; margin-top: 18px;
+      line-height: 1.8; color: var(--text-2);
+    }
+
+    .payoff-entry-time { color: var(--text-3); font-size: 11px; display: block; margin-bottom: 4px; }
+    .payoff-entry-del  { color: var(--red);   display: block; }
+    .payoff-entry-add  { color: var(--green); display: block; }
+    .payoff-entry-risk {
+      display: inline-block; margin-top: 6px;
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      padding: 2px 8px; border-radius: 4px;
+      background: var(--red-dim); color: var(--red); border: 1px solid var(--red-bdr);
+    }
+
+    /* Outcome bullets in the "Result" card */
+    .payoff-outcomes {
+      list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 0;
+    }
+
+    .payoff-outcomes li {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+      font-size: 14px; color: var(--text); font-weight: 500; line-height: 1.4;
+    }
+
+    .payoff-outcomes li:last-child { border-bottom: none; }
+
+    .payoff-check {
+      color: var(--green); font-family: var(--mono); font-size: 13px;
+      font-weight: 700; flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* =====================================================================
+       FOUNDER
+       ===================================================================== */
+    .founder-card {
+      max-width: 720px; background: var(--bg-2);
+      border: 1px solid var(--border-2); border-radius: 16px; overflow: hidden;
+    }
+
+    .founder-card-top {
+      display: flex; align-items: center; gap: 9px;
+      padding: 13px 20px; background: var(--bg-3);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .founder-label {
+      font-family: var(--mono); font-size: 11px; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: 1.5px;
+    }
+
+    .founder-card-body { padding: 28px; }
+
+    .founder-quote {
+      font-size: 15.5px; color: var(--text-2); line-height: 1.78;
+      font-weight: 300; font-style: italic; margin-bottom: 26px;
+    }
+
+    .founder-quote strong { color: var(--text); font-weight: 500; font-style: normal; }
+
+    .founder-sig { display: flex; align-items: center; gap: 14px; }
+
+    .founder-avatar {
+      width: 42px; height: 42px; border-radius: 10px; background: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-weight: 700; font-size: 15px; color: #fff;
+      flex-shrink: 0; box-shadow: 0 0 16px var(--blue-glow);
+    }
+
+    .founder-name { font-size: 15px; font-weight: 600; color: var(--text); }
+    .founder-role { font-size: 13px; color: var(--text-3); margin-top: 2px; }
+
+    /* =====================================================================
+       FINAL CTA
+       ===================================================================== */
+    .final-cta {
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .final-cta h2 { max-width: 22ch; margin: 0 auto 18px; }
+    .final-cta .section-sub { margin: 0 auto 38px; text-align: center; }
+    .final-cta .section-label { text-align: center; }
+
+    .cta-sub-text {
+      margin-top: 18px;
+      font-family: var(--mono); font-size: 12px; color: var(--text-3); line-height: 1.6;
+    }
+
+    /* =====================================================================
+       FOOTER
+       ===================================================================== */
+    footer {
+      border-top: 1px solid var(--border); padding: 44px 0 36px;
+      position: relative; z-index: 1;
+    }
+
+    .footer-inner {
+      display: flex; flex-wrap: wrap;
+      justify-content: space-between; gap: 40px; margin-bottom: 36px;
+    }
+
+    .footer-logo {
+      display: flex; align-items: center; gap: 9px;
+      font-family: var(--mono); font-weight: 700; font-size: 15px;
+      color: var(--text); text-decoration: none; margin-bottom: 10px;
+    }
+
+    .footer-logo-box {
+      width: 22px; height: 22px; background: var(--blue); border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; color: #fff;
+    }
+
+    .footer-tagline { font-size: 13px; color: var(--text-3); max-width: 28ch; line-height: 1.55; }
+
+    .footer-col { display: flex; flex-direction: column; gap: 6px; }
+
+    .footer-col-label {
+      font-family: var(--mono); font-size: 11px; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px;
+    }
+
+    .footer-col a { color: var(--text-2); text-decoration: none; font-size: 13.5px; transition: color .15s; }
+    .footer-col a:hover { color: var(--text); }
+
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px;
+      padding-top: 28px; border-top: 1px solid var(--border);
+      font-family: var(--mono); font-size: 11.5px; color: var(--text-3);
+    }
+
+    /* =====================================================================
+       MOBILE OVERRIDES
+       ===================================================================== */
+    @media (max-width: 640px) {
+      .hero { padding: 72px 0 56px; }
+      section { padding: 70px 0; }
+      .three-min-section { padding: 40px 0 44px; }
+      h1 { letter-spacing: -1.5px; }
+      .hero-ctas .btn { width: 100%; justify-content: center; }
+      .product-mock { border-radius: 12px; }
+      .mock-alert-right { display: none; }
+      .mock-appnav-tabs { display: none; }
+    }
+  </style>
 </head>
 <body>
 
-<nav>
+<!-- ──────────────────────────────────────────────────────────────────────
+     NAV
+     ────────────────────────────────────────────────────────────────────── -->
+<nav role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
-    <div class="logo"><span class="dot"></span>ConfigTrace</div>
+    <a href="/" class="nav-logo" aria-label="ConfigTrace home">
+      <div class="nav-logo-box" aria-hidden="true">CT</div>
+      ConfigTrace
+    </a>
+
     <div class="nav-links">
       <a href="#problem">Problem</a>
       <a href="#how">How it works</a>
-      <a href="#risk">Risk engine</a>
-      <a href="#integrations">Integrations</a>
-      <a href="#start" class="nav-cta">Start tracing</a>
+      <a href="#demo">Demo</a>
+      <a href="#status">Status</a>
+      <a href="#about">About</a>
+      <a href="https://app.configtrace.org" class="nav-open-app"
+         target="_blank" rel="noopener noreferrer">Open app →</a>
     </div>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Open navigation" aria-expanded="false">
+      ☰
+    </button>
+  </div>
+
+  <div class="nav-mobile" id="navMobile" aria-hidden="true">
+    <a href="#problem">Problem</a>
+    <a href="#how">How it works</a>
+    <a href="#demo">Demo</a>
+    <a href="#status">Status</a>
+    <a href="#about">About</a>
+    <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app →</a>
   </div>
 </nav>
 
-<header>
-  <div class="wrap">
-    <span class="badge"><span class="pulse"></span>Now watching Cloudflare DNS · more providers incoming</span>
-    <h1>Git for the config that <span class="grad">actually breaks prod.</span></h1>
-    <p class="lede">Most outages aren't caused by code — they're caused by a <b>config change</b> nobody saw. A DNS record flipped. A bucket went public. A webhook URL moved. ConfigTrace snapshots your infrastructure, <b>diffs every change</b>, and tells you how dangerous it was.</p>
-    <div class="hero-ctas">
-      <a href="#start" class="btn btn-primary">Connect your first provider →</a>
-      <a href="#how" class="btn btn-ghost">See how it works</a>
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     HERO
+     ────────────────────────────────────────────────────────────────────── -->
+<section class="hero" id="top">
+  <div class="container">
+
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Cloudflare DNS monitoring · Now live
     </div>
 
-    <div class="terminal">
-      <div class="term-bar">
-        <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
-        <span class="term-title">configtrace diff · cloudflare-zone · sync #1284</span>
+    <h1>
+      Know what changed<br>
+      before production<br>
+      <span class="accent">breaks.</span>
+    </h1>
+
+    <p class="hero-sub">
+      Most production incidents <strong>don't start in Git.</strong> They start in dashboards —
+      a DNS record flipped, a webhook URL changed, an OAuth callback quietly broke.
+      ConfigTrace gives your team a precise, timestamped record of every configuration
+      change so the next incident takes minutes to diagnose, not hours.
+    </p>
+
+    <div class="hero-ctas">
+      <a href="https://app.configtrace.org" class="btn btn-primary btn-lg"
+         target="_blank" rel="noopener noreferrer">
+        Create your first baseline →
+      </a>
+      <a href="#how" class="btn btn-ghost btn-lg">
+        See how it works
+      </a>
+    </div>
+
+    <div class="hero-steps" aria-label="Product flow">
+      <span class="hero-step">Connect zone</span>
+      <span class="hero-step-sep">→</span>
+      <span class="hero-step">Create baseline</span>
+      <span class="hero-step-sep">→</span>
+      <span class="hero-step">Track changes</span>
+    </div>
+
+    <p class="hero-trust">
+      <span class="live-dot" aria-hidden="true"></span>
+      Cloudflare DNS is live. GitHub, Stripe, and AWS are next.
+    </p>
+
+    <!-- Product mock -->
+    <div class="hero-visual" aria-hidden="true">
+      <div class="product-mock">
+
+        <!-- App-level nav -->
+        <div class="mock-appnav">
+          <span class="mock-appnav-brand">ConfigTrace</span>
+          <div class="mock-appnav-tabs">
+            <span class="mock-tab on">Timeline</span>
+            <span class="mock-tab">Syncs</span>
+            <span class="mock-tab">Settings</span>
+          </div>
+        </div>
+
+        <!-- Integration row -->
+        <div class="mock-topbar">
+          <div class="mock-topbar-left">
+            <div class="mock-provider-tag">
+              <div class="mock-cf-icon">CF</div>
+              Cloudflare DNS
+            </div>
+            <span class="mock-zone">example.com · zone a1b2c3d4</span>
+          </div>
+          <div class="mock-live-badge">
+            <span class="mock-live-dot"></span>
+            Hourly sync active
+          </div>
+        </div>
+
+        <!-- Alert -->
+        <div class="mock-alert">
+          <span>⚠</span>
+          <span>1 critical change detected — Sync #47</span>
+          <span class="mock-alert-right">Dec 14, 2024 · 14:32 UTC</span>
+        </div>
+
+        <!-- Change card -->
+        <div class="mock-body">
+          <div class="mock-change-card">
+
+            <div class="mock-change-header">
+              <span class="mock-rec-type">CNAME</span>
+              <span class="mock-rec-name">api.example.com</span>
+              <span class="mock-risk-badge crit">Critical</span>
+            </div>
+
+            <div class="mock-diff">
+              <div class="mock-diff-row del">
+                <span class="mock-diff-sign">−</span>
+                <span class="mock-diff-key">content</span>
+                <span class="mock-diff-val">"prod.vercel.app"</span>
+              </div>
+              <div class="mock-diff-row add">
+                <span class="mock-diff-sign">+</span>
+                <span class="mock-diff-key">content</span>
+                <span class="mock-diff-val">"staging.vercel.app"</span>
+              </div>
+              <div class="mock-diff-row del">
+                <span class="mock-diff-sign">−</span>
+                <span class="mock-diff-key">ttl</span>
+                <span class="mock-diff-val">3600</span>
+              </div>
+              <div class="mock-diff-row add">
+                <span class="mock-diff-sign">+</span>
+                <span class="mock-diff-key">ttl</span>
+                <span class="mock-diff-val">60</span>
+              </div>
+            </div>
+
+            <div class="mock-risk-reason">
+              <span class="mock-risk-icon">⚡</span>
+              Production API traffic is being routed to a staging endpoint. Live users may be affected immediately.
+            </div>
+
+          </div>
+        </div>
+
+        <div class="mock-footer">
+          <span class="mock-stats">
+            2 records changed · <span class="c">1 critical</span> · 1 medium
+          </span>
+          <div class="mock-actions">
+            <span class="mock-btn">View timeline</span>
+            <span class="mock-btn">Sync now</span>
+          </div>
+        </div>
+
       </div>
-      <div class="term-body">
-<div class="tl ctx"><span class="gut">  </span>  CNAME  api.example.com<span class="risk-tag risk-critical">CRITICAL</span></div>
-<div class="tl del"><span class="gut">- </span>    <span class="key">content:</span> "prod.vercel.app"</div>
-<div class="tl add"><span class="gut">+ </span>    <span class="key">content:</span> "staging.vercel.app"</div>
-<div class="tl ctx"><span class="gut">  </span></div>
-<div class="tl ctx"><span class="gut">  </span>  A      example.com</div>
-<div class="tl del"><span class="gut">- </span>    <span class="key">ttl:</span> 3600</div>
-<div class="tl add"><span class="gut">+ </span>    <span class="key">ttl:</span> 60</div>
-<div class="tl ctx"><span class="gut">  </span></div>
-<div class="tl ctx"><span class="gut">  </span>  → 2 changes detected · 1 critical · live traffic may be rerouted</div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     IN 3 MINUTES
+     ────────────────────────────────────────────────────────────────────── -->
+<section class="alt three-min-section" id="quickstart">
+  <div class="container">
+    <span class="three-min-label">In 3 minutes, you get:</span>
+    <div class="three-min-grid">
+
+      <div class="three-min-item">
+        <span class="three-min-num">01</span>
+        <span class="three-min-check" aria-hidden="true">✓</span>
+        <div class="three-min-title">A baseline snapshot</div>
+        <div class="three-min-desc">
+          Every DNS record in your Cloudflare zone captured as your known-good state.
+          The reference point for every diff that follows.
+        </div>
       </div>
+
+      <div class="three-min-item">
+        <span class="three-min-num">02</span>
+        <span class="three-min-check" aria-hidden="true">✓</span>
+        <div class="three-min-title">Hourly automatic syncs</div>
+        <div class="three-min-desc">
+          ConfigTrace re-syncs your zone every hour and diffs against the last known state.
+          Manual Sync Now is always available.
+        </div>
+      </div>
+
+      <div class="three-min-item">
+        <span class="three-min-num">03</span>
+        <span class="three-min-check" aria-hidden="true">✓</span>
+        <div class="three-min-title">A timeline of every change</div>
+        <div class="three-min-desc">
+          Added records, removed records, and modified field values — each surfaced with
+          old value, new value, and timestamp.
+        </div>
+      </div>
+
+      <div class="three-min-item">
+        <span class="three-min-num">04</span>
+        <span class="three-min-check" aria-hidden="true">✓</span>
+        <div class="three-min-title">Risk labels on every change</div>
+        <div class="three-min-desc">
+          Low, medium, high, or critical — based on each change's potential blast radius.
+          Triage at a glance, not after the fact.
+        </div>
+      </div>
+
     </div>
   </div>
-</header>
+</section>
 
-<section class="problem" id="problem">
-  <div class="wrap">
-    <div class="stat-row">
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     PROBLEM
+     ────────────────────────────────────────────────────────────────────── -->
+<section id="problem">
+  <div class="container">
+    <div class="problem-grid">
+
       <div>
-        <div class="sec-label">The blind spot</div>
-        <div class="big-stat">outside<br><span class="unit">GitHub.</span></div>
-        <p class="stat-caption">The changes that take you down don't show up in a pull request. They happen in dashboards, CLIs, and consoles — with no history, no diff, and no review.</p>
+        <span class="section-label">The blind spot</span>
+        <div class="problem-statement">Production incidents don't start in Git.</div>
+        <p class="problem-body">
+          Code changes go through pull requests, code review, and CI/CD.
+          But <strong>configuration changes bypass all of that.</strong>
+          They happen in dashboards, CLIs, and vendor portals — with no history,
+          no diff, and no way to trace them after the fact.
+        </p>
+        <br>
+        <p class="problem-body">
+          When production breaks, your team asks: <strong>"What changed?"</strong>
+          The answer is often not in Git.
+        </p>
       </div>
+
       <div>
-        <ul class="miss-list">
-          <li><span class="x">×</span><b>DNS record changed</b> — silently, by anyone with access</li>
-          <li><span class="x">×</span><b>S3 bucket became public</b> — no alert, no trail</li>
-          <li><span class="x">×</span><b>Firebase rule opened up</b> — wide open overnight</li>
-          <li><span class="x">×</span><b>Stripe webhook URL moved</b> — payments quietly drop</li>
-          <li><span class="x">×</span><b>OAuth callback broke</b> — logins fail in prod</li>
-          <li><span class="x">×</span><b>Cloudflare routing changed</b> — traffic goes elsewhere</li>
+        <ul class="blind-list">
+          <li>
+            <span class="blind-x">×</span>
+            <div>
+              <strong>DNS record silently changed</strong>
+              Traffic rerouted to the wrong destination. No alert, no trail.
+            </div>
+          </li>
+          <li>
+            <span class="blind-x">×</span>
+            <div>
+              <strong>Stripe webhook URL moved</strong>
+              Payment events stop arriving. Revenue impact visible — cause invisible.
+            </div>
+          </li>
+          <li>
+            <span class="blind-x">×</span>
+            <div>
+              <strong>GitHub branch protection disabled</strong>
+              Direct pushes to main. Discovered weeks later in an incident review.
+            </div>
+          </li>
+          <li>
+            <span class="blind-x">×</span>
+            <div>
+              <strong>OAuth callback URL changed</strong>
+              User logins fail in production. Root cause took three hours to find.
+            </div>
+          </li>
+          <li>
+            <span class="blind-x">×</span>
+            <div>
+              <strong>Cloudflare routing rule updated</strong>
+              Live traffic forwarded elsewhere. The change was made in the dashboard.
+            </div>
+          </li>
+          <li>
+            <span class="blind-x">×</span>
+            <div>
+              <strong>Root DNS record deleted</strong>
+              The entire site goes offline. On-call scrambles to understand why.
+            </div>
+          </li>
         </ul>
       </div>
+
     </div>
   </div>
 </section>
 
-<section id="how">
-  <div class="wrap">
-    <div class="sec-label">The full flow</div>
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     BEFORE / AFTER
+     ────────────────────────────────────────────────────────────────────── -->
+<section class="alt" id="beforeafter">
+  <div class="container">
+    <span class="section-label">The difference</span>
+    <h2>From "something changed" to exactly what.</h2>
+    <p class="section-sub">
+      Without ConfigTrace, a production incident starts with a question nobody
+      can answer. With it, the answer is already there.
+    </p>
+
+    <div class="ba-grid">
+
+      <!-- BEFORE -->
+      <div class="ba-panel before">
+        <div class="ba-header">
+          <span aria-hidden="true">✕</span> Before · Without ConfigTrace
+        </div>
+        <div class="ba-body">
+          <p class="ba-before-text">
+            "Prod is down. Did code change?
+            Did DNS change? Did someone
+            touch Cloudflare? Who has
+            access? When did it happen?"
+          </p>
+          <div class="ba-before-status">
+            <span class="ba-status-dot"></span>
+            Incident open · time to root cause unknown
+          </div>
+        </div>
+      </div>
+
+      <!-- AFTER -->
+      <div class="ba-panel after">
+        <div class="ba-header">
+          <span aria-hidden="true">✓</span> After · With ConfigTrace
+        </div>
+        <div class="ba-body">
+          <div class="ba-after-time">Dec 14, 2024 · 14:32:04 UTC — Sync #47</div>
+          <div class="ba-after-record">
+            <span class="ba-rec-type">CNAME</span>
+            <span class="ba-rec-name">api.example.com</span>
+            <span class="ba-crit">Critical</span>
+          </div>
+          <div class="ba-diff">
+            <span class="ba-del">− "prod.vercel.app"</span>
+            <span class="ba-add">+ "staging.vercel.app"</span>
+          </div>
+          <div class="ba-after-reason">
+            <span class="ba-after-icon">✓</span>
+            Production API rerouted to staging. Detected automatically. No manual triage required.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     DEMO
+     ────────────────────────────────────────────────────────────────────── -->
+<section id="demo">
+  <div class="container">
+    <span class="section-label">See it in action</span>
+    <h2>The full picture, at a glance.</h2>
+    <p class="section-sub">
+      ConfigTrace surfaces exactly what changed, when it changed, and what risk
+      it carries — so your team has a clear record to work from, not just a
+      feeling that something must have moved.
+    </p>
+
+    <div class="demo-panels">
+
+      <!-- Timeline -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <span class="demo-panel-title">Sync timeline · example.com</span>
+        </div>
+        <div class="demo-panel-body">
+          <div class="tl-entry">
+            <div class="tl-dot ok"><span class="tl-dot-inner"></span></div>
+            <div>
+              <div class="tl-label">Baseline created</div>
+              <div class="tl-meta">Sync #1 · 87 records snapshotted · Dec 12, 09:00</div>
+            </div>
+          </div>
+          <div class="tl-entry">
+            <div class="tl-dot ok"><span class="tl-dot-inner"></span></div>
+            <div>
+              <div class="tl-label">No changes detected</div>
+              <div class="tl-meta">Sync #44 · 87 records · Dec 14, 10:00</div>
+            </div>
+          </div>
+          <div class="tl-entry">
+            <div class="tl-dot ok"><span class="tl-dot-inner"></span></div>
+            <div>
+              <div class="tl-label">No changes detected</div>
+              <div class="tl-meta">Sync #45 · 87 records · Dec 14, 11:00</div>
+            </div>
+          </div>
+          <div class="tl-entry">
+            <div class="tl-dot warn"><span class="tl-dot-inner"></span></div>
+            <div>
+              <div class="tl-label">1 medium change</div>
+              <div class="tl-meta">Sync #46 · TXT record added · Dec 14, 12:00</div>
+            </div>
+          </div>
+          <div class="tl-entry">
+            <div class="tl-dot crit"><span class="tl-dot-inner"></span></div>
+            <div>
+              <div class="tl-label">1 critical — CNAME rerouted</div>
+              <div class="tl-meta">Sync #47 · api.example.com · Dec 14, 14:32</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diff panel -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <span class="demo-panel-title">Field-level diff · Sync #47</span>
+        </div>
+        <div class="demo-panel-body">
+          <div class="diff-block">
+            <div class="dl ctx"><span class="s">&nbsp;</span><span>CNAME&nbsp; api.example.com</span></div>
+            <div class="dl del"><span class="s">−</span><span>&nbsp;&nbsp;<span class="k">content</span>&nbsp; "prod.vercel.app"</span></div>
+            <div class="dl add"><span class="s">+</span><span>&nbsp;&nbsp;<span class="k">content</span>&nbsp; "staging.vercel.app"</span></div>
+            <div class="dl del"><span class="s">−</span><span>&nbsp;&nbsp;<span class="k">ttl</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3600</span></div>
+            <div class="dl add"><span class="s">+</span><span>&nbsp;&nbsp;<span class="k">ttl</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 60</span></div>
+            <div class="dl ctx"><span class="s">&nbsp;</span><span></span></div>
+            <div class="dl ctx"><span class="s">&nbsp;</span><span>TXT&nbsp;&nbsp;&nbsp; _dmarc.example.com</span></div>
+            <div class="dl add"><span class="s">+</span><span>&nbsp;&nbsp;<span class="k">content</span>&nbsp; "v=DMARC1; p=none; rua=..."</span></div>
+            <div class="dl ctx"><span class="s">&nbsp;</span><span></span></div>
+            <div class="dl ctx" style="color:var(--text-3)">
+              <span class="s">&nbsp;</span>
+              <span>→ 2 changes · 1 critical · 1 medium</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     HOW IT WORKS
+     ────────────────────────────────────────────────────────────────────── -->
+<section class="alt" id="how">
+  <div class="container">
+    <span class="section-label">The full flow</span>
     <h2>Snapshot. Diff. Risk-assess. Repeat.</h2>
-    <p class="sec-sub">ConfigTrace treats your live infrastructure like a repository — every sync is a commit, every change is reviewable.</p>
-    <div class="steps">
+    <p class="section-sub">
+      ConfigTrace treats your live infrastructure like a repository.
+      Every sync is a commit. Every change is reviewable.
+      Manual Sync Now is always available alongside the hourly schedule.
+    </p>
+
+    <div class="steps-grid">
       <div class="step">
-        <div class="num">01 · CONNECT</div>
-        <h3>Connect infrastructure</h3>
-        <p>Give ConfigTrace a scoped API token and an account, zone, or project ID. Credentials are encrypted at rest and never shown again.</p>
+        <div class="step-num">01 · CONNECT</div>
+        <h3>Connect a provider</h3>
+        <p>Add a scoped API token and a zone or account ID. Credentials are encrypted before storage and never shown again.</p>
       </div>
       <div class="step">
-        <div class="num">02 · SNAPSHOT</div>
-        <h3>Capture state</h3>
-        <p>ConfigTrace pulls the current configuration — every DNS record, rule, and setting — and freezes it as an immutable snapshot of that moment.</p>
+        <div class="step-num">02 · BASELINE</div>
+        <h3>Create a baseline</h3>
+        <p>The first sync snapshots your current configuration — every DNS record, rule, and field value — as your known-good baseline.</p>
       </div>
       <div class="step">
-        <div class="num">03 · SYNC</div>
-        <h3>Re-sync over time</h3>
-        <p>On a schedule or on demand, it fetches fresh state and lines it up against the last known-good snapshot.</p>
+        <div class="step-num">03 · SYNC</div>
+        <h3>Sync hourly or manually</h3>
+        <p>ConfigTrace syncs your zone every hour. Hit Sync Now anytime to check for changes on demand, without waiting for the schedule.</p>
       </div>
       <div class="step">
-        <div class="num">04 · DIFF</div>
-        <h3>Detect exact changes</h3>
-        <p>A field-level diff engine surfaces precisely what moved: this record's content, this TTL, this rule — old value → new value.</p>
+        <div class="step-num">04 · DIFF</div>
+        <h3>Detect field-level changes</h3>
+        <p>Every sync is diffed against the previous state. Exactly what changed surfaces: the old value, the new value, and when.</p>
       </div>
       <div class="step">
-        <div class="num">05 · CLASSIFY</div>
-        <h3>Score the risk</h3>
-        <p>Each change becomes an event, scored from low to critical based on its blast radius. A TXT comment ≠ a rerouted CNAME.</p>
+        <div class="step-num">05 · CLASSIFY</div>
+        <h3>Classify change risk</h3>
+        <p>Each change is scored low to critical based on blast radius. A changed TXT comment is not the same as a rerouted CNAME.</p>
       </div>
       <div class="step">
-        <div class="num">06 · TIMELINE</div>
-        <h3>See the history</h3>
-        <p>A clear timeline of when, what, old value, new value, and risk — instead of "uhhh, why is prod broken?"</p>
+        <div class="step-num">06 · REVIEW</div>
+        <h3>Review the timeline</h3>
+        <p>A clear change timeline shows what happened, when, and what it affected — so "what changed?" gets answered in seconds.</p>
       </div>
     </div>
+
   </div>
 </section>
 
-<section id="risk" class="problem">
-  <div class="wrap">
-    <div class="sec-label">Risk engine</div>
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     WHAT IT WATCHES
+     ────────────────────────────────────────────────────────────────────── -->
+<section id="watches">
+  <div class="container">
+    <span class="section-label">Coverage</span>
+    <h2>What ConfigTrace watches today.</h2>
+    <p class="section-sub">
+      The current MVP monitors Cloudflare DNS in depth — every record type,
+      every field, every change. More providers are on the way.
+    </p>
+
+    <div class="watches-layout">
+      <div>
+        <div class="watches-live-badge">
+          <span class="watches-live-dot"></span>
+          Cloudflare DNS · Live
+        </div>
+        <p class="watches-desc">
+          Connect a Cloudflare zone with a scoped API token and Zone ID.
+          ConfigTrace monitors every DNS record continuously.
+          Hourly syncs run automatically; manual syncs are always available.
+          The first sync creates your baseline — every sync after diffs against it.
+        </p>
+      </div>
+
+      <div class="record-grid">
+        <div class="record-card">
+          <div class="record-name">A / AAAA</div>
+          <div class="record-desc">IPv4 and IPv6 address records — the most traffic-critical changes</div>
+        </div>
+        <div class="record-card">
+          <div class="record-name">CNAME</div>
+          <div class="record-desc">Canonical name aliases — rerouting these can redirect live traffic</div>
+        </div>
+        <div class="record-card">
+          <div class="record-name">MX</div>
+          <div class="record-desc">Mail exchange records — changes here can silently break email delivery</div>
+        </div>
+        <div class="record-card">
+          <div class="record-name">TXT</div>
+          <div class="record-desc">SPF, DKIM, DMARC, domain ownership, and other text records</div>
+        </div>
+        <div class="record-card">
+          <div class="record-name">NS</div>
+          <div class="record-desc">Name server records — changes here affect your entire zone</div>
+        </div>
+        <div class="record-card">
+          <div class="record-name">TTL</div>
+          <div class="record-desc">Time-to-live values — unexpectedly short TTLs can signal impending changes</div>
+        </div>
+        <div class="record-card">
+          <div class="record-name">Proxied</div>
+          <div class="record-desc">Cloudflare proxy on/off — switching this changes your security and routing model</div>
+        </div>
+        <div class="record-card">
+          <div class="record-name">Added / Removed</div>
+          <div class="record-desc">New records and deleted records are both tracked and surfaced as changes</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     USE CASES
+     ────────────────────────────────────────────────────────────────────── -->
+<section class="alt" id="usecases">
+  <div class="container">
+    <span class="section-label">Use cases</span>
+    <h2>Built for teams that care about production.</h2>
+    <p class="section-sub">
+      Whether you're debugging an incident, reviewing a risky change, or building
+      visibility into settings that live outside the codebase, ConfigTrace gives
+      you a clear record to work from.
+    </p>
+
+    <div class="usecases-grid">
+      <div class="uc-card">
+        <span class="uc-icon" aria-hidden="true">🔍</span>
+        <h3>Debug outages faster</h3>
+        <p>When production breaks, check ConfigTrace before spending hours in logs. Find the configuration change that caused the incident in seconds.</p>
+      </div>
+      <div class="uc-card">
+        <span class="uc-icon" aria-hidden="true">⚡</span>
+        <h3>Catch risky DNS changes</h3>
+        <p>Not all DNS changes are equal. ConfigTrace classifies each change by risk so you know which ones deserve immediate attention.</p>
+      </div>
+      <div class="uc-card">
+        <span class="uc-icon" aria-hidden="true">📜</span>
+        <h3>Build a config history</h3>
+        <p>Track the settings that live outside your codebase. See exactly what changed, when it changed, and what it looked like before.</p>
+      </div>
+      <div class="uc-card">
+        <span class="uc-icon" aria-hidden="true">🔄</span>
+        <h3>Monitor configuration drift</h3>
+        <p>Catch settings that have drifted from your expected baseline before they quietly accumulate into a larger problem.</p>
+      </div>
+      <div class="uc-card">
+        <span class="uc-icon" aria-hidden="true">👁</span>
+        <h3>Review dashboard changes</h3>
+        <p>Config changes made in Cloudflare, Stripe, or AWS dashboards are invisible to Git. ConfigTrace makes them visible to your team.</p>
+      </div>
+      <div class="uc-card">
+        <span class="uc-icon" aria-hidden="true">📋</span>
+        <h3>Build an audit trail</h3>
+        <p>Maintain a timestamped record of every change to your production configuration — useful for incident reviews and change management.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     RISK ENGINE
+     ────────────────────────────────────────────────────────────────────── -->
+<section id="risk">
+  <div class="container">
+    <span class="section-label">Risk classification</span>
     <h2>Not all changes are equal.</h2>
-    <p class="sec-sub">The intelligence layer. ConfigTrace weighs each change by its potential blast radius so you can triage at a glance.</p>
+    <p class="section-sub">
+      ConfigTrace weighs each detected change by its potential blast radius
+      so your team can triage at a glance — not after the incident is already
+      in progress.
+    </p>
+
     <div class="risk-grid">
       <div class="risk-card low">
-        <div class="lvl">Low</div>
-        <div class="ex">TXT comment changed</div>
-        <div class="why">Cosmetic. No traffic or security impact.</div>
+        <div class="risk-level">Low</div>
+        <div class="risk-example">TXT comment changed</div>
+        <div class="risk-why">Cosmetic or metadata change. No routing or security impact expected.</div>
       </div>
-      <div class="risk-card med">
-        <div class="lvl">Medium</div>
-        <div class="ex">New subdomain added</div>
-        <div class="why">Expanded attack surface worth a look.</div>
+      <div class="risk-card medium">
+        <div class="risk-level">Medium</div>
+        <div class="risk-example">New subdomain added<br>TTL shortened</div>
+        <div class="risk-why">Expanded attack surface or cache behavior change. Worth a closer look.</div>
       </div>
       <div class="risk-card high">
-        <div class="lvl">High</div>
-        <div class="ex">CNAME rerouted</div>
-        <div class="why">Traffic could be flowing somewhere it shouldn't.</div>
+        <div class="risk-level">High</div>
+        <div class="risk-example">API CNAME rerouted</div>
+        <div class="risk-why">Production traffic may be flowing somewhere it shouldn't be.</div>
       </div>
-      <div class="risk-card crit">
-        <div class="lvl">Critical</div>
-        <div class="ex">Root A record deleted</div>
-        <div class="why">The entire site may be offline right now.</div>
+      <div class="risk-card critical">
+        <div class="risk-level">Critical</div>
+        <div class="risk-example">Root A record deleted<br>NS record changed</div>
+        <div class="risk-why">The site may be offline or your entire zone could be affected.</div>
       </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     LAUNCH STATUS
+     ────────────────────────────────────────────────────────────────────── -->
+<section class="alt" id="status">
+  <div class="container">
+    <span class="section-label">Product status</span>
+    <h2>What's live. What's next.</h2>
+    <p class="section-sub">
+      ConfigTrace is an early-stage product. Here's an honest view of exactly
+      what's available today and what's being built next.
+    </p>
+
+    <div class="status-grid">
+
+      <!-- Live now -->
+      <div class="status-panel live">
+        <div class="status-panel-hdr">
+          <span aria-hidden="true">●</span> Live now
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">Cloudflare DNS monitoring</div>
+            <div class="status-desc">Connect a zone with a scoped API token and Zone ID. All record types tracked.</div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">Baseline snapshots</div>
+            <div class="status-desc">First sync captures every record as your known-good starting point.</div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">Hourly automatic syncs</div>
+            <div class="status-desc">Zone is re-synced on the hour, automatically, every hour.</div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">Manual Sync Now</div>
+            <div class="status-desc">Trigger a sync on demand at any time, without waiting for the schedule.</div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">Field-level diffs</div>
+            <div class="status-desc">Added, removed, and modified records all surfaced — with old and new values.</div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">Timeline and risk classification</div>
+            <div class="status-desc">Every change gets a risk label — low, medium, high, or critical — based on blast radius.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Coming next -->
+      <div class="status-panel next">
+        <div class="status-panel-hdr">
+          <span aria-hidden="true">◌</span> Coming next
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">GitHub</div>
+            <div class="status-desc">Branch protection rules, repo settings, and org-level configuration.</div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">Stripe</div>
+            <div class="status-desc">Webhook endpoints, product settings, and account configuration.</div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">AWS</div>
+            <div class="status-desc">Route 53, security groups, IAM policies, and routing configuration.</div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">Vercel / Firebase / Supabase</div>
+            <div class="status-desc">Project settings, environment config, and deployment rules.</div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">Shopify</div>
+            <div class="status-desc">Webhook settings and store configuration.</div>
+          </div>
+        </div>
+
+      </div>
+
     </div>
   </div>
 </section>
 
-<section id="integrations">
-  <div class="wrap">
-    <div class="sec-label">Integrations</div>
-    <h2>One source of truth for every provider.</h2>
-    <p class="sec-sub">Start with DNS today. Connect the rest of your stack as ConfigTrace grows.</p>
-    <div class="integ-wrap">
-      <span class="chip live">Cloudflare DNS</span>
-      <span class="chip soon">AWS</span>
-      <span class="chip soon">Stripe</span>
-      <span class="chip soon">GitHub</span>
-      <span class="chip soon">Vercel</span>
-      <span class="chip soon">Firebase</span>
-      <span class="chip soon">Supabase</span>
-      <span class="chip soon">Shopify</span>
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     WHAT IT DOESN'T DO
+     ────────────────────────────────────────────────────────────────────── -->
+<section id="payoff">
+  <div class="container">
+    <span class="section-label">Why it matters</span>
+    <h2>The moment ConfigTrace pays for itself.</h2>
+    <p class="section-sub">
+      It is not when everything is working. It is when production breaks and your
+      team needs the answer to one question: <strong>what changed?</strong>
+    </p>
+
+    <div class="payoff-grid">
+
+      <!-- Card 1: Chaos -->
+      <div class="payoff-card chaos">
+        <div class="payoff-card-label">Without ConfigTrace</div>
+        <h3>Without ConfigTrace</h3>
+        <p>
+          Three engineers checking GitHub, Cloudflare, Slack, and memory,
+          trying to reconstruct what changed.
+        </p>
+      </div>
+
+      <!-- Card 2: Answer -->
+      <div class="payoff-card answer">
+        <div class="payoff-card-label">With ConfigTrace</div>
+        <h3>With ConfigTrace</h3>
+        <p>
+          A timestamped record shows the exact change — record, old value,
+          new value, and risk level.
+        </p>
+        <div class="payoff-entry" aria-hidden="true">
+          <span class="payoff-entry-time">Dec 14, 2024 · 14:32 UTC — Sync #47</span>
+          CNAME api.example.com
+          <span class="payoff-entry-del">− "prod.vercel.app"</span>
+          <span class="payoff-entry-add">+ "staging.vercel.app"</span>
+          <span class="payoff-entry-risk">Critical</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Result -->
+      <div class="payoff-card result">
+        <div class="payoff-card-label">The result</div>
+        <h3>The result</h3>
+        <p>
+          Less guessing. Faster root cause. Cleaner incident review.
+        </p>
+        <ul class="payoff-outcomes">
+          <li><span class="payoff-check">✓</span> Root cause in seconds, not hours</li>
+          <li><span class="payoff-check">✓</span> Clear answer for the incident timeline</li>
+          <li><span class="payoff-check">✓</span> History for the next time it happens</li>
+        </ul>
+      </div>
+
     </div>
   </div>
 </section>
 
-<section class="final" id="start">
-  <div class="wrap">
-    <div class="sec-label">Get started</div>
-    <h2>Catch the change before the outage.</h2>
-    <p class="sec-sub">Connect a provider, take your first snapshot, and never wonder "what changed?" again.</p>
-    <a href="#" class="btn btn-primary">Connect your first provider →</a>
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     ABOUT / FOUNDER
+     ────────────────────────────────────────────────────────────────────── -->
+<section class="alt" id="about">
+  <div class="container">
+    <span class="section-label">About</span>
+    <h2>Why I'm building ConfigTrace.</h2>
+    <p class="section-sub">A note from the founder.</p>
+
+    <div class="founder-card">
+      <div class="founder-card-top">
+        <span style="font-size:13px;" aria-hidden="true">📝</span>
+        <span class="founder-label">Builder's note</span>
+      </div>
+      <div class="founder-card-body">
+        <p class="founder-quote">
+          "I'm building ConfigTrace because <strong>production systems now depend on dozens of
+          dashboards, not just code.</strong> GitHub tells you what changed in the repo. It does
+          not tell you who changed a DNS record, webhook URL, OAuth callback, or cloud
+          permission.
+          <br><br>
+          ConfigTrace is my attempt to bring the same discipline we expect from code review —
+          <strong>history, diffs, accountability</strong> — to the configuration that keeps
+          production alive."
+        </p>
+        <div class="founder-sig">
+          <div class="founder-avatar" aria-label="Rohan Shah">RS</div>
+          <div>
+            <div class="founder-name">Rohan Shah</div>
+            <div class="founder-role">Founder, ConfigTrace</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     FINAL CTA
+     ────────────────────────────────────────────────────────────────────── -->
+<section class="final-cta" id="start">
+  <div class="container">
+    <span class="section-label">Get started</span>
+    <h2>Create your first baseline before the next incident.</h2>
+    <p class="section-sub">
+      Connect a Cloudflare zone, run your first sync, and get a timestamped record
+      of every DNS change from that moment forward.
+    </p>
+    <a href="https://app.configtrace.org" class="btn btn-primary btn-lg"
+       target="_blank" rel="noopener noreferrer">
+      Create your first baseline →
+    </a>
+    <p class="cta-sub-text">
+      Connect a Cloudflare zone and start tracking DNS changes in minutes.
+    </p>
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     FOOTER
+     ────────────────────────────────────────────────────────────────────── -->
 <footer>
-  <div class="wrap foot-inner">
-    <div class="logo"><span class="dot"></span>ConfigTrace</div>
-    <div class="foot-meta">Version control for infrastructure config · built with care</div>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <a href="/" class="footer-logo">
+          <div class="footer-logo-box" aria-hidden="true">CT</div>
+          ConfigTrace
+        </a>
+        <p class="footer-tagline">Version history for production configuration.</p>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-label">Product</div>
+        <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app</a>
+        <a href="#how">How it works</a>
+        <a href="#demo">Demo</a>
+        <a href="#status">Product status</a>
+        <a href="#risk">Risk classification</a>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-label">Info</div>
+        <a href="#problem">The problem</a>
+        <a href="#watches">What it watches</a>
+        <a href="#payoff">Why it matters</a>
+        <a href="#about">About</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>ConfigTrace · Built by Rohan Shah</span>
+      <span>Cloudflare DNS live · More providers coming soon</span>
+    </div>
   </div>
 </footer>
+
+
+<script>
+  (function () {
+    var btn  = document.getElementById('navToggle');
+    var menu = document.getElementById('navMobile');
+    var open = false;
+
+    btn.addEventListener('click', function () {
+      open = !open;
+      menu.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open);
+      menu.setAttribute('aria-hidden', !open);
+    });
+
+    menu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        open = false;
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+        menu.setAttribute('aria-hidden', true);
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>
