@@ -4,20 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ConfigTrace — Know what changed before production breaks</title>
-  <meta name="description" content="ConfigTrace snapshots your Cloudflare DNS, syncs every hour, and shows you exactly what changed, when, and how risky it was. Stop debugging blind — know what changed before the next outage.">
+  <meta name="description" content="ConfigTrace snapshots your Cloudflare DNS and GitHub repository configuration, syncs every hour, and shows you exactly what changed, when, and how risky it was. Stop debugging blind.">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://configtrace.org/">
   <meta property="og:title" content="ConfigTrace — Know what changed before production breaks">
-  <meta property="og:description" content="Cloudflare DNS monitoring is live. Baseline snapshots, hourly syncs, field-level diffs, and risk classification for the configuration that lives outside Git.">
+  <meta property="og:description" content="Cloudflare DNS and GitHub repo config monitoring are live. Baseline snapshots, hourly syncs, field-level diffs, and risk classification for the configuration that lives outside Git.">
   <meta property="og:image" content="https://configtrace.org/og.png">
   <meta property="og:site_name" content="ConfigTrace">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ConfigTrace — Know what changed before production breaks">
-  <meta name="twitter:description" content="Cloudflare DNS monitoring is live. Baseline snapshots, hourly syncs, field-level diffs, and risk classification for the configuration that lives outside Git.">
+  <meta name="twitter:description" content="Cloudflare DNS and GitHub repo config monitoring are live. Baseline snapshots, hourly syncs, field-level diffs, and risk classification for the configuration that lives outside Git.">
   <meta name="twitter:image" content="https://configtrace.org/og.png">
 
   <link rel="canonical" href="https://configtrace.org/">
@@ -432,6 +432,15 @@
       font-size: 9px; font-weight: 700; color: #fff; flex-shrink: 0;
     }
 
+    .mock-gh-icon {
+      width: 20px; height: 20px; background: #24292e; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; color: #fff; flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,.15);
+    }
+
+    .mock-sep { color: var(--border-2); font-size: 14px; }
+
     .mock-zone { font-family: var(--mono); font-size: 11px; color: var(--text-3); }
 
     .mock-live-badge {
@@ -772,6 +781,57 @@
     .step p  { font-size: 13.5px; color: var(--text-2); line-height: 1.65; font-weight: 300; }
 
     /* =====================================================================
+       GIT vs CONFIG (new section)
+       ===================================================================== */
+    .git-contrast-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+
+    @media (max-width: 760px) { .git-contrast-grid { grid-template-columns: 1fr; } }
+
+    .git-contrast-panel {
+      border-radius: 14px; overflow: hidden; border: 1px solid;
+    }
+
+    .git-contrast-panel.git-side { border-color: var(--border-2); }
+    .git-contrast-panel.ct-side  { border-color: rgba(75,124,246,.35); }
+
+    .git-contrast-hdr {
+      padding: 13px 20px;
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.8px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .git-contrast-panel.git-side .git-contrast-hdr {
+      background: var(--bg-3); border-bottom: 1px solid var(--border); color: var(--text-3);
+    }
+
+    .git-contrast-panel.ct-side .git-contrast-hdr {
+      background: var(--blue-dim); border-bottom: 1px solid rgba(75,124,246,.22); color: var(--blue-2);
+    }
+
+    .git-contrast-body { background: var(--bg-2); padding: 6px 20px 16px; }
+
+    .git-contrast-list { list-style: none; }
+
+    .git-contrast-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 11px 0; border-bottom: 1px solid var(--border);
+      font-size: 14px; color: var(--text-2); line-height: 1.4;
+    }
+
+    .git-contrast-list li:last-child { border-bottom: none; }
+
+    .git-contrast-icon {
+      font-family: var(--mono); font-size: 12px; flex-shrink: 0;
+      width: 14px; margin-top: 2px; font-weight: 700;
+    }
+
+    .git-contrast-panel.git-side .git-contrast-icon { color: var(--text-3); }
+    .git-contrast-panel.ct-side  .git-contrast-icon { color: var(--blue-2); }
+
+    /* =====================================================================
        WHAT IT WATCHES
        ===================================================================== */
     .watches-layout {
@@ -790,6 +850,47 @@
 
     .watches-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
     .watches-desc { font-size: 14px; color: var(--text-2); line-height: 1.72; font-weight: 300; }
+
+    .watches-providers {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    }
+
+    @media (max-width: 860px) { .watches-providers { grid-template-columns: 1fr; } }
+
+    .watches-provider-card {
+      background: var(--bg-2); border: 1px solid var(--border-2);
+      border-radius: 14px; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+
+    .watches-provider-hdr {
+      padding: 14px 18px; background: var(--bg-3);
+      border-bottom: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .watches-provider-name {
+      font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--text);
+    }
+
+    .watches-provider-desc {
+      padding: 14px 18px;
+      font-size: 13.5px; color: var(--text-2); line-height: 1.68;
+      font-weight: 300; border-bottom: 1px solid var(--border);
+    }
+
+    .watches-provider-fields { padding: 14px 18px; }
+
+    .watches-provider-fields .record-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 8px;
+    }
+
+    .watches-provider-note {
+      padding: 11px 18px; border-top: 1px solid var(--border);
+      background: var(--bg); font-family: var(--mono);
+      font-size: 11.5px; color: var(--text-3); line-height: 1.55;
+    }
 
     .record-grid {
       display: grid; grid-template-columns: repeat(auto-fill,minmax(186px,1fr)); gap: 10px;
@@ -1151,7 +1252,7 @@
 
     <div class="hero-badge">
       <span class="badge-dot"></span>
-      Cloudflare DNS monitoring · Now live
+      Cloudflare DNS + GitHub repo config · Now live
     </div>
 
     <h1>
@@ -1162,7 +1263,8 @@
 
     <p class="hero-sub">
       Most production incidents <strong>don't start in Git.</strong> They start in dashboards —
-      a DNS record flipped, a webhook URL changed, an OAuth callback quietly broke.
+      a DNS record flipped, branch protection quietly weakened, a webhook URL changed,
+      a repo variable rotated without notice.
       ConfigTrace gives your team a precise, timestamped record of every configuration
       change so the next incident takes minutes to diagnose, not hours.
     </p>
@@ -1178,7 +1280,7 @@
     </div>
 
     <div class="hero-steps" aria-label="Product flow">
-      <span class="hero-step">Connect zone</span>
+      <span class="hero-step">Connect provider</span>
       <span class="hero-step-sep">→</span>
       <span class="hero-step">Create baseline</span>
       <span class="hero-step-sep">→</span>
@@ -1187,7 +1289,7 @@
 
     <p class="hero-trust">
       <span class="live-dot" aria-hidden="true"></span>
-      Cloudflare DNS is live. GitHub, Stripe, and AWS are next.
+      Cloudflare DNS and GitHub repo settings are live. Stripe and AWS are next.
     </p>
 
     <!-- Product mock -->
@@ -1211,11 +1313,15 @@
               <div class="mock-cf-icon">CF</div>
               Cloudflare DNS
             </div>
-            <span class="mock-zone">example.com · zone a1b2c3d4</span>
+            <span class="mock-sep">·</span>
+            <div class="mock-provider-tag">
+              <div class="mock-gh-icon">GH</div>
+              GitHub Config
+            </div>
           </div>
           <div class="mock-live-badge">
             <span class="mock-live-dot"></span>
-            Hourly sync active
+            2 providers · hourly sync active
           </div>
         </div>
 
@@ -1269,7 +1375,7 @@
 
         <div class="mock-footer">
           <span class="mock-stats">
-            2 records changed · <span class="c">1 critical</span> · 1 medium
+            2 records changed · <span class="c">1 critical</span> · 1 high
           </span>
           <div class="mock-actions">
             <span class="mock-btn">View timeline</span>
@@ -1297,7 +1403,7 @@
         <span class="three-min-check" aria-hidden="true">✓</span>
         <div class="three-min-title">A baseline snapshot</div>
         <div class="three-min-desc">
-          Every DNS record in your Cloudflare zone captured as your known-good state.
+          Capture Cloudflare DNS records or GitHub repo settings as your known-good state.
           The reference point for every diff that follows.
         </div>
       </div>
@@ -1307,7 +1413,7 @@
         <span class="three-min-check" aria-hidden="true">✓</span>
         <div class="three-min-title">Hourly automatic syncs</div>
         <div class="three-min-desc">
-          ConfigTrace re-syncs your zone every hour and diffs against the last known state.
+          ConfigTrace re-syncs connected providers every hour and diffs against the last known state.
           Manual Sync Now is always available.
         </div>
       </div>
@@ -1317,7 +1423,7 @@
         <span class="three-min-check" aria-hidden="true">✓</span>
         <div class="three-min-title">A timeline of every change</div>
         <div class="three-min-desc">
-          Added records, removed records, and modified field values — each surfaced with
+          Added, removed, and modified configuration across providers — each surfaced with
           old value, new value, and timestamp.
         </div>
       </div>
@@ -1327,8 +1433,8 @@
         <span class="three-min-check" aria-hidden="true">✓</span>
         <div class="three-min-title">Risk labels on every change</div>
         <div class="three-min-desc">
-          Low, medium, high, or critical — based on each change's potential blast radius.
-          Triage at a glance, not after the fact.
+          Low, medium, high, or critical based on blast radius — not just whether
+          something changed. Triage at a glance, not after the fact.
         </div>
       </div>
 
@@ -1372,14 +1478,14 @@
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>Stripe webhook URL moved</strong>
-              Payment events stop arriving. Revenue impact visible — cause invisible.
+              <strong>GitHub Actions secret deleted</strong>
+              The CI pipeline broke in a way nobody expected. No one knew when it was removed.
             </div>
           </li>
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>GitHub branch protection disabled</strong>
+              <strong>Branch protection disabled</strong>
               Direct pushes to main. Discovered weeks later in an incident review.
             </div>
           </li>
@@ -1393,8 +1499,8 @@
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>Cloudflare routing rule updated</strong>
-              Live traffic forwarded elsewhere. The change was made in the dashboard.
+              <strong>Repository made public</strong>
+              Visibility was changed in the UI. Discovered during a security review, weeks later.
             </div>
           </li>
           <li>
@@ -1578,17 +1684,17 @@
       <div class="step">
         <div class="step-num">01 · CONNECT</div>
         <h3>Connect a provider</h3>
-        <p>Add a scoped API token and a zone or account ID. Credentials are encrypted before storage and never shown again.</p>
+        <p>Add credentials for Cloudflare DNS or a GitHub repository. Credentials are encrypted before storage and never shown again.</p>
       </div>
       <div class="step">
         <div class="step-num">02 · BASELINE</div>
         <h3>Create a baseline</h3>
-        <p>The first sync snapshots your current configuration — every DNS record, rule, and field value — as your known-good baseline.</p>
+        <p>The first sync snapshots your current configuration — every DNS record, repo setting, and field value — as your known-good baseline.</p>
       </div>
       <div class="step">
         <div class="step-num">03 · SYNC</div>
         <h3>Sync hourly or manually</h3>
-        <p>ConfigTrace syncs your zone every hour. Hit Sync Now anytime to check for changes on demand, without waiting for the schedule.</p>
+        <p>ConfigTrace syncs your connected providers every hour. Hit Sync Now anytime to check for changes on demand, without waiting for the schedule.</p>
       </div>
       <div class="step">
         <div class="step-num">04 · DIFF</div>
@@ -1598,7 +1704,7 @@
       <div class="step">
         <div class="step-num">05 · CLASSIFY</div>
         <h3>Classify change risk</h3>
-        <p>Each change is scored low to critical based on blast radius. A changed TXT comment is not the same as a rerouted CNAME.</p>
+        <p>Each change is scored low to critical based on blast radius. A changed TXT comment is not the same as a rerouted CNAME or a removed branch protection rule.</p>
       </div>
       <div class="step">
         <div class="step-num">06 · REVIEW</div>
@@ -1612,67 +1718,164 @@
 
 
 <!-- ──────────────────────────────────────────────────────────────────────
+     GIT TRACKS CODE — ConfigTrace tracks the rest
+     ────────────────────────────────────────────────────────────────────── -->
+<section id="git-config">
+  <div class="container">
+    <span class="section-label">The coverage gap</span>
+    <h2>Git tracks code. ConfigTrace tracks the rest.</h2>
+    <p class="section-sub">
+      Your repo already has commit history, pull request reviews, and branch diffs.
+      But production also depends on DNS records, branch protection rules, webhook URLs,
+      repository variables, secrets metadata, and deployment settings —
+      <strong>none of which live in a file.</strong>
+      ConfigTrace gives those changes the same discipline Git gives code: baseline, diff, risk label, timeline.
+    </p>
+
+    <div class="git-contrast-grid">
+
+      <div class="git-contrast-panel git-side">
+        <div class="git-contrast-hdr">
+          <span aria-hidden="true">✓</span> Already tracked by Git
+        </div>
+        <div class="git-contrast-body">
+          <ul class="git-contrast-list">
+            <li><span class="git-contrast-icon">·</span> Commits and file changes</li>
+            <li><span class="git-contrast-icon">·</span> Pull requests and code reviews</li>
+            <li><span class="git-contrast-icon">·</span> Branch merges and release tags</li>
+            <li><span class="git-contrast-icon">·</span> Source code history</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="git-contrast-panel ct-side">
+        <div class="git-contrast-hdr">
+          <span aria-hidden="true">✓</span> Now tracked by ConfigTrace
+        </div>
+        <div class="git-contrast-body">
+          <ul class="git-contrast-list">
+            <li><span class="git-contrast-icon">→</span> DNS records and routing rules</li>
+            <li><span class="git-contrast-icon">→</span> Branch protection and required status checks</li>
+            <li><span class="git-contrast-icon">→</span> Webhook URLs and event subscriptions</li>
+            <li><span class="git-contrast-icon">→</span> Repository variables and secrets metadata</li>
+            <li><span class="git-contrast-icon">→</span> Deploy keys and access controls</li>
+            <li><span class="git-contrast-icon">→</span> Actions permissions and settings</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
      WHAT IT WATCHES
      ────────────────────────────────────────────────────────────────────── -->
-<section id="watches">
+<section class="alt" id="watches">
   <div class="container">
     <span class="section-label">Coverage</span>
     <h2>What ConfigTrace watches today.</h2>
     <p class="section-sub">
-      The current MVP monitors Cloudflare DNS in depth — every record type,
-      every field, every change. More providers are on the way.
+      Two live monitoring surfaces. Every field, every change, every provider
+      diffed field-by-field against the last known state.
     </p>
 
-    <div class="watches-layout">
-      <div>
-        <div class="watches-live-badge">
-          <span class="watches-live-dot"></span>
-          Cloudflare DNS · Live
+    <div class="watches-providers">
+
+      <!-- Cloudflare DNS -->
+      <div class="watches-provider-card">
+        <div class="watches-provider-hdr">
+          <div class="watches-live-badge" style="margin-bottom:0;">
+            <span class="watches-live-dot"></span>
+            Live now
+          </div>
+          <div class="watches-provider-name">Cloudflare DNS</div>
         </div>
-        <p class="watches-desc">
+        <div class="watches-provider-desc">
           Connect a Cloudflare zone with a scoped API token and Zone ID.
-          ConfigTrace monitors every DNS record continuously.
-          Hourly syncs run automatically; manual syncs are always available.
-          The first sync creates your baseline — every sync after diffs against it.
-        </p>
+          ConfigTrace monitors every DNS record continuously — hourly syncs run automatically,
+          manual syncs are always available. The first sync creates your baseline.
+        </div>
+        <div class="watches-provider-fields">
+          <div class="record-grid">
+            <div class="record-card">
+              <div class="record-name">A / AAAA</div>
+              <div class="record-desc">IPv4 and IPv6 address records — the most traffic-critical changes</div>
+            </div>
+            <div class="record-card">
+              <div class="record-name">CNAME</div>
+              <div class="record-desc">Canonical name aliases — rerouting these can redirect live traffic</div>
+            </div>
+            <div class="record-card">
+              <div class="record-name">MX</div>
+              <div class="record-desc">Mail exchange records — changes here can silently break email</div>
+            </div>
+            <div class="record-card">
+              <div class="record-name">TXT</div>
+              <div class="record-desc">SPF, DKIM, DMARC, domain ownership, and verification records</div>
+            </div>
+            <div class="record-card">
+              <div class="record-name">NS</div>
+              <div class="record-desc">Name server records — changes here affect your entire zone</div>
+            </div>
+            <div class="record-card">
+              <div class="record-name">TTL · Proxied</div>
+              <div class="record-desc">Caching duration and Cloudflare proxy on/off tracked per record</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="record-grid">
-        <div class="record-card">
-          <div class="record-name">A / AAAA</div>
-          <div class="record-desc">IPv4 and IPv6 address records — the most traffic-critical changes</div>
+      <!-- GitHub repo config -->
+      <div class="watches-provider-card">
+        <div class="watches-provider-hdr">
+          <div class="watches-live-badge" style="margin-bottom:0;">
+            <span class="watches-live-dot"></span>
+            Live now
+          </div>
+          <div class="watches-provider-name">GitHub Repository Configuration</div>
         </div>
-        <div class="record-card">
-          <div class="record-name">CNAME</div>
-          <div class="record-desc">Canonical name aliases — rerouting these can redirect live traffic</div>
+        <div class="watches-provider-desc">
+          Connect a GitHub repository with a personal access token. ConfigTrace monitors
+          repository settings that are invisible to Git — not commits or code, but the
+          configuration that controls how your repo operates.
         </div>
-        <div class="record-card">
-          <div class="record-name">MX</div>
-          <div class="record-desc">Mail exchange records — changes here can silently break email delivery</div>
+        <div class="watches-provider-fields">
+          <div class="record-grid">
+            <div class="record-card">
+              <div class="record-name">Branch protection</div>
+              <div class="record-desc">Required reviews, status checks, force-push rules, and admin enforcement</div>
+            </div>
+            <div class="record-card">
+              <div class="record-name">Repo settings</div>
+              <div class="record-desc">Visibility, default branch, and repository-level configuration</div>
+            </div>
+            <div class="record-card">
+              <div class="record-name">Secrets metadata</div>
+              <div class="record-desc">Actions secret presence tracked — values are never read or stored</div>
+            </div>
+            <div class="record-card">
+              <div class="record-name">Variables</div>
+              <div class="record-desc">Actions variables and their values tracked for drift</div>
+            </div>
+            <div class="record-card">
+              <div class="record-name">Webhooks</div>
+              <div class="record-desc">Endpoint URLs, active status, and event subscriptions</div>
+            </div>
+            <div class="record-card">
+              <div class="record-name">Deploy keys · Actions</div>
+              <div class="record-desc">Deploy key access levels and Actions permissions settings</div>
+            </div>
+          </div>
         </div>
-        <div class="record-card">
-          <div class="record-name">TXT</div>
-          <div class="record-desc">SPF, DKIM, DMARC, domain ownership, and other text records</div>
-        </div>
-        <div class="record-card">
-          <div class="record-name">NS</div>
-          <div class="record-desc">Name server records — changes here affect your entire zone</div>
-        </div>
-        <div class="record-card">
-          <div class="record-name">TTL</div>
-          <div class="record-desc">Time-to-live values — unexpectedly short TTLs can signal impending changes</div>
-        </div>
-        <div class="record-card">
-          <div class="record-name">Proxied</div>
-          <div class="record-desc">Cloudflare proxy on/off — switching this changes your security and routing model</div>
-        </div>
-        <div class="record-card">
-          <div class="record-name">Added / Removed</div>
-          <div class="record-desc">New records and deleted records are both tracked and surfaced as changes</div>
+        <div class="watches-provider-note">
+          ConfigTrace does not track Git commits. Git already does that.<br>
+          ConfigTrace tracks repository configuration drift.
         </div>
       </div>
+
     </div>
-
   </div>
 </section>
 
@@ -1680,7 +1883,7 @@
 <!-- ──────────────────────────────────────────────────────────────────────
      USE CASES
      ────────────────────────────────────────────────────────────────────── -->
-<section class="alt" id="usecases">
+<section id="usecases">
   <div class="container">
     <span class="section-label">Use cases</span>
     <h2>Built for teams that care about production.</h2>
@@ -1694,12 +1897,12 @@
       <div class="uc-card">
         <span class="uc-icon" aria-hidden="true">🔍</span>
         <h3>Debug outages faster</h3>
-        <p>When production breaks, check ConfigTrace before spending hours in logs. Find the configuration change that caused the incident in seconds.</p>
+        <p>When production breaks, check ConfigTrace before spending hours in logs. Find the DNS record flip, branch protection change, or webhook URL that caused the incident in seconds.</p>
       </div>
       <div class="uc-card">
         <span class="uc-icon" aria-hidden="true">⚡</span>
-        <h3>Catch risky DNS changes</h3>
-        <p>Not all DNS changes are equal. ConfigTrace classifies each change by risk so you know which ones deserve immediate attention.</p>
+        <h3>Catch risky configuration changes</h3>
+        <p>Not all configuration changes are equal. ConfigTrace classifies each change by risk so you know which ones — a rerouted CNAME, a removed branch protection rule — deserve immediate attention.</p>
       </div>
       <div class="uc-card">
         <span class="uc-icon" aria-hidden="true">📜</span>
@@ -1707,14 +1910,14 @@
         <p>Track the settings that live outside your codebase. See exactly what changed, when it changed, and what it looked like before.</p>
       </div>
       <div class="uc-card">
-        <span class="uc-icon" aria-hidden="true">🔄</span>
-        <h3>Monitor configuration drift</h3>
-        <p>Catch settings that have drifted from your expected baseline before they quietly accumulate into a larger problem.</p>
+        <span class="uc-icon" aria-hidden="true">🔒</span>
+        <h3>Track repo safety controls</h3>
+        <p>Know when branch protection rules are weakened, required status checks removed, or repo visibility changed — before those changes cause a problem.</p>
       </div>
       <div class="uc-card">
         <span class="uc-icon" aria-hidden="true">👁</span>
         <h3>Review dashboard changes</h3>
-        <p>Config changes made in Cloudflare, Stripe, or AWS dashboards are invisible to Git. ConfigTrace makes them visible to your team.</p>
+        <p>Config changes made in Cloudflare, GitHub, or other vendor dashboards are invisible to Git. ConfigTrace makes them visible to your team.</p>
       </div>
       <div class="uc-card">
         <span class="uc-icon" aria-hidden="true">📋</span>
@@ -1730,7 +1933,7 @@
 <!-- ──────────────────────────────────────────────────────────────────────
      RISK ENGINE
      ────────────────────────────────────────────────────────────────────── -->
-<section id="risk">
+<section class="alt" id="risk">
   <div class="container">
     <span class="section-label">Risk classification</span>
     <h2>Not all changes are equal.</h2>
@@ -1743,23 +1946,23 @@
     <div class="risk-grid">
       <div class="risk-card low">
         <div class="risk-level">Low</div>
-        <div class="risk-example">TXT comment changed</div>
-        <div class="risk-why">Cosmetic or metadata change. No routing or security impact expected.</div>
+        <div class="risk-example">Verification TXT added<br>Repo variable added</div>
+        <div class="risk-why">Hardening, ownership proof, or non-sensitive addition. No routing or security impact expected.</div>
       </div>
       <div class="risk-card medium">
         <div class="risk-level">Medium</div>
-        <div class="risk-example">New subdomain added<br>TTL shortened</div>
-        <div class="risk-why">Expanded attack surface or cache behavior change. Worth a closer look.</div>
+        <div class="risk-example">New subdomain CNAME<br>MX priority changed</div>
+        <div class="risk-why">Expanded attack surface or altered routing preference. Worth a closer look.</div>
       </div>
       <div class="risk-card high">
         <div class="risk-level">High</div>
-        <div class="risk-example">API CNAME rerouted</div>
-        <div class="risk-why">Production traffic may be flowing somewhere it shouldn't be.</div>
+        <div class="risk-example">SPF record removed<br>Webhook URL changed</div>
+        <div class="risk-why">Email authentication at risk or production traffic may be flowing somewhere it shouldn't.</div>
       </div>
       <div class="risk-card critical">
         <div class="risk-level">Critical</div>
-        <div class="risk-example">Root A record deleted<br>NS record changed</div>
-        <div class="risk-why">The site may be offline or your entire zone could be affected.</div>
+        <div class="risk-example">Root A record deleted<br>Repo made public</div>
+        <div class="risk-why">The site may be offline, or sensitive code and configuration has been exposed.</div>
       </div>
     </div>
 
@@ -1770,7 +1973,7 @@
 <!-- ──────────────────────────────────────────────────────────────────────
      LAUNCH STATUS
      ────────────────────────────────────────────────────────────────────── -->
-<section class="alt" id="status">
+<section id="status">
   <div class="container">
     <span class="section-label">Product status</span>
     <h2>What's live. What's next.</h2>
@@ -1798,8 +2001,16 @@
         <div class="status-item">
           <span class="status-dot"></span>
           <div>
+            <div class="status-name">GitHub repo configuration monitoring</div>
+            <div class="status-desc">Connect a repository with a personal access token. Branch protection, webhooks, secrets metadata, variables, deploy keys, and Actions settings tracked.</div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
             <div class="status-name">Baseline snapshots</div>
-            <div class="status-desc">First sync captures every record as your known-good starting point.</div>
+            <div class="status-desc">First sync captures every record or setting as your known-good starting point.</div>
           </div>
         </div>
 
@@ -1807,7 +2018,7 @@
           <span class="status-dot"></span>
           <div>
             <div class="status-name">Hourly automatic syncs</div>
-            <div class="status-desc">Zone is re-synced on the hour, automatically, every hour.</div>
+            <div class="status-desc">Connected providers are re-synced on the hour, automatically, every hour.</div>
           </div>
         </div>
 
@@ -1835,6 +2046,14 @@
           </div>
         </div>
 
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">High-risk and critical email alerts</div>
+            <div class="status-desc">High and critical changes trigger an email digest after each sync. Low and medium changes appear in the timeline only.</div>
+          </div>
+        </div>
+
       </div>
 
       <!-- Coming next -->
@@ -1846,8 +2065,8 @@
         <div class="status-item">
           <span class="status-dot"></span>
           <div>
-            <div class="status-name">GitHub</div>
-            <div class="status-desc">Branch protection rules, repo settings, and org-level configuration.</div>
+            <div class="status-name">GitHub App installation flow</div>
+            <div class="status-desc">Upgrade from PAT-based repo monitoring to an installable GitHub App with broader, permission-scoped access.</div>
           </div>
         </div>
 
@@ -1910,7 +2129,8 @@
         <h3>Without ConfigTrace</h3>
         <p>
           Three engineers checking GitHub, Cloudflare, Slack, and memory,
-          trying to reconstruct what changed.
+          trying to reconstruct whether it was a DNS change, a branch protection
+          tweak, or a webhook URL that triggered the outage.
         </p>
       </div>
 
@@ -1968,8 +2188,8 @@
         <p class="founder-quote">
           "I'm building ConfigTrace because <strong>production systems now depend on dozens of
           dashboards, not just code.</strong> GitHub tells you what changed in the repo. It does
-          not tell you who changed a DNS record, webhook URL, OAuth callback, or cloud
-          permission.
+          not tell you who changed a DNS record, webhook URL, branch protection rule, OAuth
+          callback, or cloud permission.
           <br><br>
           ConfigTrace is my attempt to bring the same discipline we expect from code review —
           <strong>history, diffs, accountability</strong> — to the configuration that keeps
@@ -1997,15 +2217,15 @@
     <span class="section-label">Get started</span>
     <h2>Create your first baseline before the next incident.</h2>
     <p class="section-sub">
-      Connect a Cloudflare zone, run your first sync, and get a timestamped record
-      of every DNS change from that moment forward.
+      Connect Cloudflare DNS or a GitHub repository, run your first sync, and get
+      a timestamped record of every configuration change from that moment forward.
     </p>
     <a href="https://app.configtrace.org" class="btn btn-primary btn-lg"
        target="_blank" rel="noopener noreferrer">
       Create your first baseline →
     </a>
     <p class="cta-sub-text">
-      Connect a Cloudflare zone and start tracking DNS changes in minutes.
+      Connect Cloudflare DNS or a GitHub repository and start tracking configuration changes in minutes.
     </p>
   </div>
 </section>
@@ -2045,7 +2265,7 @@
 
     <div class="footer-bottom">
       <span>ConfigTrace · Built by Rohan Shah</span>
-      <span>Cloudflare DNS live · More providers coming soon</span>
+      <span>Cloudflare DNS + GitHub config live · More providers coming soon</span>
     </div>
   </div>
 </footer>
