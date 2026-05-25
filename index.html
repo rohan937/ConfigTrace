@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ConfigTrace — Know what changed before production breaks</title>
-  <meta name="description" content="ConfigTrace snapshots your Cloudflare DNS and GitHub repository configuration, syncs every hour, and shows you exactly what changed, when, and how risky it was. Stop debugging blind.">
+  <title>ConfigTrace — Know what changed before it becomes an incident</title>
+  <meta name="description" content="ConfigTrace monitors configuration drift across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel. Baseline snapshots, automatic syncs, field-level diffs, and risk classification for the configuration that lives outside Git.">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://configtrace.org/">
-  <meta property="og:title" content="ConfigTrace — Know what changed before production breaks">
-  <meta property="og:description" content="Cloudflare DNS and GitHub repo config monitoring are live. Baseline snapshots, hourly syncs, field-level diffs, and risk classification for the configuration that lives outside Git.">
+  <meta property="og:title" content="ConfigTrace — Know what changed before it becomes an incident">
+  <meta property="og:description" content="ConfigTrace monitors risky configuration drift across 7 providers: AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel. Field-level diffs and risk classification for the configuration that lives outside Git.">
   <meta property="og:image" content="https://configtrace.org/og.png">
   <meta property="og:site_name" content="ConfigTrace">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ConfigTrace — Know what changed before production breaks">
-  <meta name="twitter:description" content="Cloudflare DNS and GitHub repo config monitoring are live. Baseline snapshots, hourly syncs, field-level diffs, and risk classification for the configuration that lives outside Git.">
+  <meta name="twitter:title" content="ConfigTrace — Know what changed before it becomes an incident">
+  <meta name="twitter:description" content="ConfigTrace monitors risky configuration drift across 7 providers: AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel. Field-level diffs and risk classification for the configuration that lives outside Git.">
   <meta name="twitter:image" content="https://configtrace.org/og.png">
 
   <link rel="canonical" href="https://configtrace.org/">
@@ -1204,6 +1204,138 @@
       .mock-alert-right { display: none; }
       .mock-appnav-tabs { display: none; }
     }
+
+    /* =====================================================================
+       PROVIDER ICON CHIPS (mock)
+       ===================================================================== */
+    .mock-providers-row {
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    }
+
+    .mock-prov-chip {
+      display: flex; align-items: center; gap: 5px;
+      font-family: var(--mono); font-size: 11px; color: var(--text);
+      font-weight: 500;
+    }
+
+    .mock-prov-icon {
+      width: 18px; height: 18px; border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+
+    /* =====================================================================
+       7-PROVIDER GRID
+       ===================================================================== */
+    .providers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) { .providers-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .providers-grid { grid-template-columns: 1fr; } }
+
+    .provider-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border-2);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .provider-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+
+    .provider-card-hdr {
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+
+    .provider-icon-box {
+      width: 32px; height: 32px; border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      color: #fff; flex-shrink: 0;
+    }
+
+    .provider-name-block { flex: 1; min-width: 0; }
+
+    .provider-name {
+      font-family: var(--mono); font-size: 14px; font-weight: 700;
+      color: var(--text); margin-bottom: 3px;
+    }
+
+    .provider-live-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-family: var(--mono); font-size: 10px; color: var(--green);
+      background: var(--green-dim); border: 1px solid var(--green-bdr);
+      border-radius: 4px; padding: 2px 7px;
+    }
+
+    .provider-live-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green); }
+
+    .provider-desc {
+      padding: 12px 18px;
+      font-size: 13px; color: var(--text-2); line-height: 1.6; font-weight: 300;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .provider-monitors { padding: 12px 18px; }
+
+    .provider-monitors-label {
+      font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--text-3); margin-bottom: 8px;
+    }
+
+    .provider-monitors-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+
+    .provider-monitors-list li {
+      display: flex; align-items: flex-start; gap: 7px;
+      font-size: 12.5px; color: var(--text-2); line-height: 1.45;
+    }
+
+    .provider-monitors-list li::before {
+      content: '→'; font-family: var(--mono); font-size: 11px;
+      flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* =====================================================================
+       TRUST SECTION
+       ===================================================================== */
+    .trust-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+
+    .trust-card {
+      background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px 18px;
+    }
+
+    .trust-provider-name {
+      font-family: var(--mono); font-size: 12px; font-weight: 700;
+      color: var(--text); margin-bottom: 8px;
+      display: flex; align-items: center; gap: 7px;
+    }
+
+    .trust-dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+    }
+
+    .trust-not-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+
+    .trust-not-list li {
+      display: flex; align-items: flex-start; gap: 7px;
+      font-size: 12px; color: var(--text-3); line-height: 1.45;
+    }
+
+    .trust-not-x {
+      font-family: var(--mono); font-size: 10px; color: var(--red);
+      font-weight: 700; flex-shrink: 0; margin-top: 2px;
+    }
   </style>
 </head>
 <body>
@@ -1220,6 +1352,7 @@
 
     <div class="nav-links">
       <a href="#problem">Problem</a>
+      <a href="#watches">Providers</a>
       <a href="#how">How it works</a>
       <a href="#demo">Demo</a>
       <a href="#status">Status</a>
@@ -1235,6 +1368,7 @@
 
   <div class="nav-mobile" id="navMobile" aria-hidden="true">
     <a href="#problem">Problem</a>
+    <a href="#watches">Providers</a>
     <a href="#how">How it works</a>
     <a href="#demo">Demo</a>
     <a href="#status">Status</a>
@@ -1252,44 +1386,47 @@
 
     <div class="hero-badge">
       <span class="badge-dot"></span>
-      Cloudflare DNS + GitHub repo config · Now live
+      7 providers live · AWS · Firebase · Supabase · Stripe · GitHub · Cloudflare · Vercel
     </div>
 
     <h1>
       Know what changed<br>
-      before production<br>
-      <span class="accent">breaks.</span>
+      before it becomes<br>
+      <span class="accent">an incident.</span>
     </h1>
 
     <p class="hero-sub">
       Most production incidents <strong>don't start in Git.</strong> They start in dashboards —
-      a DNS record flipped, branch protection quietly weakened, a webhook URL changed,
-      a repo variable rotated without notice.
-      ConfigTrace gives your team a precise, timestamped record of every configuration
-      change so the next incident takes minutes to diagnose, not hours.
+      a security group opened, a Firestore rule weakened, a Stripe webhook silently dropped,
+      a DNS record rerouted to staging.
+      ConfigTrace gives your team a precise, timestamped record of every risky configuration
+      change across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel —
+      so the next incident takes minutes to diagnose, not hours.
     </p>
 
     <div class="hero-ctas">
       <a href="https://app.configtrace.org" class="btn btn-primary btn-lg"
          target="_blank" rel="noopener noreferrer">
-        Create your first baseline →
+        Start monitoring →
       </a>
-      <a href="#how" class="btn btn-ghost btn-lg">
-        See how it works
+      <a href="#watches" class="btn btn-ghost btn-lg">
+        See what it covers
       </a>
     </div>
 
     <div class="hero-steps" aria-label="Product flow">
       <span class="hero-step">Connect provider</span>
       <span class="hero-step-sep">→</span>
-      <span class="hero-step">Create baseline</span>
+      <span class="hero-step">Baseline snapshot</span>
       <span class="hero-step-sep">→</span>
-      <span class="hero-step">Track changes</span>
+      <span class="hero-step">Detect drift</span>
+      <span class="hero-step-sep">→</span>
+      <span class="hero-step">Review risk</span>
     </div>
 
     <p class="hero-trust">
       <span class="live-dot" aria-hidden="true"></span>
-      Cloudflare DNS and GitHub repo settings are live. Stripe and AWS are next.
+      All 7 providers live. Reads configuration metadata only — never customer data, secrets values, or database contents.
     </p>
 
     <!-- Product mock -->
@@ -1309,19 +1446,36 @@
         <!-- Integration row -->
         <div class="mock-topbar">
           <div class="mock-topbar-left">
-            <div class="mock-provider-tag">
-              <div class="mock-cf-icon">CF</div>
-              Cloudflare DNS
-            </div>
-            <span class="mock-sep">·</span>
-            <div class="mock-provider-tag">
-              <div class="mock-gh-icon">GH</div>
-              GitHub Config
+            <div class="mock-providers-row">
+              <div class="mock-prov-chip">
+                <div class="mock-prov-icon" style="background:#f48120">CF</div>
+                Cloudflare
+              </div>
+              <span class="mock-sep">·</span>
+              <div class="mock-prov-chip">
+                <div class="mock-prov-icon" style="background:#24292e;border:1px solid rgba(255,255,255,.2)">GH</div>
+                GitHub
+              </div>
+              <span class="mock-sep">·</span>
+              <div class="mock-prov-chip">
+                <div class="mock-prov-icon" style="background:#635bff">ST</div>
+                Stripe
+              </div>
+              <span class="mock-sep">·</span>
+              <div class="mock-prov-chip">
+                <div class="mock-prov-icon" style="background:#f5a623">AW</div>
+                AWS
+              </div>
+              <span class="mock-sep">·</span>
+              <div class="mock-prov-chip">
+                <div class="mock-prov-icon" style="background:#3ecf8e">SB</div>
+                Supabase
+              </div>
             </div>
           </div>
           <div class="mock-live-badge">
             <span class="mock-live-dot"></span>
-            2 providers · hourly sync active
+            7 providers · sync active
           </div>
         </div>
 
@@ -1403,17 +1557,17 @@
         <span class="three-min-check" aria-hidden="true">✓</span>
         <div class="three-min-title">A baseline snapshot</div>
         <div class="three-min-desc">
-          Capture Cloudflare DNS records or GitHub repo settings as your known-good state.
-          The reference point for every diff that follows.
+          Capture your current configuration across any supported provider — AWS, Firebase,
+          Supabase, Stripe, GitHub, Cloudflare, or Vercel — as your known-good state.
         </div>
       </div>
 
       <div class="three-min-item">
         <span class="three-min-num">02</span>
         <span class="three-min-check" aria-hidden="true">✓</span>
-        <div class="three-min-title">Hourly automatic syncs</div>
+        <div class="three-min-title">Automatic syncs</div>
         <div class="three-min-desc">
-          ConfigTrace re-syncs connected providers every hour and diffs against the last known state.
+          ConfigTrace re-syncs connected providers on a schedule and diffs against the last known state.
           Manual Sync Now is always available.
         </div>
       </div>
@@ -1423,7 +1577,7 @@
         <span class="three-min-check" aria-hidden="true">✓</span>
         <div class="three-min-title">A timeline of every change</div>
         <div class="three-min-desc">
-          Added, removed, and modified configuration across providers — each surfaced with
+          Added, removed, and modified configuration across all providers — each surfaced with
           old value, new value, and timestamp.
         </div>
       </div>
@@ -1471,43 +1625,50 @@
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>DNS record silently changed</strong>
-              Traffic rerouted to the wrong destination. No alert, no trail.
+              <strong>AWS security group opened to 0.0.0.0/0</strong>
+              An inbound rule widened in the console. No ticket, no review, no trail.
             </div>
           </li>
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>GitHub Actions secret deleted</strong>
-              The CI pipeline broke in a way nobody expected. No one knew when it was removed.
+              <strong>Firebase Firestore rules weakened</strong>
+              A rule change made a collection publicly readable. Discovered days later.
             </div>
           </li>
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>Branch protection disabled</strong>
-              Direct pushes to main. Discovered weeks later in an incident review.
+              <strong>Stripe webhook endpoint silently dropped</strong>
+              Payment events stopped delivering. No one knew the endpoint had been deleted.
             </div>
           </li>
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>OAuth callback URL changed</strong>
-              User logins fail in production. Root cause took three hours to find.
+              <strong>Cloudflare DNS record rerouted</strong>
+              Production API traffic pointed at staging. Users started hitting errors.
             </div>
           </li>
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>Repository made public</strong>
-              Visibility was changed in the UI. Discovered during a security review, weeks later.
+              <strong>GitHub branch protection disabled</strong>
+              Direct pushes to main went undetected for weeks until the next incident review.
             </div>
           </li>
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>Root DNS record deleted</strong>
-              The entire site goes offline. On-call scrambles to understand why.
+              <strong>Supabase RLS policy removed</strong>
+              A row-level security policy was dropped. Data exposure found during audit.
+            </div>
+          </li>
+          <li>
+            <span class="blind-x">×</span>
+            <div>
+              <strong>Vercel environment variable changed</strong>
+              A production variable was overwritten in the dashboard. Build failures followed.
             </div>
           </li>
         </ul>
@@ -1684,17 +1845,17 @@
       <div class="step">
         <div class="step-num">01 · CONNECT</div>
         <h3>Connect a provider</h3>
-        <p>Add credentials for Cloudflare DNS or a GitHub repository. Credentials are encrypted before storage and never shown again.</p>
+        <p>Add credentials for any supported provider — AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, or Vercel. Credentials are encrypted before storage and never shown again.</p>
       </div>
       <div class="step">
         <div class="step-num">02 · BASELINE</div>
         <h3>Create a baseline</h3>
-        <p>The first sync snapshots your current configuration — every DNS record, repo setting, and field value — as your known-good baseline.</p>
+        <p>The first sync snapshots your current configuration — every DNS record, security rule, webhook, and policy — as your known-good baseline.</p>
       </div>
       <div class="step">
         <div class="step-num">03 · SYNC</div>
-        <h3>Sync hourly or manually</h3>
-        <p>ConfigTrace syncs your connected providers every hour. Hit Sync Now anytime to check for changes on demand, without waiting for the schedule.</p>
+        <h3>Sync on a schedule or manually</h3>
+        <p>ConfigTrace syncs your connected providers on your plan's schedule. Hit Sync Now anytime to check for changes on demand, without waiting.</p>
       </div>
       <div class="step">
         <div class="step-num">04 · DIFF</div>
@@ -1704,12 +1865,12 @@
       <div class="step">
         <div class="step-num">05 · CLASSIFY</div>
         <h3>Classify change risk</h3>
-        <p>Each change is scored low to critical based on blast radius. A changed TXT comment is not the same as a rerouted CNAME or a removed branch protection rule.</p>
+        <p>Each change is scored low to critical based on blast radius. A changed TXT comment is not the same as an opened security group or a removed Firestore rule.</p>
       </div>
       <div class="step">
         <div class="step-num">06 · REVIEW</div>
         <h3>Review the timeline</h3>
-        <p>A clear change timeline shows what happened, when, and what it affected — so "what changed?" gets answered in seconds.</p>
+        <p>A clear change timeline shows what happened, when, and what it affected — so "what changed?" gets answered in seconds, across every provider.</p>
       </div>
     </div>
 
@@ -1754,12 +1915,13 @@
         </div>
         <div class="git-contrast-body">
           <ul class="git-contrast-list">
-            <li><span class="git-contrast-icon">→</span> DNS records and routing rules</li>
-            <li><span class="git-contrast-icon">→</span> Branch protection and required status checks</li>
-            <li><span class="git-contrast-icon">→</span> Webhook URLs and event subscriptions</li>
-            <li><span class="git-contrast-icon">→</span> Repository variables and secrets metadata</li>
-            <li><span class="git-contrast-icon">→</span> Deploy keys and access controls</li>
-            <li><span class="git-contrast-icon">→</span> Actions permissions and settings</li>
+            <li><span class="git-contrast-icon">→</span> DNS records and routing rules (Cloudflare)</li>
+            <li><span class="git-contrast-icon">→</span> Branch protection and webhook settings (GitHub)</li>
+            <li><span class="git-contrast-icon">→</span> Security group rules and IAM policies (AWS)</li>
+            <li><span class="git-contrast-icon">→</span> Firestore, Storage, and Realtime DB security rules (Firebase)</li>
+            <li><span class="git-contrast-icon">→</span> Row-level security policies and auth config (Supabase)</li>
+            <li><span class="git-contrast-icon">→</span> Webhook endpoints and product settings (Stripe)</li>
+            <li><span class="git-contrast-icon">→</span> Environment variables and deployment config (Vercel)</li>
           </ul>
         </div>
       </div>
@@ -1775,104 +1937,290 @@
 <section class="alt" id="watches">
   <div class="container">
     <span class="section-label">Coverage</span>
-    <h2>What ConfigTrace watches today.</h2>
+    <h2>7 providers. Every field tracked.</h2>
     <p class="section-sub">
-      Two live monitoring surfaces. Every field, every change, every provider
-      diffed field-by-field against the last known state.
+      All 7 providers are live. Every sync is diffed field-by-field against the last known state —
+      so you see exactly what changed, not just that something did.
     </p>
 
-    <div class="watches-providers">
+    <div class="providers-grid">
 
-      <!-- Cloudflare DNS -->
-      <div class="watches-provider-card">
-        <div class="watches-provider-hdr">
-          <div class="watches-live-badge" style="margin-bottom:0;">
-            <span class="watches-live-dot"></span>
-            Live now
+      <!-- AWS -->
+      <div class="provider-card" style="--prov-color:#f5a623">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#f5a623"></div>
+        <div class="provider-card-hdr">
+          <div class="provider-icon-box" style="background:#f5a623">AW</div>
+          <div class="provider-name-block">
+            <div class="provider-name">AWS</div>
+            <span class="provider-live-tag"><span class="provider-live-dot"></span>Live</span>
           </div>
-          <div class="watches-provider-name">Cloudflare DNS</div>
         </div>
-        <div class="watches-provider-desc">
-          Connect a Cloudflare zone with a scoped API token and Zone ID.
-          ConfigTrace monitors every DNS record continuously — hourly syncs run automatically,
-          manual syncs are always available. The first sync creates your baseline.
+        <div class="provider-desc">
+          Connect with an IAM user or role scoped to read-only access. ConfigTrace monitors
+          security configuration that controls who can reach your infrastructure.
         </div>
-        <div class="watches-provider-fields">
-          <div class="record-grid">
-            <div class="record-card">
-              <div class="record-name">A / AAAA</div>
-              <div class="record-desc">IPv4 and IPv6 address records — the most traffic-critical changes</div>
-            </div>
-            <div class="record-card">
-              <div class="record-name">CNAME</div>
-              <div class="record-desc">Canonical name aliases — rerouting these can redirect live traffic</div>
-            </div>
-            <div class="record-card">
-              <div class="record-name">MX</div>
-              <div class="record-desc">Mail exchange records — changes here can silently break email</div>
-            </div>
-            <div class="record-card">
-              <div class="record-name">TXT</div>
-              <div class="record-desc">SPF, DKIM, DMARC, domain ownership, and verification records</div>
-            </div>
-            <div class="record-card">
-              <div class="record-name">NS</div>
-              <div class="record-desc">Name server records — changes here affect your entire zone</div>
-            </div>
-            <div class="record-card">
-              <div class="record-name">TTL · Proxied</div>
-              <div class="record-desc">Caching duration and Cloudflare proxy on/off tracked per record</div>
-            </div>
-          </div>
+        <div class="provider-monitors">
+          <div class="provider-monitors-label">Monitors</div>
+          <ul class="provider-monitors-list">
+            <li>EC2 security group inbound/outbound rules</li>
+            <li>IAM policy documents and attached policies</li>
+            <li>Route 53 DNS record sets</li>
+            <li>S3 bucket policies and public access settings</li>
+          </ul>
         </div>
       </div>
 
-      <!-- GitHub repo config -->
-      <div class="watches-provider-card">
-        <div class="watches-provider-hdr">
-          <div class="watches-live-badge" style="margin-bottom:0;">
-            <span class="watches-live-dot"></span>
-            Live now
-          </div>
-          <div class="watches-provider-name">GitHub Repository Configuration</div>
-        </div>
-        <div class="watches-provider-desc">
-          Connect a GitHub repository with a personal access token. ConfigTrace monitors
-          repository settings that are invisible to Git — not commits or code, but the
-          configuration that controls how your repo operates.
-        </div>
-        <div class="watches-provider-fields">
-          <div class="record-grid">
-            <div class="record-card">
-              <div class="record-name">Branch protection</div>
-              <div class="record-desc">Required reviews, status checks, force-push rules, and admin enforcement</div>
-            </div>
-            <div class="record-card">
-              <div class="record-name">Repo settings</div>
-              <div class="record-desc">Visibility, default branch, and repository-level configuration</div>
-            </div>
-            <div class="record-card">
-              <div class="record-name">Secrets metadata</div>
-              <div class="record-desc">Actions secret presence tracked — values are never read or stored</div>
-            </div>
-            <div class="record-card">
-              <div class="record-name">Variables</div>
-              <div class="record-desc">Actions variables and their values tracked for drift</div>
-            </div>
-            <div class="record-card">
-              <div class="record-name">Webhooks</div>
-              <div class="record-desc">Endpoint URLs, active status, and event subscriptions</div>
-            </div>
-            <div class="record-card">
-              <div class="record-name">Deploy keys · Actions</div>
-              <div class="record-desc">Deploy key access levels and Actions permissions settings</div>
-            </div>
+      <!-- Firebase -->
+      <div class="provider-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#ffca28"></div>
+        <div class="provider-card-hdr">
+          <div class="provider-icon-box" style="background:#ffca28;color:#1a1a1a">FB</div>
+          <div class="provider-name-block">
+            <div class="provider-name">Firebase</div>
+            <span class="provider-live-tag"><span class="provider-live-dot"></span>Live</span>
           </div>
         </div>
-        <div class="watches-provider-note">
-          ConfigTrace does not track Git commits. Git already does that.<br>
-          ConfigTrace tracks repository configuration drift.
+        <div class="provider-desc">
+          Connect a Firebase project with a service account. ConfigTrace tracks the security
+          rules that control who can read and write your data.
         </div>
+        <div class="provider-monitors">
+          <div class="provider-monitors-label">Monitors</div>
+          <ul class="provider-monitors-list">
+            <li>Firestore security rules</li>
+            <li>Firebase Storage rules</li>
+            <li>Realtime Database rules</li>
+            <li>Project settings and OAuth providers</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Supabase -->
+      <div class="provider-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#3ecf8e"></div>
+        <div class="provider-card-hdr">
+          <div class="provider-icon-box" style="background:#3ecf8e;color:#1a1a1a">SB</div>
+          <div class="provider-name-block">
+            <div class="provider-name">Supabase</div>
+            <span class="provider-live-tag"><span class="provider-live-dot"></span>Live</span>
+          </div>
+        </div>
+        <div class="provider-desc">
+          Connect with your Supabase management API key. ConfigTrace tracks the policies
+          that control database access and authentication behavior.
+        </div>
+        <div class="provider-monitors">
+          <div class="provider-monitors-label">Monitors</div>
+          <ul class="provider-monitors-list">
+            <li>Row-level security (RLS) policies per table</li>
+            <li>Auth configuration and JWT settings</li>
+            <li>API settings and CORS configuration</li>
+            <li>Project access and database settings</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Stripe -->
+      <div class="provider-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#635bff"></div>
+        <div class="provider-card-hdr">
+          <div class="provider-icon-box" style="background:#635bff">ST</div>
+          <div class="provider-name-block">
+            <div class="provider-name">Stripe</div>
+            <span class="provider-live-tag"><span class="provider-live-dot"></span>Live</span>
+          </div>
+        </div>
+        <div class="provider-desc">
+          Connect with a restricted API key. ConfigTrace monitors the webhook endpoints
+          and product settings your payment flow depends on.
+        </div>
+        <div class="provider-monitors">
+          <div class="provider-monitors-label">Monitors</div>
+          <ul class="provider-monitors-list">
+            <li>Webhook endpoint URLs, status, and events</li>
+            <li>Product and price configuration</li>
+            <li>API key metadata (presence, not values)</li>
+            <li>Account and branding settings</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- GitHub -->
+      <div class="provider-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#8b90a0"></div>
+        <div class="provider-card-hdr">
+          <div class="provider-icon-box" style="background:#24292e;border:1px solid rgba(255,255,255,.2)">GH</div>
+          <div class="provider-name-block">
+            <div class="provider-name">GitHub</div>
+            <span class="provider-live-tag"><span class="provider-live-dot"></span>Live</span>
+          </div>
+        </div>
+        <div class="provider-desc">
+          Connect a repository with a personal access token. ConfigTrace monitors settings
+          that are invisible to Git — not code, but the rules that govern your repo.
+        </div>
+        <div class="provider-monitors">
+          <div class="provider-monitors-label">Monitors</div>
+          <ul class="provider-monitors-list">
+            <li>Branch protection rules and required checks</li>
+            <li>Repo visibility and settings</li>
+            <li>Webhooks, secrets metadata, and variables</li>
+            <li>Deploy keys and Actions permissions</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Cloudflare -->
+      <div class="provider-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#f48120"></div>
+        <div class="provider-card-hdr">
+          <div class="provider-icon-box" style="background:#f48120">CF</div>
+          <div class="provider-name-block">
+            <div class="provider-name">Cloudflare</div>
+            <span class="provider-live-tag"><span class="provider-live-dot"></span>Live</span>
+          </div>
+        </div>
+        <div class="provider-desc">
+          Connect a zone with a scoped API token. ConfigTrace monitors every DNS record —
+          any reroute, deletion, or TTL change is detected and risk-classified immediately.
+        </div>
+        <div class="provider-monitors">
+          <div class="provider-monitors-label">Monitors</div>
+          <ul class="provider-monitors-list">
+            <li>A, AAAA, CNAME, MX, TXT, NS records</li>
+            <li>TTL and Cloudflare proxy status per record</li>
+            <li>SRV, CAA, and other record types</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Vercel -->
+      <div class="provider-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#b0b5c4"></div>
+        <div class="provider-card-hdr">
+          <div class="provider-icon-box" style="background:#1a1a1a;border:1px solid rgba(255,255,255,.25)">VC</div>
+          <div class="provider-name-block">
+            <div class="provider-name">Vercel</div>
+            <span class="provider-live-tag"><span class="provider-live-dot"></span>Live</span>
+          </div>
+        </div>
+        <div class="provider-desc">
+          Connect with a Vercel API token. ConfigTrace monitors the project settings and
+          environment configuration your deployments depend on.
+        </div>
+        <div class="provider-monitors">
+          <div class="provider-monitors-label">Monitors</div>
+          <ul class="provider-monitors-list">
+            <li>Environment variable names and targets</li>
+            <li>Project settings and framework config</li>
+            <li>Custom domains and redirects</li>
+            <li>Deployment protection and team settings</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     TRUST / DATA MINIMIZATION
+     ────────────────────────────────────────────────────────────────────── -->
+<section id="trust">
+  <div class="container">
+    <span class="section-label">Data minimization</span>
+    <h2>Built for metadata, not customer data.</h2>
+    <p class="section-sub">
+      ConfigTrace reads only configuration metadata — the rules, settings, and policies
+      that control your infrastructure. It never reads customer records, secret values,
+      database contents, or application data.
+    </p>
+
+    <div class="trust-grid">
+
+      <div class="trust-card">
+        <div class="trust-provider-name">
+          <span class="trust-dot" style="background:#f5a623"></span>AWS
+        </div>
+        <ul class="trust-not-list">
+          <li><span class="trust-not-x">✕</span> S3 object contents or bucket data</li>
+          <li><span class="trust-not-x">✕</span> RDS or DynamoDB records</li>
+          <li><span class="trust-not-x">✕</span> Application logs or CloudWatch data</li>
+          <li><span class="trust-not-x">✕</span> IAM user passwords or access keys</li>
+        </ul>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-provider-name">
+          <span class="trust-dot" style="background:#ffca28"></span>Firebase
+        </div>
+        <ul class="trust-not-list">
+          <li><span class="trust-not-x">✕</span> Firestore document contents</li>
+          <li><span class="trust-not-x">✕</span> Realtime Database data</li>
+          <li><span class="trust-not-x">✕</span> Firebase Storage file contents</li>
+          <li><span class="trust-not-x">✕</span> User authentication records</li>
+        </ul>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-provider-name">
+          <span class="trust-dot" style="background:#3ecf8e"></span>Supabase
+        </div>
+        <ul class="trust-not-list">
+          <li><span class="trust-not-x">✕</span> Database row data</li>
+          <li><span class="trust-not-x">✕</span> User records or auth tokens</li>
+          <li><span class="trust-not-x">✕</span> Query history or logs</li>
+          <li><span class="trust-not-x">✕</span> Storage bucket contents</li>
+        </ul>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-provider-name">
+          <span class="trust-dot" style="background:#635bff"></span>Stripe
+        </div>
+        <ul class="trust-not-list">
+          <li><span class="trust-not-x">✕</span> Payment data or card information</li>
+          <li><span class="trust-not-x">✕</span> Customer records or transactions</li>
+          <li><span class="trust-not-x">✕</span> Subscription billing history</li>
+          <li><span class="trust-not-x">✕</span> API key values (presence only)</li>
+        </ul>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-provider-name">
+          <span class="trust-dot" style="background:#8b90a0"></span>GitHub
+        </div>
+        <ul class="trust-not-list">
+          <li><span class="trust-not-x">✕</span> Source code or file contents</li>
+          <li><span class="trust-not-x">✕</span> Commit history or pull requests</li>
+          <li><span class="trust-not-x">✕</span> Secret values (names/presence only)</li>
+          <li><span class="trust-not-x">✕</span> Issue or discussion content</li>
+        </ul>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-provider-name">
+          <span class="trust-dot" style="background:#f48120"></span>Cloudflare
+        </div>
+        <ul class="trust-not-list">
+          <li><span class="trust-not-x">✕</span> Website traffic or request logs</li>
+          <li><span class="trust-not-x">✕</span> Cached content or responses</li>
+          <li><span class="trust-not-x">✕</span> Worker script code</li>
+          <li><span class="trust-not-x">✕</span> Analytics or visitor data</li>
+        </ul>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-provider-name">
+          <span class="trust-dot" style="background:#b0b5c4"></span>Vercel
+        </div>
+        <ul class="trust-not-list">
+          <li><span class="trust-not-x">✕</span> Deployment code or build output</li>
+          <li><span class="trust-not-x">✕</span> Build logs or runtime logs</li>
+          <li><span class="trust-not-x">✕</span> Environment variable values</li>
+          <li><span class="trust-not-x">✕</span> Serverless function code</li>
+        </ul>
       </div>
 
     </div>
@@ -1917,7 +2265,7 @@
       <div class="uc-card">
         <span class="uc-icon" aria-hidden="true">👁</span>
         <h3>Review dashboard changes</h3>
-        <p>Config changes made in Cloudflare, GitHub, or other vendor dashboards are invisible to Git. ConfigTrace makes them visible to your team.</p>
+        <p>Config changes made in AWS, Firebase, Stripe, Cloudflare, GitHub, Supabase, or Vercel dashboards are invisible to Git. ConfigTrace makes them visible.</p>
       </div>
       <div class="uc-card">
         <span class="uc-icon" aria-hidden="true">📋</span>
@@ -1946,23 +2294,23 @@
     <div class="risk-grid">
       <div class="risk-card low">
         <div class="risk-level">Low</div>
-        <div class="risk-example">Verification TXT added<br>Repo variable added</div>
+        <div class="risk-example">Domain verification TXT added<br>Vercel project variable added<br>Stripe product description updated</div>
         <div class="risk-why">Hardening, ownership proof, or non-sensitive addition. No routing or security impact expected.</div>
       </div>
       <div class="risk-card medium">
         <div class="risk-level">Medium</div>
-        <div class="risk-example">New subdomain CNAME<br>MX priority changed</div>
-        <div class="risk-why">Expanded attack surface or altered routing preference. Worth a closer look.</div>
+        <div class="risk-example">New subdomain CNAME created<br>IAM policy attached to role<br>Firebase auth provider enabled</div>
+        <div class="risk-why">Expanded access surface or altered routing. Worth a closer look before it causes issues.</div>
       </div>
       <div class="risk-card high">
         <div class="risk-level">High</div>
-        <div class="risk-example">SPF record removed<br>Webhook URL changed</div>
-        <div class="risk-why">Email authentication at risk or production traffic may be flowing somewhere it shouldn't.</div>
+        <div class="risk-example">Stripe webhook endpoint changed<br>Supabase RLS policy modified<br>GitHub branch protection weakened</div>
+        <div class="risk-why">Production traffic, data access, or security controls may be affected. Needs prompt review.</div>
       </div>
       <div class="risk-card critical">
         <div class="risk-level">Critical</div>
-        <div class="risk-example">Root A record deleted<br>Repo made public</div>
-        <div class="risk-why">The site may be offline, or sensitive code and configuration has been exposed.</div>
+        <div class="risk-example">AWS security group opened to 0.0.0.0/0<br>Firestore rules allow all reads<br>Root DNS record deleted</div>
+        <div class="risk-why">Infrastructure exposed, data potentially public, or the site may be offline. Act immediately.</div>
       </div>
     </div>
 
@@ -1993,16 +2341,8 @@
         <div class="status-item">
           <span class="status-dot"></span>
           <div>
-            <div class="status-name">Cloudflare DNS monitoring</div>
-            <div class="status-desc">Connect a zone with a scoped API token and Zone ID. All record types tracked.</div>
-          </div>
-        </div>
-
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">GitHub repo configuration monitoring</div>
-            <div class="status-desc">Connect a repository with a personal access token. Branch protection, webhooks, secrets metadata, variables, deploy keys, and Actions settings tracked.</div>
+            <div class="status-name">7 provider integrations</div>
+            <div class="status-desc">AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel — all live and actively monitored.</div>
           </div>
         </div>
 
@@ -2010,23 +2350,15 @@
           <span class="status-dot"></span>
           <div>
             <div class="status-name">Baseline snapshots</div>
-            <div class="status-desc">First sync captures every record or setting as your known-good starting point.</div>
+            <div class="status-desc">First sync captures every record, rule, and setting as your known-good starting point.</div>
           </div>
         </div>
 
         <div class="status-item">
           <span class="status-dot"></span>
           <div>
-            <div class="status-name">Hourly automatic syncs</div>
-            <div class="status-desc">Connected providers are re-synced on the hour, automatically, every hour.</div>
-          </div>
-        </div>
-
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">Manual Sync Now</div>
-            <div class="status-desc">Trigger a sync on demand at any time, without waiting for the schedule.</div>
+            <div class="status-name">Automatic syncs + Manual Sync Now</div>
+            <div class="status-desc">Connected providers sync on a schedule. Trigger an on-demand sync anytime without waiting.</div>
           </div>
         </div>
 
@@ -2034,7 +2366,7 @@
           <span class="status-dot"></span>
           <div>
             <div class="status-name">Field-level diffs</div>
-            <div class="status-desc">Added, removed, and modified records all surfaced — with old and new values.</div>
+            <div class="status-desc">Added, removed, and modified fields all surfaced — with exact old and new values.</div>
           </div>
         </div>
 
@@ -2042,7 +2374,7 @@
           <span class="status-dot"></span>
           <div>
             <div class="status-name">Timeline and risk classification</div>
-            <div class="status-desc">Every change gets a risk label — low, medium, high, or critical — based on blast radius.</div>
+            <div class="status-desc">Every change gets a risk label — low, medium, high, or critical — based on blast radius across all providers.</div>
           </div>
         </div>
 
@@ -2050,7 +2382,23 @@
           <span class="status-dot"></span>
           <div>
             <div class="status-name">High-risk and critical email alerts</div>
-            <div class="status-desc">High and critical changes trigger an email digest after each sync. Low and medium changes appear in the timeline only.</div>
+            <div class="status-desc">High and critical changes trigger an email digest after each sync. Low and medium changes appear in the timeline.</div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">Workspace audit log</div>
+            <div class="status-desc">Full history of team and admin actions — members, integrations, billing — for compliance and accountability.</div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">Team workspaces</div>
+            <div class="status-desc">Invite team members, assign roles (owner, admin, member), and share a unified view of all integrations.</div>
           </div>
         </div>
 
@@ -2066,31 +2414,23 @@
           <span class="status-dot"></span>
           <div>
             <div class="status-name">GitHub App installation flow</div>
-            <div class="status-desc">Upgrade from PAT-based repo monitoring to an installable GitHub App with broader, permission-scoped access.</div>
+            <div class="status-desc">Upgrade from PAT-based repo monitoring to an installable GitHub App with permission-scoped access across multiple repos.</div>
           </div>
         </div>
 
         <div class="status-item">
           <span class="status-dot"></span>
           <div>
-            <div class="status-name">Stripe</div>
-            <div class="status-desc">Webhook endpoints, product settings, and account configuration.</div>
+            <div class="status-name">Slack and webhook notifications</div>
+            <div class="status-desc">Route high and critical change alerts directly to a Slack channel or webhook endpoint of your choice.</div>
           </div>
         </div>
 
         <div class="status-item">
           <span class="status-dot"></span>
           <div>
-            <div class="status-name">AWS</div>
-            <div class="status-desc">Route 53, security groups, IAM policies, and routing configuration.</div>
-          </div>
-        </div>
-
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">Vercel / Firebase / Supabase</div>
-            <div class="status-desc">Project settings, environment config, and deployment rules.</div>
+            <div class="status-name">Change acknowledgment and snooze</div>
+            <div class="status-desc">Mark expected changes as reviewed and suppress known-safe drift from future alerts.</div>
           </div>
         </div>
 
@@ -2098,7 +2438,15 @@
           <span class="status-dot"></span>
           <div>
             <div class="status-name">Shopify</div>
-            <div class="status-desc">Webhook settings and store configuration.</div>
+            <div class="status-desc">Webhook settings, store configuration, and checkout settings.</div>
+          </div>
+        </div>
+
+        <div class="status-item">
+          <span class="status-dot"></span>
+          <div>
+            <div class="status-name">Additional provider depth</div>
+            <div class="status-desc">More monitored surfaces per provider — AWS CloudFront, Firebase Remote Config, Stripe billing portal settings, and more.</div>
           </div>
         </div>
 
@@ -2128,9 +2476,9 @@
         <div class="payoff-card-label">Without ConfigTrace</div>
         <h3>Without ConfigTrace</h3>
         <p>
-          Three engineers checking GitHub, Cloudflare, Slack, and memory,
-          trying to reconstruct whether it was a DNS change, a branch protection
-          tweak, or a webhook URL that triggered the outage.
+          Three engineers checking AWS, Cloudflare, Stripe, GitHub, and Slack —
+          trying to reconstruct whether it was a security group, a DNS change,
+          a deleted webhook, or a weakened Firestore rule.
         </p>
       </div>
 
@@ -2217,15 +2565,16 @@
     <span class="section-label">Get started</span>
     <h2>Create your first baseline before the next incident.</h2>
     <p class="section-sub">
-      Connect Cloudflare DNS or a GitHub repository, run your first sync, and get
-      a timestamped record of every configuration change from that moment forward.
+      Connect any of 7 supported providers — AWS, Firebase, Supabase, Stripe, GitHub,
+      Cloudflare, or Vercel — run your first sync, and get a timestamped record of every
+      risky configuration change from that moment forward.
     </p>
     <a href="https://app.configtrace.org" class="btn btn-primary btn-lg"
        target="_blank" rel="noopener noreferrer">
-      Create your first baseline →
+      Start monitoring →
     </a>
     <p class="cta-sub-text">
-      Connect Cloudflare DNS or a GitHub repository and start tracking configuration changes in minutes.
+      7 providers live · Reads configuration metadata only · Free plan available
     </p>
   </div>
 </section>
@@ -2242,7 +2591,7 @@
           <div class="footer-logo-box" aria-hidden="true">CT</div>
           ConfigTrace
         </a>
-        <p class="footer-tagline">Version history for production configuration.</p>
+        <p class="footer-tagline">Configuration drift detection across 7 providers. Know what changed before it becomes an incident.</p>
       </div>
 
       <div class="footer-col">
@@ -2257,7 +2606,8 @@
       <div class="footer-col">
         <div class="footer-col-label">Info</div>
         <a href="#problem">The problem</a>
-        <a href="#watches">What it watches</a>
+        <a href="#watches">7 providers</a>
+        <a href="#trust">Data minimization</a>
         <a href="#payoff">Why it matters</a>
         <a href="#about">About</a>
       </div>
@@ -2265,7 +2615,7 @@
 
     <div class="footer-bottom">
       <span>ConfigTrace · Built by Rohan Shah</span>
-      <span>Cloudflare DNS + GitHub config live · More providers coming soon</span>
+      <span>7 providers live · AWS · Firebase · Supabase · Stripe · GitHub · Cloudflare · Vercel</span>
     </div>
   </div>
 </footer>
