@@ -8,12 +8,17 @@
 
 ## Core narrative
 
-> "Production doesn't only break because code changes. It also breaks because
-> *settings drift* — across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel —
-> and nobody notices until an incident is already in progress."
+> "Production does not only break because code changes. It breaks because
+> *settings drift outside Git* — across AWS, Firebase, Supabase, Stripe, GitHub,
+> Cloudflare, and Vercel — and nobody notices until an incident is already in progress."
 
-ConfigTrace is the **security timeline for settings that live outside your codebase.**
+ConfigTrace is the **security timeline for those settings.**
 It tells you what changed, why it matters, and what to check next.
+
+One-sentence category: **"Configuration security monitoring for cloud and SaaS tools."**
+
+Git-history contrast (use this to open any version of the pitch):
+**"Your code has Git history. Your production settings do not."**
 
 ---
 
@@ -21,19 +26,22 @@ It tells you what changed, why it matters, and what to check next.
 
 Use this to open any version of the demo:
 
-> "Your team already has Git for code changes. Git tells you what changed in
-> your source files. But your production system also depends on dozens of
-> dashboards — DNS records, security group rules, Firestore rules, Stripe
-> webhooks, branch protection settings.
+> "Production does not only break because code changes. It breaks because settings
+> drift outside Git. Your code has Git history — your production settings do not.
 >
-> None of those changes go through Git. None of them have history. None of
-> them have a diff. When something breaks, you're debugging blind.
+> DNS records, security group rules, Firestore rules, Stripe webhooks, branch
+> protection settings — none of those changes go through Git. None of them have
+> history. None of them have a diff. When something breaks, you're debugging blind.
 >
-> ConfigTrace gives all of that the same discipline Git gives code:
-> a baseline, a diff on every change, and a risk classification so you
-> know which changes deserve immediate attention."
+> ConfigTrace is the security timeline for those settings.
+> A baseline, a diff on every change, and a risk classification so you know which
+> changes deserve immediate attention — across AWS, Firebase, Supabase, Stripe,
+> GitHub, Cloudflare, and Vercel."
 
 Key phrases to land:
+- **"Your code has Git history. Your production settings do not."**
+- **"ConfigTrace is the security timeline for configuration drift."**
+- **"Configuration security monitoring for cloud and SaaS tools."**
 - **"ConfigTrace monitors configuration metadata, not customer data."**
 - **"It reads the rules that protect your data — not the data those rules protect."**
 - **"It tells you what changed, why it matters, and what to check next."**

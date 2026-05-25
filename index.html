@@ -4,20 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ConfigTrace — Know what changed before it becomes an incident</title>
-  <meta name="description" content="ConfigTrace monitors configuration drift across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel. Baseline snapshots, automatic syncs, field-level diffs, and risk classification for the configuration that lives outside Git.">
+  <meta name="description" content="ConfigTrace is configuration security monitoring for cloud and SaaS tools. A security timeline for risky configuration drift across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel — the production-critical settings that live outside Git.">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://configtrace.org/">
   <meta property="og:title" content="ConfigTrace — Know what changed before it becomes an incident">
-  <meta property="og:description" content="ConfigTrace monitors risky configuration drift across 7 providers: AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel. Field-level diffs and risk classification for the configuration that lives outside Git.">
+  <meta property="og:description" content="ConfigTrace is the security timeline for risky configuration drift. Configuration security monitoring across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel — the production-critical settings that live outside Git.">
   <meta property="og:image" content="https://configtrace.org/og.png">
   <meta property="og:site_name" content="ConfigTrace">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ConfigTrace — Know what changed before it becomes an incident">
-  <meta name="twitter:description" content="ConfigTrace monitors risky configuration drift across 7 providers: AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel. Field-level diffs and risk classification for the configuration that lives outside Git.">
+  <meta name="twitter:description" content="ConfigTrace is the security timeline for risky configuration drift. Configuration security monitoring across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel — the production-critical settings that live outside Git.">
   <meta name="twitter:image" content="https://configtrace.org/og.png">
 
   <link rel="canonical" href="https://configtrace.org/">
@@ -1398,12 +1398,12 @@
     </h1>
 
     <p class="hero-sub">
-      Most production incidents <strong>don't start in Git.</strong> They start in dashboards —
-      a security group opened, a Firestore rule weakened, a Stripe webhook silently dropped,
-      a DNS record rerouted to staging.
-      ConfigTrace gives your team a precise, timestamped record of every risky configuration
-      change across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel —
-      so the next incident takes minutes to diagnose, not hours.
+      Your code has Git history. <strong>Your production settings do not.</strong>
+      Security groups, Firestore rules, Stripe webhooks, DNS records — they change in
+      dashboards with no diff, no review, and no trail.
+      ConfigTrace gives every risky configuration change a security timeline:
+      field-level diffs, risk classification, and a clear next step —
+      across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel.
     </p>
 
     <div class="hero-ctas">
@@ -1617,8 +1617,8 @@
         </p>
         <br>
         <p class="problem-body">
-          When production breaks, your team asks: <strong>"What changed?"</strong>
-          The answer is often not in Git.
+          Your code has a reviewable history. <strong>Production settings do not.</strong>
+          When something breaks, the answer is almost never in Git.
         </p>
       </div>
 
@@ -2541,15 +2541,16 @@
           not tell you who changed a DNS record, webhook URL, branch protection rule, OAuth
           callback, or cloud permission.
           <br><br>
-          ConfigTrace is my attempt to bring the same discipline we expect from code review —
-          <strong>history, diffs, accountability</strong> — to the configuration that keeps
-          production alive."
+          Your code has Git history. <strong>Your production settings do not.</strong>
+          ConfigTrace is my attempt to give those settings the same discipline code gets from Git —
+          a security timeline with diffs, risk classification, and a clear answer
+          when something breaks."
         </p>
         <div class="founder-sig">
           <div class="founder-avatar" aria-label="Rohan Shah">RS</div>
           <div>
             <div class="founder-name">Rohan Shah</div>
-            <div class="founder-role">Founder, ConfigTrace</div>
+            <div class="founder-role">Founder, ConfigTrace · UMass Amherst</div>
           </div>
         </div>
       </div>
@@ -2623,7 +2624,7 @@
     </div>
 
     <div class="footer-bottom">
-      <span>ConfigTrace · Built by Rohan Shah</span>
+      <span>ConfigTrace · Built by Rohan Shah at UMass Amherst</span>
       <span>7 providers live · AWS · Firebase · Supabase · Stripe · GitHub · Cloudflare · Vercel</span>
     </div>
   </div>
