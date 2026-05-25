@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supabase Setup — ConfigTrace Docs</title>
+  <meta name="description" content="Connect Supabase to ConfigTrace using a management API access token. Monitor RLS policy metadata, auth configuration, storage bucket settings, and edge function metadata.">
+  <link rel="canonical" href="https://configtrace.org/docs/supabase.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+
+<nav class="docs-topnav" role="navigation" aria-label="Main navigation">
+  <div class="docs-topnav-inner">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="docs-mobile-toggle" id="sidebarToggle" aria-label="Toggle sidebar" aria-expanded="false">☰</button>
+      <a href="/" class="docs-nav-logo" aria-label="ConfigTrace home">
+        <div class="docs-nav-logo-box" aria-hidden="true">CT</div>
+        ConfigTrace
+      </a>
+      <span class="docs-nav-sep" aria-hidden="true">/</span>
+      <span class="docs-nav-label">Docs</span>
+    </div>
+    <div class="docs-nav-links">
+      <a href="/">Home</a>
+      <a href="../docs.html#providers">Providers</a>
+      <a href="data-access.html">Data Access</a>
+      <a href="troubleshooting.html">Troubleshooting</a>
+      <a href="https://app.configtrace.org" class="docs-nav-app" target="_blank" rel="noopener noreferrer">Open app →</a>
+    </div>
+  </div>
+</nav>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar" id="docsSidebar" aria-label="Documentation navigation">
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Overview</span>
+      <ul class="sidebar-nav">
+        <li><a href="../docs.html">Docs Home</a></li>
+        <li><a href="getting-started.html">Getting Started</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Provider Setup</span>
+      <ul class="sidebar-nav">
+        <li><a href="aws.html"><span class="sidebar-provider-dot" style="background:#f5a623"></span>AWS</a></li>
+        <li><a href="firebase.html"><span class="sidebar-provider-dot" style="background:#ffca28"></span>Firebase</a></li>
+        <li><a href="supabase.html" class="active"><span class="sidebar-provider-dot" style="background:#3ecf8e"></span>Supabase</a></li>
+        <li><a href="stripe.html"><span class="sidebar-provider-dot" style="background:#635bff"></span>Stripe</a></li>
+        <li><a href="github.html"><span class="sidebar-provider-dot" style="background:#8b90a0"></span>GitHub</a></li>
+        <li><a href="cloudflare.html"><span class="sidebar-provider-dot" style="background:#f48120"></span>Cloudflare</a></li>
+        <li><a href="vercel.html"><span class="sidebar-provider-dot" style="background:#b0b5c4"></span>Vercel</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Reference</span>
+      <ul class="sidebar-nav">
+        <li><a href="data-access.html">Data Access &amp; Permissions</a></li>
+        <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-main" id="docsMain">
+    <div class="docs-content">
+
+      <nav class="docs-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">ConfigTrace</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <a href="../docs.html">Docs</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <span>Supabase</span>
+      </nav>
+
+      <div class="provider-badge">
+        <div class="provider-badge-icon" style="background:#3ecf8e;color:#1a1a1a">SB</div>
+        Supabase
+      </div>
+
+      <span class="docs-page-label">Provider Setup</span>
+      <h1 class="docs-page-title">Connect Supabase</h1>
+      <p class="docs-page-intro">
+        ConfigTrace connects to Supabase using a management API access token. It reviews RLS policy
+        metadata, auth configuration, storage bucket settings, and edge function metadata — without
+        reading any table rows, user records, or stored files.
+      </p>
+
+      <div class="docs-toc">
+        <div class="docs-toc-title">On this page</div>
+        <ol class="docs-toc-list">
+          <li><a href="#prereqs">Prerequisites</a></li>
+          <li><a href="#access-token">Step 1 — Create an access token</a></li>
+          <li><a href="#project-ref">Step 2 — Find your Project Ref</a></li>
+          <li><a href="#connect">Step 3 — Connect in ConfigTrace</a></li>
+          <li><a href="#first-sync">Step 4 — Run your first sync</a></li>
+          <li><a href="#monitors">What ConfigTrace monitors</a></li>
+          <li><a href="#never-reads">What ConfigTrace never reads</a></li>
+        </ol>
+      </div>
+
+      <h2 class="docs-h2" id="prereqs">Prerequisites</h2>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>A Supabase project</span></li>
+        <li><span class="docs-list-icon">→</span><span>Owner role on the Supabase organization</span></li>
+        <li><span class="docs-list-icon">→</span><span>A ConfigTrace workspace (owner or admin role)</span></li>
+      </ul>
+
+      <h2 class="docs-h2" id="access-token">Step 1 — Create an access token</h2>
+      <ol class="docs-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">Open Account settings</div>
+            <div class="step-desc">Go to supabase.com/dashboard → your account avatar → Account → Access Tokens.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Generate a new token</div>
+            <div class="step-desc">Click "Generate new token". Name it <code>configtrace</code> and set an appropriate expiry.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Copy the token</div>
+            <div class="step-desc">Copy the token immediately — it won't be shown again.</div>
+          </div>
+        </li>
+      </ol>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body">
+          Supabase access tokens are scoped to your account, not a single project. ConfigTrace uses the token along with your Project Reference to scope its reads to your specific project only.
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="project-ref">Step 2 — Find your Project Ref</h2>
+      <p class="docs-p">Your project reference is visible in your Supabase dashboard URL: <code>https://supabase.com/dashboard/project/[your-project-ref]</code>. It's also shown in Project Settings → General.</p>
+
+      <h2 class="docs-h2" id="connect">Step 3 — Connect in ConfigTrace</h2>
+      <ol class="docs-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">Open Integrations</div>
+            <div class="step-desc">In the ConfigTrace sidebar, click <strong>Integrations</strong>, then click <strong>Connect</strong> on the Supabase card.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Enter credentials</div>
+            <div class="step-desc">Enter your <strong>Access Token</strong> and <strong>Project Reference</strong> (not the full URL, just the ref string).</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Save and validate</div>
+            <div class="step-desc">Click <strong>Save integration</strong>. ConfigTrace will validate and connect.</div>
+          </div>
+        </li>
+      </ol>
+
+      <h2 class="docs-h2" id="first-sync">Step 4 — Run your first sync</h2>
+      <p class="docs-p">Click <strong>Sync Now</strong>. The first sync captures your RLS policy metadata, auth settings, and project configuration as a baseline.</p>
+
+      <h2 class="docs-h2" id="monitors">What ConfigTrace monitors</h2>
+      <div class="perm-grid">
+        <div class="perm-panel reads">
+          <div class="perm-panel-hdr"><span>✓</span> Reads (configuration metadata)</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✓</span>Row-level security (RLS) policies — names, tables, commands, and policy expressions</li>
+              <li><span class="perm-icon">✓</span>Auth configuration: email settings, JWT expiry, OAuth providers enabled, redirect URL allowlist</li>
+              <li><span class="perm-icon">✓</span>Storage bucket metadata: names, public/private status, file size limits</li>
+              <li><span class="perm-icon">✓</span>Edge Function metadata: names, deployment status, region (not function code)</li>
+              <li><span class="perm-icon">✓</span>Project metadata and API settings</li>
+              <li><span class="perm-icon">✓</span>Database connection settings (not connection strings or passwords)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="perm-panel no-reads">
+          <div class="perm-panel-hdr"><span>✕</span> Never reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✕</span>Table row data of any kind</li>
+              <li><span class="perm-icon">✕</span>Storage file contents</li>
+              <li><span class="perm-icon">✕</span>Auth user records, passwords, or tokens</li>
+              <li><span class="perm-icon">✕</span>Edge Function source code</li>
+              <li><span class="perm-icon">✕</span>Service role key values or JWT secrets</li>
+              <li><span class="perm-icon">✕</span>Any customer application data</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="never-reads">What ConfigTrace never reads</h2>
+      <div class="callout warning">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body">
+          ConfigTrace reviews RLS policy posture — it reads the policy expressions that control data access (e.g. <code>using (auth.uid() = user_id)</code>). It does not execute queries against your tables or read any rows.
+        </div>
+      </div>
+      <p class="docs-p">For a full breakdown across all providers, see the <a href="data-access.html">Data Access &amp; Permissions</a> reference.</p>
+
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="docs-footer">
+    <div class="docs-footer-inner">
+      <span>ConfigTrace Docs</span>
+      <div>
+        <a href="/">Home</a>
+        <a href="../docs.html">Docs</a>
+        <a href="data-access.html">Data access</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+        <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var toggle  = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('docsSidebar');
+    var open    = false;
+    toggle.addEventListener('click', function () { open = !open; sidebar.classList.toggle('open', open); toggle.setAttribute('aria-expanded', open); });
+    sidebar.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { if (window.innerWidth < 900) { open = false; sidebar.classList.remove('open'); toggle.setAttribute('aria-expanded', false); } }); });
+  })();
+</script>
+</body>
+</html>

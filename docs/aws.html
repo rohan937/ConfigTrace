@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWS Setup — ConfigTrace Docs</title>
+  <meta name="description" content="Connect AWS to ConfigTrace. Set up a read-only IAM policy, enter credentials, and start monitoring security groups, IAM policies, Route 53, and S3 configuration.">
+  <link rel="canonical" href="https://configtrace.org/docs/aws.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+
+<nav class="docs-topnav" role="navigation" aria-label="Main navigation">
+  <div class="docs-topnav-inner">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="docs-mobile-toggle" id="sidebarToggle" aria-label="Toggle sidebar" aria-expanded="false">☰</button>
+      <a href="/" class="docs-nav-logo" aria-label="ConfigTrace home">
+        <div class="docs-nav-logo-box" aria-hidden="true">CT</div>
+        ConfigTrace
+      </a>
+      <span class="docs-nav-sep" aria-hidden="true">/</span>
+      <span class="docs-nav-label">Docs</span>
+    </div>
+    <div class="docs-nav-links">
+      <a href="/">Home</a>
+      <a href="../docs.html#providers">Providers</a>
+      <a href="data-access.html">Data Access</a>
+      <a href="troubleshooting.html">Troubleshooting</a>
+      <a href="https://app.configtrace.org" class="docs-nav-app" target="_blank" rel="noopener noreferrer">Open app →</a>
+    </div>
+  </div>
+</nav>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar" id="docsSidebar" aria-label="Documentation navigation">
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Overview</span>
+      <ul class="sidebar-nav">
+        <li><a href="../docs.html">Docs Home</a></li>
+        <li><a href="getting-started.html">Getting Started</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Provider Setup</span>
+      <ul class="sidebar-nav">
+        <li><a href="aws.html" class="active"><span class="sidebar-provider-dot" style="background:#f5a623"></span>AWS</a></li>
+        <li><a href="firebase.html"><span class="sidebar-provider-dot" style="background:#ffca28"></span>Firebase</a></li>
+        <li><a href="supabase.html"><span class="sidebar-provider-dot" style="background:#3ecf8e"></span>Supabase</a></li>
+        <li><a href="stripe.html"><span class="sidebar-provider-dot" style="background:#635bff"></span>Stripe</a></li>
+        <li><a href="github.html"><span class="sidebar-provider-dot" style="background:#8b90a0"></span>GitHub</a></li>
+        <li><a href="cloudflare.html"><span class="sidebar-provider-dot" style="background:#f48120"></span>Cloudflare</a></li>
+        <li><a href="vercel.html"><span class="sidebar-provider-dot" style="background:#b0b5c4"></span>Vercel</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Reference</span>
+      <ul class="sidebar-nav">
+        <li><a href="data-access.html">Data Access &amp; Permissions</a></li>
+        <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-main" id="docsMain">
+    <div class="docs-content">
+
+      <nav class="docs-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">ConfigTrace</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <a href="../docs.html">Docs</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <span>AWS</span>
+      </nav>
+
+      <div class="provider-badge">
+        <div class="provider-badge-icon" style="background:#f5a623">AW</div>
+        AWS
+      </div>
+
+      <span class="docs-page-label">Provider Setup</span>
+      <h1 class="docs-page-title">Connect AWS</h1>
+      <p class="docs-page-intro">
+        ConfigTrace connects to AWS using an IAM user or role with read-only permissions.
+        It monitors security group rules, IAM policies, Route 53 records, and S3 bucket configuration —
+        with no write access and no access to your application data.
+      </p>
+
+      <div class="docs-toc">
+        <div class="docs-toc-title">On this page</div>
+        <ol class="docs-toc-list">
+          <li><a href="#prereqs">Prerequisites</a></li>
+          <li><a href="#iam-policy">Step 1 — Create read-only IAM policy</a></li>
+          <li><a href="#iam-user">Step 2 — Create IAM user and access key</a></li>
+          <li><a href="#connect">Step 3 — Connect in ConfigTrace</a></li>
+          <li><a href="#first-sync">Step 4 — Run your first sync</a></li>
+          <li><a href="#monitors">What ConfigTrace monitors</a></li>
+          <li><a href="#data-access">What ConfigTrace never reads</a></li>
+        </ol>
+      </div>
+
+      <h2 class="docs-h2" id="prereqs">Prerequisites</h2>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>An AWS account with IAM access (to create policies and users)</span></li>
+        <li><span class="docs-list-icon">→</span><span>Permission to create IAM policies and generate access keys</span></li>
+        <li><span class="docs-list-icon">→</span><span>A ConfigTrace workspace (owner or admin role)</span></li>
+      </ul>
+
+      <h2 class="docs-h2" id="iam-policy">Step 1 — Create read-only IAM policy</h2>
+      <p class="docs-p">In the AWS Console, go to <strong>IAM → Policies → Create policy</strong>. Switch to the JSON editor and paste the following policy:</p>
+
+      <div class="docs-code-block">
+        <div class="docs-code-header">
+          <span>IAM Policy JSON</span>
+          <span>Read-only · No write permissions</span>
+        </div>
+        <div class="docs-code-body">
+          <pre><span class="code-punct">{</span>
+  <span class="code-key">"Version"</span><span class="code-punct">:</span> <span class="code-str">"2012-10-17"</span><span class="code-punct">,</span>
+  <span class="code-key">"Statement"</span><span class="code-punct">: [</span>
+    <span class="code-punct">{</span>
+      <span class="code-key">"Sid"</span><span class="code-punct">:</span> <span class="code-str">"ConfigTraceReadOnly"</span><span class="code-punct">,</span>
+      <span class="code-key">"Effect"</span><span class="code-punct">:</span> <span class="code-str">"Allow"</span><span class="code-punct">,</span>
+      <span class="code-key">"Action"</span><span class="code-punct">: [</span>
+        <span class="code-comment">// EC2 — security groups</span>
+        <span class="code-str">"ec2:DescribeSecurityGroups"</span><span class="code-punct">,</span>
+        <span class="code-str">"ec2:DescribeSecurityGroupRules"</span><span class="code-punct">,</span>
+        <span class="code-str">"ec2:DescribeInstances"</span><span class="code-punct">,</span>
+
+        <span class="code-comment">// IAM — policies and roles</span>
+        <span class="code-str">"iam:ListPolicies"</span><span class="code-punct">,</span>
+        <span class="code-str">"iam:GetPolicy"</span><span class="code-punct">,</span>
+        <span class="code-str">"iam:GetPolicyVersion"</span><span class="code-punct">,</span>
+        <span class="code-str">"iam:ListPolicyVersions"</span><span class="code-punct">,</span>
+        <span class="code-str">"iam:ListUsers"</span><span class="code-punct">,</span>
+        <span class="code-str">"iam:ListRoles"</span><span class="code-punct">,</span>
+        <span class="code-str">"iam:ListAttachedUserPolicies"</span><span class="code-punct">,</span>
+        <span class="code-str">"iam:ListAttachedRolePolicies"</span><span class="code-punct">,</span>
+
+        <span class="code-comment">// Route 53 — DNS records</span>
+        <span class="code-str">"route53:ListHostedZones"</span><span class="code-punct">,</span>
+        <span class="code-str">"route53:GetHostedZone"</span><span class="code-punct">,</span>
+        <span class="code-str">"route53:ListResourceRecordSets"</span><span class="code-punct">,</span>
+
+        <span class="code-comment">// S3 — bucket configuration metadata</span>
+        <span class="code-str">"s3:ListAllMyBuckets"</span><span class="code-punct">,</span>
+        <span class="code-str">"s3:GetBucketPolicy"</span><span class="code-punct">,</span>
+        <span class="code-str">"s3:GetBucketPublicAccessBlock"</span><span class="code-punct">,</span>
+        <span class="code-str">"s3:GetBucketAcl"</span><span class="code-punct">,</span>
+        <span class="code-str">"s3:GetBucketEncryption"</span><span class="code-punct">,</span>
+        <span class="code-str">"s3:GetBucketVersioning"</span>
+      <span class="code-punct">],</span>
+      <span class="code-key">"Resource"</span><span class="code-punct">:</span> <span class="code-str">"*"</span>
+    <span class="code-punct">}</span>
+  <span class="code-punct">]</span>
+<span class="code-punct">}</span></pre>
+        </div>
+      </div>
+
+      <p class="docs-p">Name the policy something recognizable like <code>ConfigTraceReadOnly</code>. Click <strong>Create policy</strong>.</p>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body">
+          <strong>No write permissions required.</strong> ConfigTrace only reads configuration metadata. Do not grant any <code>ec2:Modify*</code>, <code>iam:Create*</code>, or similar write actions. ConfigTrace will never attempt to remediate or change your configuration.
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="iam-user">Step 2 — Create IAM user and access key</h2>
+      <ol class="docs-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">Create a dedicated IAM user</div>
+            <div class="step-desc">Go to <strong>IAM → Users → Create user</strong>. Name it <code>configtrace-readonly</code> or similar. Select <strong>Programmatic access</strong>.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Attach the policy</div>
+            <div class="step-desc">On the permissions step, choose <strong>Attach existing policies directly</strong> and attach the <code>ConfigTraceReadOnly</code> policy you created.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Save the access key</div>
+            <div class="step-desc">On the final screen, copy the <strong>Access Key ID</strong> and <strong>Secret Access Key</strong>. You'll need both. The secret key is shown only once.</div>
+          </div>
+        </li>
+      </ol>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body">
+          <strong>Prefer IAM roles?</strong> If your infrastructure uses IAM roles, you can attach the <code>ConfigTraceReadOnly</code> policy to a role and generate temporary credentials instead. The credentials you provide to ConfigTrace are encrypted and stored securely.
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="connect">Step 3 — Connect in ConfigTrace</h2>
+      <ol class="docs-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">Go to Integrations</div>
+            <div class="step-desc">In the ConfigTrace sidebar, click <strong>Integrations</strong>, then click <strong>Connect</strong> on the AWS card.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Enter credentials</div>
+            <div class="step-desc">Paste your <strong>AWS Access Key ID</strong>, <strong>Secret Access Key</strong>, and select your primary <strong>AWS Region</strong> (e.g. <code>us-east-1</code>).</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Save</div>
+            <div class="step-desc">Click <strong>Save integration</strong>. ConfigTrace will validate the credentials and confirm the connection.</div>
+          </div>
+        </li>
+      </ol>
+
+      <h2 class="docs-h2" id="first-sync">Step 4 — Run your first sync</h2>
+      <p class="docs-p">From the integration detail page, click <strong>Sync Now</strong>. The first sync creates your baseline snapshot. After it completes, ConfigTrace will sync automatically on your plan's schedule.</p>
+      <p class="docs-p">Open the <strong>Timeline</strong> to see the baseline created and any resources captured.</p>
+
+      <h2 class="docs-h2" id="monitors">What ConfigTrace monitors</h2>
+      <div class="perm-grid">
+        <div class="perm-panel reads">
+          <div class="perm-panel-hdr"><span>✓</span> Reads (configuration metadata)</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✓</span>EC2 security group inbound and outbound rules</li>
+              <li><span class="perm-icon">✓</span>IAM policy documents and attached policies</li>
+              <li><span class="perm-icon">✓</span>Route 53 hosted zones and DNS record sets</li>
+              <li><span class="perm-icon">✓</span>S3 bucket policies and public access settings</li>
+              <li><span class="perm-icon">✓</span>S3 bucket ACLs, encryption, and versioning config</li>
+            </ul>
+          </div>
+        </div>
+        <div class="perm-panel no-reads">
+          <div class="perm-panel-hdr"><span>✕</span> Never reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✕</span>S3 object contents or bucket data</li>
+              <li><span class="perm-icon">✕</span>RDS, DynamoDB, or any database records</li>
+              <li><span class="perm-icon">✕</span>CloudWatch logs or event contents</li>
+              <li><span class="perm-icon">✕</span>Secrets Manager or Parameter Store values</li>
+              <li><span class="perm-icon">✕</span>IAM user passwords or secret access key values</li>
+              <li><span class="perm-icon">✕</span>Application data of any kind</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="data-access">What ConfigTrace never reads</h2>
+      <p class="docs-p">ConfigTrace is built for <strong>configuration metadata</strong> only. It uses read-only configuration APIs and never requests write permissions. It does not perform any remediation actions or modify your AWS environment in any way.</p>
+      <p class="docs-p">For a full breakdown across all providers, see the <a href="data-access.html">Data Access &amp; Permissions</a> reference.</p>
+
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="docs-footer">
+    <div class="docs-footer-inner">
+      <span>ConfigTrace Docs</span>
+      <div>
+        <a href="/">Home</a>
+        <a href="../docs.html">Docs</a>
+        <a href="data-access.html">Data access</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+        <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var toggle  = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('docsSidebar');
+    var open    = false;
+    toggle.addEventListener('click', function () { open = !open; sidebar.classList.toggle('open', open); toggle.setAttribute('aria-expanded', open); });
+    sidebar.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { if (window.innerWidth < 900) { open = false; sidebar.classList.remove('open'); toggle.setAttribute('aria-expanded', false); } }); });
+  })();
+</script>
+</body>
+</html>

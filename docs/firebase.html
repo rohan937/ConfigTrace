@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Setup — ConfigTrace Docs</title>
+  <meta name="description" content="Connect Firebase to ConfigTrace using a service account key. Monitor Firestore rules, Storage rules, Realtime Database rules, and project configuration.">
+  <link rel="canonical" href="https://configtrace.org/docs/firebase.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+
+<nav class="docs-topnav" role="navigation" aria-label="Main navigation">
+  <div class="docs-topnav-inner">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="docs-mobile-toggle" id="sidebarToggle" aria-label="Toggle sidebar" aria-expanded="false">☰</button>
+      <a href="/" class="docs-nav-logo" aria-label="ConfigTrace home">
+        <div class="docs-nav-logo-box" aria-hidden="true">CT</div>
+        ConfigTrace
+      </a>
+      <span class="docs-nav-sep" aria-hidden="true">/</span>
+      <span class="docs-nav-label">Docs</span>
+    </div>
+    <div class="docs-nav-links">
+      <a href="/">Home</a>
+      <a href="../docs.html#providers">Providers</a>
+      <a href="data-access.html">Data Access</a>
+      <a href="troubleshooting.html">Troubleshooting</a>
+      <a href="https://app.configtrace.org" class="docs-nav-app" target="_blank" rel="noopener noreferrer">Open app →</a>
+    </div>
+  </div>
+</nav>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar" id="docsSidebar" aria-label="Documentation navigation">
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Overview</span>
+      <ul class="sidebar-nav">
+        <li><a href="../docs.html">Docs Home</a></li>
+        <li><a href="getting-started.html">Getting Started</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Provider Setup</span>
+      <ul class="sidebar-nav">
+        <li><a href="aws.html"><span class="sidebar-provider-dot" style="background:#f5a623"></span>AWS</a></li>
+        <li><a href="firebase.html" class="active"><span class="sidebar-provider-dot" style="background:#ffca28"></span>Firebase</a></li>
+        <li><a href="supabase.html"><span class="sidebar-provider-dot" style="background:#3ecf8e"></span>Supabase</a></li>
+        <li><a href="stripe.html"><span class="sidebar-provider-dot" style="background:#635bff"></span>Stripe</a></li>
+        <li><a href="github.html"><span class="sidebar-provider-dot" style="background:#8b90a0"></span>GitHub</a></li>
+        <li><a href="cloudflare.html"><span class="sidebar-provider-dot" style="background:#f48120"></span>Cloudflare</a></li>
+        <li><a href="vercel.html"><span class="sidebar-provider-dot" style="background:#b0b5c4"></span>Vercel</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Reference</span>
+      <ul class="sidebar-nav">
+        <li><a href="data-access.html">Data Access &amp; Permissions</a></li>
+        <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-main" id="docsMain">
+    <div class="docs-content">
+
+      <nav class="docs-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">ConfigTrace</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <a href="../docs.html">Docs</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <span>Firebase</span>
+      </nav>
+
+      <div class="provider-badge">
+        <div class="provider-badge-icon" style="background:#ffca28;color:#1a1a1a">FB</div>
+        Firebase
+      </div>
+
+      <span class="docs-page-label">Provider Setup</span>
+      <h1 class="docs-page-title">Connect Firebase</h1>
+      <p class="docs-page-intro">
+        ConfigTrace connects to Firebase using a service account key. It monitors Firestore rules,
+        Storage rules, Realtime Database rules, and project/auth configuration — without reading
+        any Firestore documents, Storage files, or user records.
+      </p>
+
+      <div class="docs-toc">
+        <div class="docs-toc-title">On this page</div>
+        <ol class="docs-toc-list">
+          <li><a href="#prereqs">Prerequisites</a></li>
+          <li><a href="#service-account">Step 1 — Create a service account</a></li>
+          <li><a href="#json-key">Step 2 — Generate a JSON key</a></li>
+          <li><a href="#connect">Step 3 — Connect in ConfigTrace</a></li>
+          <li><a href="#first-sync">Step 4 — Run your first sync</a></li>
+          <li><a href="#monitors">What ConfigTrace monitors</a></li>
+          <li><a href="#never-reads">What ConfigTrace never reads</a></li>
+        </ol>
+      </div>
+
+      <h2 class="docs-h2" id="prereqs">Prerequisites</h2>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>A Firebase project (Blaze plan recommended for full service account support)</span></li>
+        <li><span class="docs-list-icon">→</span><span>Owner or Editor role on the project</span></li>
+        <li><span class="docs-list-icon">→</span><span>A ConfigTrace workspace (owner or admin role)</span></li>
+      </ul>
+
+      <h2 class="docs-h2" id="service-account">Step 1 — Create a service account</h2>
+      <ol class="docs-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">Open Project Settings</div>
+            <div class="step-desc">Go to the Firebase Console → Project Settings → Service Accounts tab.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Open Google Cloud IAM</div>
+            <div class="step-desc">Click "Manage service account permissions" — this opens Google Cloud IAM.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Create the service account</div>
+            <div class="step-desc">In Google Cloud IAM, click "Create Service Account". Name it <code>configtrace-readonly</code> and give it a description.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">4</span>
+          <div class="step-body">
+            <div class="step-title">Assign the Firebase Viewer role</div>
+            <div class="step-desc">On the permissions step, assign the role <strong>Firebase Viewer</strong> (<code>roles/firebase.viewer</code>). This gives read-only access to Firebase project configuration.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">5</span>
+          <div class="step-body">
+            <div class="step-title">Finish</div>
+            <div class="step-desc">Click "Create and continue" then "Done".</div>
+          </div>
+        </li>
+      </ol>
+
+      <h2 class="docs-h2" id="json-key">Step 2 — Generate a JSON key</h2>
+      <ol class="docs-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">Locate your service account</div>
+            <div class="step-desc">Back in Google Cloud IAM, find the service account you created.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Open key management</div>
+            <div class="step-desc">Click the three-dot menu → "Manage keys".</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Create and download the key</div>
+            <div class="step-desc">Click "Add key → Create new key → JSON". Download the JSON key file. Keep it secure.</div>
+          </div>
+        </li>
+      </ol>
+
+      <h2 class="docs-h2" id="connect">Step 3 — Connect in ConfigTrace</h2>
+      <ol class="docs-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">Open Integrations</div>
+            <div class="step-desc">In the ConfigTrace sidebar, click <strong>Integrations</strong>, then click <strong>Connect</strong> on the Firebase card.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Paste your credential</div>
+            <div class="step-desc">Paste the contents of your service account JSON key into the credential field.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Save and validate</div>
+            <div class="step-desc">Click <strong>Save integration</strong>. ConfigTrace will validate the credentials.</div>
+          </div>
+        </li>
+      </ol>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body">
+          <strong>Handle your JSON key like a password.</strong> ConfigTrace encrypts it before storage, but you should treat the downloaded file as a secret and delete it once you've pasted it into ConfigTrace.
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="first-sync">Step 4 — Run your first sync</h2>
+      <p class="docs-p">Click <strong>Sync Now</strong> on the integration. The first sync captures your Firestore rules, Storage rules, and project configuration as a baseline.</p>
+
+      <h2 class="docs-h2" id="monitors">What ConfigTrace monitors</h2>
+      <div class="perm-grid">
+        <div class="perm-panel reads">
+          <div class="perm-panel-hdr"><span>✓</span> Reads (configuration metadata)</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✓</span>Firestore security rules</li>
+              <li><span class="perm-icon">✓</span>Firebase Storage security rules</li>
+              <li><span class="perm-icon">✓</span>Realtime Database rules</li>
+              <li><span class="perm-icon">✓</span>Firebase project metadata and settings</li>
+              <li><span class="perm-icon">✓</span>Firebase Authentication configuration (authorized domains, sign-in providers, OAuth redirect URIs)</li>
+              <li><span class="perm-icon">✓</span>Firebase Hosting configuration</li>
+              <li><span class="perm-icon">✓</span>Cloud Functions metadata (names, triggers, runtime — not function code)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="perm-panel no-reads">
+          <div class="perm-panel-hdr"><span>✕</span> Never reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✕</span>Firestore collection or document contents</li>
+              <li><span class="perm-icon">✕</span>Firebase Storage file contents</li>
+              <li><span class="perm-icon">✕</span>Firebase Auth user records or passwords</li>
+              <li><span class="perm-icon">✕</span>Cloud Functions source code</li>
+              <li><span class="perm-icon">✕</span>Secret Manager values</li>
+              <li><span class="perm-icon">✕</span>Any customer application data</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="never-reads">What ConfigTrace never reads</h2>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body">
+          ConfigTrace reads security rules as text (e.g. <code>allow read: if request.auth != null</code>). It never queries or reads the data those rules protect.
+        </div>
+      </div>
+      <p class="docs-p">For a full breakdown across all providers, see the <a href="data-access.html">Data Access &amp; Permissions</a> reference.</p>
+
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="docs-footer">
+    <div class="docs-footer-inner">
+      <span>ConfigTrace Docs</span>
+      <div>
+        <a href="/">Home</a>
+        <a href="../docs.html">Docs</a>
+        <a href="data-access.html">Data access</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+        <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var toggle  = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('docsSidebar');
+    var open    = false;
+    toggle.addEventListener('click', function () { open = !open; sidebar.classList.toggle('open', open); toggle.setAttribute('aria-expanded', open); });
+    sidebar.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { if (window.innerWidth < 900) { open = false; sidebar.classList.remove('open'); toggle.setAttribute('aria-expanded', false); } }); });
+  })();
+</script>
+</body>
+</html>

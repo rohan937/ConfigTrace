@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Access &amp; Permissions — ConfigTrace Docs</title>
+  <meta name="description" content="Exactly what ConfigTrace reads from each provider and what it is architecturally incapable of accessing. Metadata-first, read-only, no customer data.">
+  <link rel="canonical" href="https://configtrace.org/docs/data-access.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+
+<nav class="docs-topnav" role="navigation" aria-label="Main navigation">
+  <div class="docs-topnav-inner">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="docs-mobile-toggle" id="sidebarToggle" aria-label="Toggle sidebar" aria-expanded="false">☰</button>
+      <a href="/" class="docs-nav-logo" aria-label="ConfigTrace home">
+        <div class="docs-nav-logo-box" aria-hidden="true">CT</div>
+        ConfigTrace
+      </a>
+      <span class="docs-nav-sep" aria-hidden="true">/</span>
+      <span class="docs-nav-label">Docs</span>
+    </div>
+    <div class="docs-nav-links">
+      <a href="/">Home</a>
+      <a href="../docs.html#providers">Providers</a>
+      <a href="data-access.html">Data Access</a>
+      <a href="troubleshooting.html">Troubleshooting</a>
+      <a href="https://app.configtrace.org" class="docs-nav-app" target="_blank" rel="noopener noreferrer">Open app →</a>
+    </div>
+  </div>
+</nav>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar" id="docsSidebar" aria-label="Documentation navigation">
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Overview</span>
+      <ul class="sidebar-nav">
+        <li><a href="../docs.html">Docs Home</a></li>
+        <li><a href="getting-started.html">Getting Started</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Provider Setup</span>
+      <ul class="sidebar-nav">
+        <li><a href="aws.html"><span class="sidebar-provider-dot" style="background:#f5a623"></span>AWS</a></li>
+        <li><a href="firebase.html"><span class="sidebar-provider-dot" style="background:#ffca28"></span>Firebase</a></li>
+        <li><a href="supabase.html"><span class="sidebar-provider-dot" style="background:#3ecf8e"></span>Supabase</a></li>
+        <li><a href="stripe.html"><span class="sidebar-provider-dot" style="background:#635bff"></span>Stripe</a></li>
+        <li><a href="github.html"><span class="sidebar-provider-dot" style="background:#8b90a0"></span>GitHub</a></li>
+        <li><a href="cloudflare.html"><span class="sidebar-provider-dot" style="background:#f48120"></span>Cloudflare</a></li>
+        <li><a href="vercel.html"><span class="sidebar-provider-dot" style="background:#b0b5c4"></span>Vercel</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Reference</span>
+      <ul class="sidebar-nav">
+        <li><a href="data-access.html" class="active">Data Access &amp; Permissions</a></li>
+        <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-main" id="docsMain">
+    <div class="docs-content">
+
+      <nav class="docs-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">ConfigTrace</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <a href="../docs.html">Docs</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <span>Data Access &amp; Permissions</span>
+      </nav>
+
+      <span class="docs-page-label">Reference</span>
+      <h1 class="docs-page-title">Data Access &amp; Permissions</h1>
+      <p class="docs-page-intro">
+        ConfigTrace is built for configuration metadata, not customer data. This page explains
+        exactly what ConfigTrace reads from each provider — and what it is architecturally
+        incapable of accessing.
+      </p>
+
+      <div class="docs-toc">
+        <div class="docs-toc-title">On this page</div>
+        <ol class="docs-toc-list">
+          <li><a href="#principle">The metadata-first principle</a></li>
+          <li><a href="#aws">AWS</a></li>
+          <li><a href="#firebase">Firebase</a></li>
+          <li><a href="#supabase">Supabase</a></li>
+          <li><a href="#stripe">Stripe</a></li>
+          <li><a href="#github">GitHub</a></li>
+          <li><a href="#cloudflare">Cloudflare</a></li>
+          <li><a href="#vercel">Vercel</a></li>
+          <li><a href="#credential-storage">Credential storage and encryption</a></li>
+        </ol>
+      </div>
+
+      <h2 class="docs-h2" id="principle">The metadata-first principle</h2>
+      <p class="docs-p">ConfigTrace is a configuration drift detector, not a data pipeline. It monitors the rules, settings, and policies that control your infrastructure — not the data those settings protect. This distinction is intentional and enforced by the permissions ConfigTrace requests.</p>
+
+      <div class="callout tip">
+        <span class="callout-icon">✦</span>
+        <div class="callout-body">
+          ConfigTrace uses read-only APIs. It requests only the permissions it needs to read configuration metadata, and has no write access to any provider.
+        </div>
+      </div>
+
+      <hr class="docs-divider">
+
+      <h2 class="docs-h2" id="aws">AWS</h2>
+      <div class="perm-grid">
+        <div class="perm-panel reads">
+          <div class="perm-panel-hdr"><span>✓</span> Reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✓</span>EC2 security group rules and inbound/outbound settings</li>
+              <li><span class="perm-icon">✓</span>IAM policy documents and role attachments</li>
+              <li><span class="perm-icon">✓</span>Route 53 hosted zones and DNS record sets</li>
+              <li><span class="perm-icon">✓</span>S3 bucket policies, public access settings, ACLs, encryption config</li>
+            </ul>
+          </div>
+        </div>
+        <div class="perm-panel no-reads">
+          <div class="perm-panel-hdr"><span>✕</span> Never reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✕</span>S3 object contents or bucket data</li>
+              <li><span class="perm-icon">✕</span>RDS, DynamoDB, or any database records</li>
+              <li><span class="perm-icon">✕</span>CloudWatch log event contents</li>
+              <li><span class="perm-icon">✕</span>Secrets Manager or Parameter Store values</li>
+              <li><span class="perm-icon">✕</span>Application data of any kind</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <hr class="docs-divider">
+
+      <h2 class="docs-h2" id="firebase">Firebase</h2>
+      <div class="perm-grid">
+        <div class="perm-panel reads">
+          <div class="perm-panel-hdr"><span>✓</span> Reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✓</span>Firestore security rules</li>
+              <li><span class="perm-icon">✓</span>Firebase Storage security rules</li>
+              <li><span class="perm-icon">✓</span>Realtime Database rules</li>
+              <li><span class="perm-icon">✓</span>Project metadata and settings</li>
+              <li><span class="perm-icon">✓</span>Auth configuration: sign-in providers, authorized domains</li>
+              <li><span class="perm-icon">✓</span>Hosting configuration</li>
+              <li><span class="perm-icon">✓</span>Cloud Functions metadata (names, triggers — not code)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="perm-panel no-reads">
+          <div class="perm-panel-hdr"><span>✕</span> Never reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✕</span>Firestore collection or document contents</li>
+              <li><span class="perm-icon">✕</span>Storage file contents</li>
+              <li><span class="perm-icon">✕</span>Firebase Auth user records</li>
+              <li><span class="perm-icon">✕</span>Cloud Functions source code</li>
+              <li><span class="perm-icon">✕</span>Secret Manager values</li>
+              <li><span class="perm-icon">✕</span>Any customer or user data</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <hr class="docs-divider">
+
+      <h2 class="docs-h2" id="supabase">Supabase</h2>
+      <div class="perm-grid">
+        <div class="perm-panel reads">
+          <div class="perm-panel-hdr"><span>✓</span> Reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✓</span>Row-level security (RLS) policy definitions</li>
+              <li><span class="perm-icon">✓</span>Auth config: OAuth providers, JWT settings, redirect URL allowlist</li>
+              <li><span class="perm-icon">✓</span>Storage bucket metadata: names, access mode, size limits</li>
+              <li><span class="perm-icon">✓</span>Edge Function metadata: names, status (not code)</li>
+              <li><span class="perm-icon">✓</span>Project API and connection settings</li>
+            </ul>
+          </div>
+        </div>
+        <div class="perm-panel no-reads">
+          <div class="perm-panel-hdr"><span>✕</span> Never reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✕</span>Table row data</li>
+              <li><span class="perm-icon">✕</span>Storage file contents</li>
+              <li><span class="perm-icon">✕</span>Auth user records, passwords, or sessions</li>
+              <li><span class="perm-icon">✕</span>Edge Function source code</li>
+              <li><span class="perm-icon">✕</span>Service role key values</li>
+              <li><span class="perm-icon">✕</span>JWT secret values</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <hr class="docs-divider">
+
+      <h2 class="docs-h2" id="stripe">Stripe</h2>
+      <div class="perm-grid">
+        <div class="perm-panel reads">
+          <div class="perm-panel-hdr"><span>✓</span> Reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✓</span>Webhook endpoint URLs, status, and subscribed events</li>
+              <li><span class="perm-icon">✓</span>Product and price configuration</li>
+              <li><span class="perm-icon">✓</span>API key metadata: names, created dates (not values)</li>
+              <li><span class="perm-icon">✓</span>Account settings: business name, branding, support contact</li>
+            </ul>
+          </div>
+        </div>
+        <div class="perm-panel no-reads">
+          <div class="perm-panel-hdr"><span>✕</span> Never reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✕</span>Card numbers or payment method data</li>
+              <li><span class="perm-icon">✕</span>Customer records or PII</li>
+              <li><span class="perm-icon">✕</span>Transaction or payout history</li>
+              <li><span class="perm-icon">✕</span>Webhook signing secrets</li>
+              <li><span class="perm-icon">✕</span>Full API key values</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <hr class="docs-divider">
+
+      <h2 class="docs-h2" id="github">GitHub</h2>
+      <div class="perm-grid">
+        <div class="perm-panel reads">
+          <div class="perm-panel-hdr"><span>✓</span> Reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✓</span>Branch protection rules and required status checks</li>
+              <li><span class="perm-icon">✓</span>Repository settings: visibility, default branch, merge settings</li>
+              <li><span class="perm-icon">✓</span>Webhook URLs, status, and event subscriptions</li>
+              <li><span class="perm-icon">✓</span>Actions secrets metadata: names only (not values)</li>
+              <li><span class="perm-icon">✓</span>Actions variables: names and values</li>
+              <li><span class="perm-icon">✓</span>Deploy keys: titles and access levels</li>
+              <li><span class="perm-icon">✓</span>Actions permissions settings</li>
+            </ul>
+          </div>
+        </div>
+        <div class="perm-panel no-reads">
+          <div class="perm-panel-hdr"><span>✕</span> Never reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✕</span>Source code or file contents</li>
+              <li><span class="perm-icon">✕</span>Commit history or diff content</li>
+              <li><span class="perm-icon">✕</span>Pull request content</li>
+              <li><span class="perm-icon">✕</span>Actions secret values</li>
+              <li><span class="perm-icon">✕</span>User data or emails</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <hr class="docs-divider">
+
+      <h2 class="docs-h2" id="cloudflare">Cloudflare</h2>
+      <div class="perm-grid">
+        <div class="perm-panel reads">
+          <div class="perm-panel-hdr"><span>✓</span> Reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✓</span>DNS records: A, AAAA, CNAME, MX, TXT, NS, SRV, CAA</li>
+              <li><span class="perm-icon">✓</span>Per-record TTL and proxy status</li>
+            </ul>
+          </div>
+        </div>
+        <div class="perm-panel no-reads">
+          <div class="perm-panel-hdr"><span>✕</span> Never reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✕</span>Website traffic or visitor data</li>
+              <li><span class="perm-icon">✕</span>Cached content or responses</li>
+              <li><span class="perm-icon">✕</span>Workers script code</li>
+              <li><span class="perm-icon">✕</span>SSL private keys</li>
+              <li><span class="perm-icon">✕</span>Account billing or member data</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <hr class="docs-divider">
+
+      <h2 class="docs-h2" id="vercel">Vercel</h2>
+      <div class="perm-grid">
+        <div class="perm-panel reads">
+          <div class="perm-panel-hdr"><span>✓</span> Reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✓</span>Project settings and framework configuration</li>
+              <li><span class="perm-icon">✓</span>Custom domain names and redirect settings</li>
+              <li><span class="perm-icon">✓</span>Environment variable names and target environments</li>
+              <li><span class="perm-icon">✓</span>Deployment protection settings</li>
+              <li><span class="perm-icon">✓</span>Git integration settings</li>
+            </ul>
+          </div>
+        </div>
+        <div class="perm-panel no-reads">
+          <div class="perm-panel-hdr"><span>✕</span> Never reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✕</span>Environment variable values</li>
+              <li><span class="perm-icon">✕</span>Build or runtime logs</li>
+              <li><span class="perm-icon">✕</span>Serverless function code</li>
+              <li><span class="perm-icon">✕</span>Edge config or edge middleware values</li>
+              <li><span class="perm-icon">✕</span>Customer data</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <hr class="docs-divider">
+
+      <h2 class="docs-h2" id="credential-storage">Credential storage and encryption</h2>
+      <p class="docs-p">All credentials you provide to ConfigTrace — API tokens, service account JSON, access keys — are encrypted before being stored. Credentials are never logged, displayed in the UI after saving, or transmitted in plain text. ConfigTrace connects to provider APIs over HTTPS only.</p>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body">
+          If you ever need to rotate credentials, go to Integrations → open the integration → Edit credentials. You can update credentials without losing your sync history or baseline.
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="docs-footer">
+    <div class="docs-footer-inner">
+      <span>ConfigTrace Docs</span>
+      <div>
+        <a href="/">Home</a>
+        <a href="../docs.html">Docs</a>
+        <a href="data-access.html">Data access</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+        <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var toggle  = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('docsSidebar');
+    var open    = false;
+    toggle.addEventListener('click', function () { open = !open; sidebar.classList.toggle('open', open); toggle.setAttribute('aria-expanded', open); });
+    sidebar.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { if (window.innerWidth < 900) { open = false; sidebar.classList.remove('open'); toggle.setAttribute('aria-expanded', false); } }); });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Docs — ConfigTrace</title>
+  <meta name="description" content="ConfigTrace documentation. Learn how to connect providers, understand permissions, review configuration drift, and manage your team.">
+  <link rel="canonical" href="https://configtrace.org/docs.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+
+<!-- Top Nav -->
+<nav class="docs-topnav" role="navigation" aria-label="Main navigation">
+  <div class="docs-topnav-inner">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="docs-mobile-toggle" id="sidebarToggle" aria-label="Toggle sidebar" aria-expanded="false">☰</button>
+      <a href="/" class="docs-nav-logo" aria-label="ConfigTrace home">
+        <div class="docs-nav-logo-box" aria-hidden="true">CT</div>
+        ConfigTrace
+      </a>
+      <span class="docs-nav-sep" aria-hidden="true">/</span>
+      <span class="docs-nav-label">Docs</span>
+    </div>
+    <div class="docs-nav-links">
+      <a href="/">Home</a>
+      <a href="#providers">Providers</a>
+      <a href="docs/data-access.html">Data Access</a>
+      <a href="docs/troubleshooting.html">Troubleshooting</a>
+      <a href="https://app.configtrace.org" class="docs-nav-app" target="_blank" rel="noopener noreferrer">Open app →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Docs Shell -->
+<div class="docs-shell">
+
+  <!-- Sidebar -->
+  <aside class="docs-sidebar" id="docsSidebar" aria-label="Documentation navigation">
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Overview</span>
+      <ul class="sidebar-nav">
+        <li><a href="docs.html" class="active">Docs Home</a></li>
+        <li><a href="docs/getting-started.html">Getting Started</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Provider Setup</span>
+      <ul class="sidebar-nav">
+        <li><a href="docs/aws.html"><span class="sidebar-provider-dot" style="background:#f5a623"></span>AWS</a></li>
+        <li><a href="docs/firebase.html"><span class="sidebar-provider-dot" style="background:#ffca28"></span>Firebase</a></li>
+        <li><a href="docs/supabase.html"><span class="sidebar-provider-dot" style="background:#3ecf8e"></span>Supabase</a></li>
+        <li><a href="docs/stripe.html"><span class="sidebar-provider-dot" style="background:#635bff"></span>Stripe</a></li>
+        <li><a href="docs/github.html"><span class="sidebar-provider-dot" style="background:#8b90a0"></span>GitHub</a></li>
+        <li><a href="docs/cloudflare.html"><span class="sidebar-provider-dot" style="background:#f48120"></span>Cloudflare</a></li>
+        <li><a href="docs/vercel.html"><span class="sidebar-provider-dot" style="background:#b0b5c4"></span>Vercel</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Reference</span>
+      <ul class="sidebar-nav">
+        <li><a href="docs/data-access.html">Data Access &amp; Permissions</a></li>
+        <li><a href="docs/troubleshooting.html">Troubleshooting</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="docs-main" id="docsMain">
+    <div class="docs-content">
+
+      <nav class="docs-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">ConfigTrace</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <span>Docs</span>
+      </nav>
+
+      <span class="docs-page-label">Documentation</span>
+      <h1 class="docs-page-title">ConfigTrace Docs</h1>
+      <p class="docs-page-intro">
+        Learn how to connect providers, understand permissions, and review configuration
+        drift safely. All 7 providers are live and ready to connect.
+      </p>
+
+      <!-- Getting started card -->
+      <h2 class="docs-h2">Getting started</h2>
+      <div class="docs-card-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); margin-bottom: 16px;">
+        <a href="docs/getting-started.html" class="docs-card">
+          <div class="docs-card-icon">🚀</div>
+          <div class="docs-card-title">Getting Started Guide</div>
+          <div class="docs-card-desc">Connect your first provider, run a sync, and understand the ConfigTrace workflow in under 5 minutes.</div>
+        </a>
+        <a href="docs/data-access.html" class="docs-card">
+          <div class="docs-card-icon">🔒</div>
+          <div class="docs-card-title">Data Access &amp; Permissions</div>
+          <div class="docs-card-desc">Exactly what ConfigTrace reads from each provider — and what it never touches.</div>
+        </a>
+        <a href="docs/troubleshooting.html" class="docs-card">
+          <div class="docs-card-icon">🛠</div>
+          <div class="docs-card-title">Troubleshooting</div>
+          <div class="docs-card-desc">Common issues with syncs, invites, permissions, and billing — with practical fixes.</div>
+        </a>
+      </div>
+
+      <hr class="docs-divider">
+
+      <!-- Provider guides -->
+      <h2 class="docs-h2" id="providers">Provider setup guides</h2>
+      <p class="docs-p">Each guide covers credentials setup, required permissions, and exactly what ConfigTrace monitors and does not read.</p>
+
+      <div class="provider-card-grid">
+        <a href="docs/aws.html" class="provider-mini-card">
+          <div class="provider-mini-icon" style="background:#f5a623">AW</div>
+          <div>
+            <div class="provider-mini-name">AWS</div>
+            <div class="provider-mini-sub">IAM · EC2 · Route 53 · S3</div>
+          </div>
+        </a>
+        <a href="docs/firebase.html" class="provider-mini-card">
+          <div class="provider-mini-icon" style="background:#ffca28;color:#1a1a1a">FB</div>
+          <div>
+            <div class="provider-mini-name">Firebase</div>
+            <div class="provider-mini-sub">Firestore · Storage · Auth</div>
+          </div>
+        </a>
+        <a href="docs/supabase.html" class="provider-mini-card">
+          <div class="provider-mini-icon" style="background:#3ecf8e;color:#1a1a1a">SB</div>
+          <div>
+            <div class="provider-mini-name">Supabase</div>
+            <div class="provider-mini-sub">RLS · Auth · Edge Functions</div>
+          </div>
+        </a>
+        <a href="docs/stripe.html" class="provider-mini-card">
+          <div class="provider-mini-icon" style="background:#635bff">ST</div>
+          <div>
+            <div class="provider-mini-name">Stripe</div>
+            <div class="provider-mini-sub">Webhooks · Products · Keys</div>
+          </div>
+        </a>
+        <a href="docs/github.html" class="provider-mini-card">
+          <div class="provider-mini-icon" style="background:#24292e;border:1px solid rgba(255,255,255,.2)">GH</div>
+          <div>
+            <div class="provider-mini-name">GitHub</div>
+            <div class="provider-mini-sub">Branch protection · Webhooks</div>
+          </div>
+        </a>
+        <a href="docs/cloudflare.html" class="provider-mini-card">
+          <div class="provider-mini-icon" style="background:#f48120">CF</div>
+          <div>
+            <div class="provider-mini-name">Cloudflare</div>
+            <div class="provider-mini-sub">DNS · TTL · Proxy status</div>
+          </div>
+        </a>
+        <a href="docs/vercel.html" class="provider-mini-card">
+          <div class="provider-mini-icon" style="background:#1a1a1a;border:1px solid rgba(255,255,255,.2)">VC</div>
+          <div>
+            <div class="provider-mini-name">Vercel</div>
+            <div class="provider-mini-sub">Projects · Domains · Env vars</div>
+          </div>
+        </a>
+      </div>
+
+      <hr class="docs-divider">
+
+      <!-- Teams & Workspaces -->
+      <h2 class="docs-h2">Teams &amp; workspaces</h2>
+      <p class="docs-p">Every ConfigTrace account belongs to a workspace. A workspace holds your integrations, your team's timeline view, and your billing plan.</p>
+
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span><strong>Roles:</strong> Owner (full control), Admin (manage integrations and members), Member (read-only timeline).</span></li>
+        <li><span class="docs-list-icon">→</span><span><strong>Inviting teammates:</strong> Go to <strong>Settings → Workspace → Members</strong>. Enter an email and assign a role. The invitee receives a link; if the email doesn't arrive, share the fallback invite link directly.</span></li>
+        <li><span class="docs-list-icon">→</span><span><strong>Workspace switcher:</strong> You can belong to multiple workspaces. Use the workspace switcher in the sidebar to move between them.</span></li>
+        <li><span class="docs-list-icon">→</span><span><strong>Audit log:</strong> All admin actions (invites, integration changes, billing events) are recorded at <strong>Settings → Workspace → Audit Log</strong>.</span></li>
+      </ul>
+
+      <hr class="docs-divider">
+
+      <!-- Billing & Limits -->
+      <h2 class="docs-h2">Billing &amp; limits</h2>
+      <p class="docs-p">ConfigTrace offers three plans. Only workspace owners and admins can manage billing.</p>
+
+      <div style="background:var(--bg-2);border:1px solid var(--border-2);border-radius:10px;overflow:hidden;margin-bottom:24px;">
+        <table style="width:100%;border-collapse:collapse;font-size:13.5px;">
+          <thead>
+            <tr style="background:var(--bg-3);border-bottom:1px solid var(--border);">
+              <th style="text-align:left;padding:10px 14px;font-weight:500;color:var(--text-2);">Plan</th>
+              <th style="text-align:left;padding:10px 14px;font-weight:500;color:var(--text-2);">Integrations</th>
+              <th style="text-align:left;padding:10px 14px;font-weight:500;color:var(--text-2);">Members</th>
+              <th style="text-align:left;padding:10px 14px;font-weight:500;color:var(--text-2);">Sync interval</th>
+              <th style="text-align:left;padding:10px 14px;font-weight:500;color:var(--text-2);">History</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:10px 14px;color:var(--text);font-weight:600;">Free</td>
+              <td style="padding:10px 14px;color:var(--text-2);">3</td>
+              <td style="padding:10px 14px;color:var(--text-2);">1 (owner)</td>
+              <td style="padding:10px 14px;color:var(--text-2);">60 min</td>
+              <td style="padding:10px 14px;color:var(--text-2);">30 days</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:10px 14px;color:var(--text);font-weight:600;">Pro <span style="font-family:var(--mono);font-size:11px;color:var(--blue-2);">$29/mo</span></td>
+              <td style="padding:10px 14px;color:var(--text-2);">20</td>
+              <td style="padding:10px 14px;color:var(--text-2);">5</td>
+              <td style="padding:10px 14px;color:var(--text-2);">15 min</td>
+              <td style="padding:10px 14px;color:var(--text-2);">180 days</td>
+            </tr>
+            <tr>
+              <td style="padding:10px 14px;color:var(--text);font-weight:600;">Team <span style="font-family:var(--mono);font-size:11px;color:var(--blue-2);">$79/mo</span></td>
+              <td style="padding:10px 14px;color:var(--text-2);">100</td>
+              <td style="padding:10px 14px;color:var(--text-2);">25</td>
+              <td style="padding:10px 14px;color:var(--text-2);">5 min</td>
+              <td style="padding:10px 14px;color:var(--text-2);">365 days</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="docs-p">Billing is managed at <strong>Settings → Workspace → Billing</strong>. If you hit an integration or member limit, ConfigTrace will block the action and show an upgrade prompt.</p>
+
+    </div><!-- /docs-content -->
+  </main>
+</div><!-- /docs-shell -->
+
+<footer>
+  <div class="docs-footer">
+    <div class="docs-footer-inner">
+      <span>ConfigTrace Docs</span>
+      <div>
+        <a href="/">Home</a>
+        <a href="docs/getting-started.html">Getting started</a>
+        <a href="docs/data-access.html">Data access</a>
+        <a href="docs/troubleshooting.html">Troubleshooting</a>
+        <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var toggle  = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('docsSidebar');
+    var open    = false;
+
+    toggle.addEventListener('click', function () {
+      open = !open;
+      sidebar.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', open);
+    });
+
+    // Close sidebar when a link is clicked on mobile
+    sidebar.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        if (window.innerWidth < 900) {
+          open = false;
+          sidebar.classList.remove('open');
+          toggle.setAttribute('aria-expanded', false);
+        }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Setup — ConfigTrace Docs</title>
+  <meta name="description" content="Connect GitHub to ConfigTrace using a personal access token. Monitor branch protection rules, repository settings, webhooks, secrets metadata, and Actions configuration.">
+  <link rel="canonical" href="https://configtrace.org/docs/github.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+
+<nav class="docs-topnav" role="navigation" aria-label="Main navigation">
+  <div class="docs-topnav-inner">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="docs-mobile-toggle" id="sidebarToggle" aria-label="Toggle sidebar" aria-expanded="false">☰</button>
+      <a href="/" class="docs-nav-logo" aria-label="ConfigTrace home">
+        <div class="docs-nav-logo-box" aria-hidden="true">CT</div>
+        ConfigTrace
+      </a>
+      <span class="docs-nav-sep" aria-hidden="true">/</span>
+      <span class="docs-nav-label">Docs</span>
+    </div>
+    <div class="docs-nav-links">
+      <a href="/">Home</a>
+      <a href="../docs.html#providers">Providers</a>
+      <a href="data-access.html">Data Access</a>
+      <a href="troubleshooting.html">Troubleshooting</a>
+      <a href="https://app.configtrace.org" class="docs-nav-app" target="_blank" rel="noopener noreferrer">Open app →</a>
+    </div>
+  </div>
+</nav>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar" id="docsSidebar" aria-label="Documentation navigation">
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Overview</span>
+      <ul class="sidebar-nav">
+        <li><a href="../docs.html">Docs Home</a></li>
+        <li><a href="getting-started.html">Getting Started</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Provider Setup</span>
+      <ul class="sidebar-nav">
+        <li><a href="aws.html"><span class="sidebar-provider-dot" style="background:#f5a623"></span>AWS</a></li>
+        <li><a href="firebase.html"><span class="sidebar-provider-dot" style="background:#ffca28"></span>Firebase</a></li>
+        <li><a href="supabase.html"><span class="sidebar-provider-dot" style="background:#3ecf8e"></span>Supabase</a></li>
+        <li><a href="stripe.html"><span class="sidebar-provider-dot" style="background:#635bff"></span>Stripe</a></li>
+        <li><a href="github.html" class="active"><span class="sidebar-provider-dot" style="background:#8b90a0"></span>GitHub</a></li>
+        <li><a href="cloudflare.html"><span class="sidebar-provider-dot" style="background:#f48120"></span>Cloudflare</a></li>
+        <li><a href="vercel.html"><span class="sidebar-provider-dot" style="background:#b0b5c4"></span>Vercel</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Reference</span>
+      <ul class="sidebar-nav">
+        <li><a href="data-access.html">Data Access &amp; Permissions</a></li>
+        <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-main" id="docsMain">
+    <div class="docs-content">
+
+      <nav class="docs-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">ConfigTrace</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <a href="../docs.html">Docs</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <span>GitHub</span>
+      </nav>
+
+      <div class="provider-badge">
+        <div class="provider-badge-icon" style="background:#24292e;border:1px solid rgba(255,255,255,.2)">GH</div>
+        GitHub
+      </div>
+
+      <span class="docs-page-label">Provider Setup</span>
+      <h1 class="docs-page-title">Connect GitHub</h1>
+      <p class="docs-page-intro">
+        ConfigTrace connects to a GitHub repository using a personal access token (PAT). It monitors
+        branch protection rules, repository settings, webhooks, secrets metadata, and Actions
+        configuration — without reading source code, commit history, or secret values.
+      </p>
+
+      <div class="docs-toc">
+        <div class="docs-toc-title">On this page</div>
+        <ol class="docs-toc-list">
+          <li><a href="#prereqs">Prerequisites</a></li>
+          <li><a href="#pat">Step 1 — Create a personal access token</a></li>
+          <li><a href="#connect">Step 2 — Connect in ConfigTrace</a></li>
+          <li><a href="#first-sync">Step 3 — Run your first sync</a></li>
+          <li><a href="#monitors">What ConfigTrace monitors</a></li>
+          <li><a href="#never-reads">What ConfigTrace never reads</a></li>
+        </ol>
+      </div>
+
+      <h2 class="docs-h2" id="prereqs">Prerequisites</h2>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>A GitHub account with at least admin access to the repository you want to monitor</span></li>
+        <li><span class="docs-list-icon">→</span><span>A ConfigTrace workspace (owner or admin role)</span></li>
+      </ul>
+
+      <h2 class="docs-h2" id="pat">Step 1 — Create a personal access token</h2>
+      <ol class="docs-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">Open Developer settings</div>
+            <div class="step-desc">Go to GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic).</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Generate a new token</div>
+            <div class="step-desc">Click "Generate new token (classic)". Give it a name like <code>ConfigTrace (read-only)</code>.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Set an expiry</div>
+            <div class="step-desc">Set an expiry appropriate to your security policy.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">4</span>
+          <div class="step-body">
+            <div class="step-title">Select scopes</div>
+            <div class="step-desc">Select the following scopes: <code>repo</code> — Required to read repository configuration, branch protection, webhooks, secrets metadata, and variables. <code>read:org</code> — Required if monitoring repositories in an organization.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">5</span>
+          <div class="step-body">
+            <div class="step-title">Generate and copy</div>
+            <div class="step-desc">Click "Generate token" and copy the value. It starts with <code>ghp_</code>.</div>
+          </div>
+        </li>
+      </ol>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body">
+          The <code>repo</code> scope grants read access to private repositories. ConfigTrace only reads configuration metadata — it never reads file contents, commits, or pull requests. If you prefer finer-grained control, a fine-grained PAT with read-only access to repository settings is also supported.
+        </div>
+      </div>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body">
+          Each integration is scoped to one repository. To monitor multiple repositories, create one integration per repo. You can reuse the same PAT if it has access to all the repos you want to monitor.
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="connect">Step 2 — Connect in ConfigTrace</h2>
+      <ol class="docs-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">Open Integrations</div>
+            <div class="step-desc">In the ConfigTrace sidebar, click <strong>Integrations</strong>, then click <strong>Connect</strong> on the GitHub card.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Enter credentials</div>
+            <div class="step-desc">Enter your PAT and the repository in <code>owner/repo</code> format (e.g. <code>acme/api-service</code>).</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Save integration</div>
+            <div class="step-desc">Click <strong>Save integration</strong>.</div>
+          </div>
+        </li>
+      </ol>
+
+      <h2 class="docs-h2" id="first-sync">Step 3 — Run your first sync</h2>
+      <p class="docs-p">Click <strong>Sync Now</strong>. The first sync captures your branch protection rules, webhook configuration, and repo settings as a baseline.</p>
+
+      <h2 class="docs-h2" id="monitors">What ConfigTrace monitors</h2>
+      <div class="perm-grid">
+        <div class="perm-panel reads">
+          <div class="perm-panel-hdr"><span>✓</span> Reads (configuration metadata)</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✓</span>Branch protection rules: required reviews, status checks, force-push restrictions, admin enforcement</li>
+              <li><span class="perm-icon">✓</span>Repository settings: visibility (public/private), default branch, merge settings</li>
+              <li><span class="perm-icon">✓</span>Webhooks: endpoint URLs, active status, subscribed events</li>
+              <li><span class="perm-icon">✓</span>Actions secrets metadata: names and creation dates (never values)</li>
+              <li><span class="perm-icon">✓</span>Actions variables: names and values</li>
+              <li><span class="perm-icon">✓</span>Deploy keys: titles, read/write access level, created date</li>
+              <li><span class="perm-icon">✓</span>GitHub Actions permissions and settings</li>
+            </ul>
+          </div>
+        </div>
+        <div class="perm-panel no-reads">
+          <div class="perm-panel-hdr"><span>✕</span> Never reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✕</span>Source code files or file contents</li>
+              <li><span class="perm-icon">✕</span>Git commit history or diff content</li>
+              <li><span class="perm-icon">✕</span>Pull request content, comments, or reviews</li>
+              <li><span class="perm-icon">✕</span>Actions secret values</li>
+              <li><span class="perm-icon">✕</span>GitHub App installation tokens</li>
+              <li><span class="perm-icon">✕</span>Issue or discussion content</li>
+              <li><span class="perm-icon">✕</span>Any user data or emails</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="never-reads">What ConfigTrace never reads</h2>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body">
+          ConfigTrace tracks repository <em>configuration</em> drift — the settings that control how your repo operates — not commit history. Git already tracks commits.
+        </div>
+      </div>
+      <p class="docs-p">For a full breakdown across all providers, see the <a href="data-access.html">Data Access &amp; Permissions</a> reference.</p>
+
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="docs-footer">
+    <div class="docs-footer-inner">
+      <span>ConfigTrace Docs</span>
+      <div>
+        <a href="/">Home</a>
+        <a href="../docs.html">Docs</a>
+        <a href="data-access.html">Data access</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+        <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var toggle  = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('docsSidebar');
+    var open    = false;
+    toggle.addEventListener('click', function () { open = !open; sidebar.classList.toggle('open', open); toggle.setAttribute('aria-expanded', open); });
+    sidebar.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { if (window.innerWidth < 900) { open = false; sidebar.classList.remove('open'); toggle.setAttribute('aria-expanded', false); } }); });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting Started — ConfigTrace Docs</title>
+  <meta name="description" content="Connect your first provider, run a sync, and start monitoring configuration drift with ConfigTrace in minutes.">
+  <link rel="canonical" href="https://configtrace.org/docs/getting-started.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+
+<nav class="docs-topnav" role="navigation" aria-label="Main navigation">
+  <div class="docs-topnav-inner">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="docs-mobile-toggle" id="sidebarToggle" aria-label="Toggle sidebar" aria-expanded="false">☰</button>
+      <a href="/" class="docs-nav-logo" aria-label="ConfigTrace home">
+        <div class="docs-nav-logo-box" aria-hidden="true">CT</div>
+        ConfigTrace
+      </a>
+      <span class="docs-nav-sep" aria-hidden="true">/</span>
+      <span class="docs-nav-label">Docs</span>
+    </div>
+    <div class="docs-nav-links">
+      <a href="/">Home</a>
+      <a href="../docs.html#providers">Providers</a>
+      <a href="data-access.html">Data Access</a>
+      <a href="troubleshooting.html">Troubleshooting</a>
+      <a href="https://app.configtrace.org" class="docs-nav-app" target="_blank" rel="noopener noreferrer">Open app →</a>
+    </div>
+  </div>
+</nav>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar" id="docsSidebar" aria-label="Documentation navigation">
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Overview</span>
+      <ul class="sidebar-nav">
+        <li><a href="../docs.html">Docs Home</a></li>
+        <li><a href="getting-started.html" class="active">Getting Started</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Provider Setup</span>
+      <ul class="sidebar-nav">
+        <li><a href="aws.html"><span class="sidebar-provider-dot" style="background:#f5a623"></span>AWS</a></li>
+        <li><a href="firebase.html"><span class="sidebar-provider-dot" style="background:#ffca28"></span>Firebase</a></li>
+        <li><a href="supabase.html"><span class="sidebar-provider-dot" style="background:#3ecf8e"></span>Supabase</a></li>
+        <li><a href="stripe.html"><span class="sidebar-provider-dot" style="background:#635bff"></span>Stripe</a></li>
+        <li><a href="github.html"><span class="sidebar-provider-dot" style="background:#8b90a0"></span>GitHub</a></li>
+        <li><a href="cloudflare.html"><span class="sidebar-provider-dot" style="background:#f48120"></span>Cloudflare</a></li>
+        <li><a href="vercel.html"><span class="sidebar-provider-dot" style="background:#b0b5c4"></span>Vercel</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Reference</span>
+      <ul class="sidebar-nav">
+        <li><a href="data-access.html">Data Access &amp; Permissions</a></li>
+        <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-main" id="docsMain">
+    <div class="docs-content">
+
+      <nav class="docs-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">ConfigTrace</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <a href="../docs.html">Docs</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <span>Getting Started</span>
+      </nav>
+
+      <span class="docs-page-label">Overview</span>
+      <h1 class="docs-page-title">Getting Started</h1>
+      <p class="docs-page-intro">
+        Connect your first provider, run a sync, and have a live drift-detection baseline
+        in under 5 minutes. This guide walks through the core workflow.
+      </p>
+
+      <div class="docs-toc">
+        <div class="docs-toc-title">On this page</div>
+        <ol class="docs-toc-list">
+          <li><a href="#workspace">1. Your workspace</a></li>
+          <li><a href="#connect">2. Connect a provider</a></li>
+          <li><a href="#first-sync">3. Run your first sync</a></li>
+          <li><a href="#timeline">4. Review the Timeline</a></li>
+          <li><a href="#change-detail">5. Open a change detail</a></li>
+          <li><a href="#invite">6. Invite teammates</a></li>
+          <li><a href="#billing">7. Configure billing</a></li>
+        </ol>
+      </div>
+
+      <h2 class="docs-h2" id="workspace">1. Your workspace</h2>
+      <p class="docs-p">When you sign up for ConfigTrace, a workspace is created for you automatically. A workspace holds your integrations, your team members, and your change timeline.</p>
+      <p class="docs-p">You can rename your workspace or create additional workspaces under <strong>Settings → Workspace</strong>. Use the workspace switcher in the sidebar to move between them.</p>
+
+      <h2 class="docs-h2" id="connect">2. Connect a provider</h2>
+      <ol class="docs-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">Go to Integrations</div>
+            <div class="step-desc">From the sidebar, click <strong>Integrations</strong>. You'll see all 7 supported providers.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Choose a provider</div>
+            <div class="step-desc">Click <strong>Connect</strong> on the provider you want to add. Each provider has a setup guide linked below with the exact credentials and permissions required.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Enter your credentials</div>
+            <div class="step-desc">Paste in the required token, key, or JSON depending on the provider. Credentials are encrypted before storage and are never shown again after saving.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">4</span>
+          <div class="step-body">
+            <div class="step-title">Save the integration</div>
+            <div class="step-desc">ConfigTrace will validate the credentials and create the integration. You're now ready to run your first sync.</div>
+          </div>
+        </li>
+      </ol>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body">
+          <strong>Provider setup guides:</strong>
+          <a href="aws.html">AWS</a> ·
+          <a href="firebase.html">Firebase</a> ·
+          <a href="supabase.html">Supabase</a> ·
+          <a href="stripe.html">Stripe</a> ·
+          <a href="github.html">GitHub</a> ·
+          <a href="cloudflare.html">Cloudflare</a> ·
+          <a href="vercel.html">Vercel</a>
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="first-sync">3. Run your first sync</h2>
+      <p class="docs-p">After connecting a provider, click <strong>Sync Now</strong> on the integration. The first sync captures your current configuration as a baseline snapshot — this becomes the reference point for all future diffs.</p>
+      <p class="docs-p">After the first sync completes, ConfigTrace will continue syncing automatically on your plan's schedule. You can always trigger a manual sync from the integration detail page.</p>
+
+      <div class="callout tip">
+        <span class="callout-icon">✓</span>
+        <div class="callout-body">
+          <strong>Tip:</strong> Run your first sync when your configuration is in a known-good state. This creates the cleanest baseline for detecting future drift.
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="timeline">4. Review the Timeline</h2>
+      <p class="docs-p">Click <strong>Timeline</strong> in the sidebar. After the first sync, you'll see a timeline entry showing the baseline snapshot was created.</p>
+      <p class="docs-p">Each subsequent sync that detects changes will appear in the timeline with a risk level indicator:</p>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:4px;background:rgba(71,75,85,.15);color:#9ca3af;font-weight:700;">LOW</span> Hardening or non-sensitive additions. No routing or security impact.</span></li>
+        <li><span class="docs-list-icon">→</span><span style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:4px;background:rgba(245,158,11,.12);color:#f59e0b;font-weight:700;">MEDIUM</span> Expanded access surface or altered routing. Worth a closer look.</span></li>
+        <li><span class="docs-list-icon">→</span><span style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:4px;background:rgba(249,115,22,.12);color:#f97316;font-weight:700;">HIGH</span> Production traffic, data access, or security controls affected.</span></li>
+        <li><span class="docs-list-icon">→</span><span style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:4px;background:rgba(239,68,68,.10);color:#ef4444;font-weight:700;">CRITICAL</span> Infrastructure exposed, data potentially public, or site may be offline.</span></li>
+      </ul>
+
+      <h2 class="docs-h2" id="change-detail">5. Open a change detail</h2>
+      <p class="docs-p">Click any change in the Timeline to open the change detail view. You'll see:</p>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>The exact field that changed</span></li>
+        <li><span class="docs-list-icon">→</span><span>The old value and the new value</span></li>
+        <li><span class="docs-list-icon">→</span><span>The timestamp of detection</span></li>
+        <li><span class="docs-list-icon">→</span><span>The risk classification and reason</span></li>
+        <li><span class="docs-list-icon">→</span><span>Which provider and integration the change came from</span></li>
+      </ul>
+
+      <h2 class="docs-h2" id="invite">6. Invite teammates</h2>
+      <p class="docs-p">Go to <strong>Settings → Workspace → Members</strong>. Enter a teammate's email address, assign a role, and click <strong>Send invite</strong>.</p>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span><strong>Owner:</strong> Full control — billing, members, integrations, settings.</span></li>
+        <li><span class="docs-list-icon">→</span><span><strong>Admin:</strong> Can manage integrations and invite/remove members.</span></li>
+        <li><span class="docs-list-icon">→</span><span><strong>Member:</strong> Read-only access to the timeline and change history.</span></li>
+      </ul>
+      <p class="docs-p">If the invite email doesn't arrive, copy the fallback invite link from the Members page and share it directly.</p>
+
+      <h2 class="docs-h2" id="billing">7. Configure billing</h2>
+      <p class="docs-p">The free plan supports 3 integrations, 1 member, hourly syncs, and 30 days of history. If you need more, go to <strong>Settings → Workspace → Billing</strong> to upgrade.</p>
+      <p class="docs-p">Only workspace owners and admins can access billing. See the <a href="../docs.html#billing">plan comparison table</a> for a full breakdown of limits.</p>
+
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="docs-footer">
+    <div class="docs-footer-inner">
+      <span>ConfigTrace Docs</span>
+      <div>
+        <a href="/">Home</a>
+        <a href="../docs.html">Docs</a>
+        <a href="data-access.html">Data access</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+        <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var toggle  = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('docsSidebar');
+    var open    = false;
+    toggle.addEventListener('click', function () {
+      open = !open;
+      sidebar.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', open);
+    });
+    sidebar.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        if (window.innerWidth < 900) { open = false; sidebar.classList.remove('open'); toggle.setAttribute('aria-expanded', false); }
+      });
+    });
+  })();
+</script>
+</body>
+</html>

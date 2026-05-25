@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Troubleshooting — ConfigTrace Docs</title>
+  <meta name="description" content="Common issues and practical fixes for ConfigTrace. Covers syncs, invites, permissions, billing, and provider-specific errors.">
+  <link rel="canonical" href="https://configtrace.org/docs/troubleshooting.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+
+<nav class="docs-topnav" role="navigation" aria-label="Main navigation">
+  <div class="docs-topnav-inner">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="docs-mobile-toggle" id="sidebarToggle" aria-label="Toggle sidebar" aria-expanded="false">☰</button>
+      <a href="/" class="docs-nav-logo" aria-label="ConfigTrace home">
+        <div class="docs-nav-logo-box" aria-hidden="true">CT</div>
+        ConfigTrace
+      </a>
+      <span class="docs-nav-sep" aria-hidden="true">/</span>
+      <span class="docs-nav-label">Docs</span>
+    </div>
+    <div class="docs-nav-links">
+      <a href="/">Home</a>
+      <a href="../docs.html#providers">Providers</a>
+      <a href="data-access.html">Data Access</a>
+      <a href="troubleshooting.html">Troubleshooting</a>
+      <a href="https://app.configtrace.org" class="docs-nav-app" target="_blank" rel="noopener noreferrer">Open app →</a>
+    </div>
+  </div>
+</nav>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar" id="docsSidebar" aria-label="Documentation navigation">
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Overview</span>
+      <ul class="sidebar-nav">
+        <li><a href="../docs.html">Docs Home</a></li>
+        <li><a href="getting-started.html">Getting Started</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Provider Setup</span>
+      <ul class="sidebar-nav">
+        <li><a href="aws.html"><span class="sidebar-provider-dot" style="background:#f5a623"></span>AWS</a></li>
+        <li><a href="firebase.html"><span class="sidebar-provider-dot" style="background:#ffca28"></span>Firebase</a></li>
+        <li><a href="supabase.html"><span class="sidebar-provider-dot" style="background:#3ecf8e"></span>Supabase</a></li>
+        <li><a href="stripe.html"><span class="sidebar-provider-dot" style="background:#635bff"></span>Stripe</a></li>
+        <li><a href="github.html"><span class="sidebar-provider-dot" style="background:#8b90a0"></span>GitHub</a></li>
+        <li><a href="cloudflare.html"><span class="sidebar-provider-dot" style="background:#f48120"></span>Cloudflare</a></li>
+        <li><a href="vercel.html"><span class="sidebar-provider-dot" style="background:#b0b5c4"></span>Vercel</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Reference</span>
+      <ul class="sidebar-nav">
+        <li><a href="data-access.html">Data Access &amp; Permissions</a></li>
+        <li><a href="troubleshooting.html" class="active">Troubleshooting</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-main" id="docsMain">
+    <div class="docs-content">
+
+      <nav class="docs-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">ConfigTrace</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <a href="../docs.html">Docs</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <span>Troubleshooting</span>
+      </nav>
+
+      <span class="docs-page-label">Reference</span>
+      <h1 class="docs-page-title">Troubleshooting</h1>
+      <p class="docs-page-intro">
+        Common issues and practical fixes. If you're stuck, this page covers the most frequent
+        problems with syncs, invites, permissions, and billing.
+      </p>
+
+      <div class="docs-toc">
+        <div class="docs-toc-title">On this page</div>
+        <ol class="docs-toc-list">
+          <li><a href="#invite-email">Invite email not received</a></li>
+          <li><a href="#sync-failed">Sync failed or shows an error</a></li>
+          <li><a href="#permission-denied">Permission denied on sync</a></li>
+          <li><a href="#never-synced">Integration never synced / timeline empty</a></li>
+          <li><a href="#billing-limit">Billing limit reached</a></li>
+          <li><a href="#firebase-errors">Firebase permission errors</a></li>
+          <li><a href="#supabase-errors">Supabase permission errors</a></li>
+          <li><a href="#stripe-portal">Stripe checkout or portal unavailable</a></li>
+          <li><a href="#cant-connect">Can't connect provider credentials</a></li>
+        </ol>
+      </div>
+
+      <h3 class="docs-h3" id="invite-email">Invite email not received</h3>
+      <p class="docs-p">A team member didn't receive the invite email.</p>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>Check spam and junk folders</span></li>
+        <li><span class="docs-list-icon">→</span><span>Ask the invitee to search for an email from configtrace.org or the ConfigTrace mailer domain</span></li>
+        <li><span class="docs-list-icon">→</span><span>Share the fallback invite link: go to Settings → Workspace → Members, find the pending invite, and click "Copy invite link" to share it directly</span></li>
+        <li><span class="docs-list-icon">→</span><span>If the link has expired, revoke the invite and send a new one</span></li>
+      </ul>
+
+      <hr class="docs-divider">
+
+      <h3 class="docs-h3" id="sync-failed">Sync failed or shows an error</h3>
+      <p class="docs-p">A sync shows a failed status or an error message in the timeline.</p>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>Open the integration detail page to see the full error message</span></li>
+        <li><span class="docs-list-icon">→</span><span>Most errors are credential problems: the token may have expired, been revoked, or permissions may have been changed. Re-enter fresh credentials.</span></li>
+        <li><span class="docs-list-icon">→</span><span>Run a manual Sync Now after updating credentials to confirm the fix</span></li>
+        <li><span class="docs-list-icon">→</span><span>Check that your provider-side token/key still exists and hasn't been deleted</span></li>
+      </ul>
+
+      <hr class="docs-divider">
+
+      <h3 class="docs-h3" id="permission-denied">Permission denied on sync</h3>
+      <p class="docs-p">Sync returns a 403 or "permission denied" error.</p>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>Verify the token/key still has the required read permissions (see the provider setup guide for the exact permissions needed)</span></li>
+        <li><span class="docs-list-icon">→</span><span>For AWS: confirm the IAM policy is still attached to the user or role</span></li>
+        <li><span class="docs-list-icon">→</span><span>For Firebase: confirm the service account still has the Firebase Viewer role</span></li>
+        <li><span class="docs-list-icon">→</span><span>For GitHub: confirm the PAT hasn't expired and still has the <code>repo</code> scope</span></li>
+        <li><span class="docs-list-icon">→</span><span>For Cloudflare: confirm the API token still has DNS:Read permission for the zone</span></li>
+        <li><span class="docs-list-icon">→</span><span>Re-enter credentials from the integration settings if in doubt</span></li>
+      </ul>
+
+      <hr class="docs-divider">
+
+      <h3 class="docs-h3" id="never-synced">Integration never synced / timeline empty</h3>
+      <p class="docs-p">The integration is connected but the timeline shows nothing, or only the creation event.</p>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>Run a manual Sync Now from the integration detail page — the first sync must be triggered manually or it will run on the next scheduled interval</span></li>
+        <li><span class="docs-list-icon">→</span><span>Check that the integration status shows "Active" on the Integrations page</span></li>
+        <li><span class="docs-list-icon">→</span><span>If the status shows "Error", see the "Sync failed" section above</span></li>
+        <li><span class="docs-list-icon">→</span><span>On the Free plan, syncs run hourly. On Pro, every 15 minutes. On Team, every 5 minutes. The timeline will show "No changes" for syncs that find nothing new.</span></li>
+      </ul>
+
+      <hr class="docs-divider">
+
+      <h3 class="docs-h3" id="billing-limit">Billing limit reached</h3>
+      <p class="docs-p">You're blocked from adding a new integration or inviting a member because of a plan limit.</p>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>Go to Settings → Workspace → Billing to see your current plan and usage</span></li>
+        <li><span class="docs-list-icon">→</span><span>If you've hit the integration limit, upgrade your plan or remove unused integrations</span></li>
+        <li><span class="docs-list-icon">→</span><span>If you've hit the member limit, upgrade your plan or remove inactive members</span></li>
+        <li><span class="docs-list-icon">→</span><span>Only workspace owners and admins can manage billing</span></li>
+      </ul>
+
+      <hr class="docs-divider">
+
+      <h3 class="docs-h3" id="firebase-errors">Firebase permission errors</h3>
+      <p class="docs-p">Firebase sync returns a permission error even after connecting a service account.</p>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>Confirm the service account has the <code>Firebase Viewer</code> role (<code>roles/firebase.viewer</code>) in Google Cloud IAM</span></li>
+        <li><span class="docs-list-icon">→</span><span>Check that the service account hasn't been deleted or had its key revoked</span></li>
+        <li><span class="docs-list-icon">→</span><span>Generate a new JSON key and re-enter it in ConfigTrace if the existing one was revoked</span></li>
+        <li><span class="docs-list-icon">→</span><span>Ensure the Firebase project has the Firebase Management API enabled in Google Cloud Console</span></li>
+      </ul>
+
+      <hr class="docs-divider">
+
+      <h3 class="docs-h3" id="supabase-errors">Supabase permission errors</h3>
+      <p class="docs-p">Supabase sync returns an authentication or permission error.</p>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>Access tokens created in the Supabase Dashboard → Account → Access Tokens expire. Check if your token has expired and generate a new one.</span></li>
+        <li><span class="docs-list-icon">→</span><span>Confirm you're using the correct Project Reference — it should be the short ref string, not the full URL</span></li>
+        <li><span class="docs-list-icon">→</span><span>Confirm the access token was created by an account with Owner access to the organization containing the project</span></li>
+      </ul>
+
+      <hr class="docs-divider">
+
+      <h3 class="docs-h3" id="stripe-portal">Stripe checkout or portal unavailable</h3>
+      <p class="docs-p">The Billing page shows "Billing is not fully configured yet" or the Upgrade/Manage button doesn't work.</p>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>This is a ConfigTrace billing configuration issue, not a Stripe integration problem</span></li>
+        <li><span class="docs-list-icon">→</span><span>Contact ConfigTrace support for help — billing portal availability depends on the server-side Stripe price ID configuration</span></li>
+        <li><span class="docs-list-icon">→</span><span>Your existing integrations and syncs are unaffected</span></li>
+      </ul>
+
+      <hr class="docs-divider">
+
+      <h3 class="docs-h3" id="cant-connect">Can't connect provider credentials</h3>
+      <p class="docs-p">Credentials fail validation when trying to save an integration.</p>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>Double-check for extra whitespace when pasting tokens or keys</span></li>
+        <li><span class="docs-list-icon">→</span><span>For AWS: confirm both the Access Key ID and Secret Access Key are entered correctly (they're different values)</span></li>
+        <li><span class="docs-list-icon">→</span><span>For Firebase: paste the entire JSON key file contents, including the opening <code>{</code> and closing <code>}</code></span></li>
+        <li><span class="docs-list-icon">→</span><span>For Cloudflare: confirm you're using an API Token (starts with a long string), not your Global API Key — and that the Zone ID is the 32-character hex string from the dashboard, not the domain name itself</span></li>
+        <li><span class="docs-list-icon">→</span><span>For GitHub: confirm the PAT starts with <code>ghp_</code> and has the <code>repo</code> scope enabled</span></li>
+      </ul>
+
+      <hr class="docs-divider">
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body">
+          Still stuck? Email us at <a href="mailto:support@configtrace.org">support@configtrace.org</a> with your workspace ID and the integration type you're trying to connect. We'll help you get set up.
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="docs-footer">
+    <div class="docs-footer-inner">
+      <span>ConfigTrace Docs</span>
+      <div>
+        <a href="/">Home</a>
+        <a href="../docs.html">Docs</a>
+        <a href="data-access.html">Data access</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+        <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var toggle  = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('docsSidebar');
+    var open    = false;
+    toggle.addEventListener('click', function () { open = !open; sidebar.classList.toggle('open', open); toggle.setAttribute('aria-expanded', open); });
+    sidebar.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { if (window.innerWidth < 900) { open = false; sidebar.classList.remove('open'); toggle.setAttribute('aria-expanded', false); } }); });
+  })();
+</script>
+</body>
+</html>

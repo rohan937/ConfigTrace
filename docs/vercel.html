@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vercel Setup — ConfigTrace Docs</title>
+  <meta name="description" content="Connect Vercel to ConfigTrace using an account-level API token. Monitor project settings, custom domains, environment variable metadata, and deployment configuration.">
+  <link rel="canonical" href="https://configtrace.org/docs/vercel.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+
+<nav class="docs-topnav" role="navigation" aria-label="Main navigation">
+  <div class="docs-topnav-inner">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="docs-mobile-toggle" id="sidebarToggle" aria-label="Toggle sidebar" aria-expanded="false">☰</button>
+      <a href="/" class="docs-nav-logo" aria-label="ConfigTrace home">
+        <div class="docs-nav-logo-box" aria-hidden="true">CT</div>
+        ConfigTrace
+      </a>
+      <span class="docs-nav-sep" aria-hidden="true">/</span>
+      <span class="docs-nav-label">Docs</span>
+    </div>
+    <div class="docs-nav-links">
+      <a href="/">Home</a>
+      <a href="../docs.html#providers">Providers</a>
+      <a href="data-access.html">Data Access</a>
+      <a href="troubleshooting.html">Troubleshooting</a>
+      <a href="https://app.configtrace.org" class="docs-nav-app" target="_blank" rel="noopener noreferrer">Open app →</a>
+    </div>
+  </div>
+</nav>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar" id="docsSidebar" aria-label="Documentation navigation">
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Overview</span>
+      <ul class="sidebar-nav">
+        <li><a href="../docs.html">Docs Home</a></li>
+        <li><a href="getting-started.html">Getting Started</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Provider Setup</span>
+      <ul class="sidebar-nav">
+        <li><a href="aws.html"><span class="sidebar-provider-dot" style="background:#f5a623"></span>AWS</a></li>
+        <li><a href="firebase.html"><span class="sidebar-provider-dot" style="background:#ffca28"></span>Firebase</a></li>
+        <li><a href="supabase.html"><span class="sidebar-provider-dot" style="background:#3ecf8e"></span>Supabase</a></li>
+        <li><a href="stripe.html"><span class="sidebar-provider-dot" style="background:#635bff"></span>Stripe</a></li>
+        <li><a href="github.html"><span class="sidebar-provider-dot" style="background:#8b90a0"></span>GitHub</a></li>
+        <li><a href="cloudflare.html"><span class="sidebar-provider-dot" style="background:#f48120"></span>Cloudflare</a></li>
+        <li><a href="vercel.html" class="active"><span class="sidebar-provider-dot" style="background:#b0b5c4"></span>Vercel</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Reference</span>
+      <ul class="sidebar-nav">
+        <li><a href="data-access.html">Data Access &amp; Permissions</a></li>
+        <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-main" id="docsMain">
+    <div class="docs-content">
+
+      <nav class="docs-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">ConfigTrace</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <a href="../docs.html">Docs</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <span>Vercel</span>
+      </nav>
+
+      <div class="provider-badge">
+        <div class="provider-badge-icon" style="background:#1a1a1a;border:1px solid rgba(255,255,255,.2)">VC</div>
+        Vercel
+      </div>
+
+      <span class="docs-page-label">Provider Setup</span>
+      <h1 class="docs-page-title">Connect Vercel</h1>
+      <p class="docs-page-intro">
+        ConfigTrace connects to Vercel using an account-level API token. It monitors project
+        settings, custom domains, environment variable metadata, and deployment configuration —
+        without reading environment variable values, build logs, or deployed code.
+      </p>
+
+      <div class="docs-toc">
+        <div class="docs-toc-title">On this page</div>
+        <ol class="docs-toc-list">
+          <li><a href="#prereqs">Prerequisites</a></li>
+          <li><a href="#api-token">Step 1 — Create an API token</a></li>
+          <li><a href="#connect">Step 2 — Connect in ConfigTrace</a></li>
+          <li><a href="#first-sync">Step 3 — Run your first sync</a></li>
+          <li><a href="#monitors">What ConfigTrace monitors</a></li>
+          <li><a href="#never-reads">What ConfigTrace never reads</a></li>
+        </ol>
+      </div>
+
+      <h2 class="docs-h2" id="prereqs">Prerequisites</h2>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>A Vercel account with access to the projects you want to monitor</span></li>
+        <li><span class="docs-list-icon">→</span><span>Permission to create access tokens</span></li>
+        <li><span class="docs-list-icon">→</span><span>A ConfigTrace workspace (owner or admin role)</span></li>
+      </ul>
+
+      <h2 class="docs-h2" id="api-token">Step 1 — Create an API token</h2>
+      <ol class="docs-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">Open tokens page</div>
+            <div class="step-desc">Go to vercel.com/account/tokens.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Create the token</div>
+            <div class="step-desc">Click "Create". Give it a name like <code>ConfigTrace (read-only)</code> and set an expiry.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Copy the token</div>
+            <div class="step-desc">Click "Create token" and copy the value.</div>
+          </div>
+        </li>
+      </ol>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body">
+          Vercel API tokens are account-scoped. If you're on a team, the token will have access to all projects the account can see. ConfigTrace will only monitor the specific project you configure in the integration.
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="connect">Step 2 — Connect in ConfigTrace</h2>
+      <ol class="docs-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">Open Integrations</div>
+            <div class="step-desc">In the ConfigTrace sidebar, click <strong>Integrations</strong>, then click <strong>Connect</strong> on the Vercel card.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Paste your API token</div>
+            <div class="step-desc">Paste your API token.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Scope to a project</div>
+            <div class="step-desc">Enter the project name or project ID to scope the integration to a single project.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">4</span>
+          <div class="step-body">
+            <div class="step-title">Save integration</div>
+            <div class="step-desc">Click <strong>Save integration</strong>.</div>
+          </div>
+        </li>
+      </ol>
+
+      <h2 class="docs-h2" id="first-sync">Step 3 — Run your first sync</h2>
+      <p class="docs-p">Click <strong>Sync Now</strong>. The first sync captures your project settings, domain configuration, and environment variable names as a baseline.</p>
+
+      <h2 class="docs-h2" id="monitors">What ConfigTrace monitors</h2>
+      <div class="perm-grid">
+        <div class="perm-panel reads">
+          <div class="perm-panel-hdr"><span>✓</span> Reads (configuration metadata)</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✓</span>Project settings: framework, root directory, build command, output directory</li>
+              <li><span class="perm-icon">✓</span>Custom domains: domain names, redirect configuration, SSL status</li>
+              <li><span class="perm-icon">✓</span>Environment variable names and their target environments (production/preview/development) — not values</li>
+              <li><span class="perm-icon">✓</span>Deployment protection settings</li>
+              <li><span class="perm-icon">✓</span>Team and project access settings</li>
+              <li><span class="perm-icon">✓</span>Git integration settings (branch, connected repo name)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="perm-panel no-reads">
+          <div class="perm-panel-hdr"><span>✕</span> Never reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✕</span>Environment variable values</li>
+              <li><span class="perm-icon">✕</span>Deployed code or build output</li>
+              <li><span class="perm-icon">✕</span>Build logs or runtime logs</li>
+              <li><span class="perm-icon">✕</span>Serverless function code</li>
+              <li><span class="perm-icon">✕</span>Edge config values</li>
+              <li><span class="perm-icon">✕</span>Customer data served by deployments</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="never-reads">What ConfigTrace never reads</h2>
+      <div class="callout warning">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body">
+          ConfigTrace tracks environment variable <em>names</em> and their target environments to detect when variables are added, removed, or reassigned. It never reads or stores the actual values.
+        </div>
+      </div>
+      <p class="docs-p">For a full breakdown across all providers, see the <a href="data-access.html">Data Access &amp; Permissions</a> reference.</p>
+
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="docs-footer">
+    <div class="docs-footer-inner">
+      <span>ConfigTrace Docs</span>
+      <div>
+        <a href="/">Home</a>
+        <a href="../docs.html">Docs</a>
+        <a href="data-access.html">Data access</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+        <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var toggle  = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('docsSidebar');
+    var open    = false;
+    toggle.addEventListener('click', function () { open = !open; sidebar.classList.toggle('open', open); toggle.setAttribute('aria-expanded', open); });
+    sidebar.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { if (window.innerWidth < 900) { open = false; sidebar.classList.remove('open'); toggle.setAttribute('aria-expanded', false); } }); });
+  })();
+</script>
+</body>
+</html>
