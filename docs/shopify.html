@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopify Setup — ConfigTrace Docs</title>
+  <meta name="description" content="Connect Shopify to ConfigTrace using Admin API credentials. Monitor store metadata, webhook subscription metadata, policy presence, and app permission-scope risk — metadata only, never customer data, orders, or payment contents.">
+  <link rel="canonical" href="https://configtrace.org/docs/shopify.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+
+<nav class="docs-topnav" role="navigation" aria-label="Main navigation">
+  <div class="docs-topnav-inner">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="docs-mobile-toggle" id="sidebarToggle" aria-label="Toggle sidebar" aria-expanded="false">☰</button>
+      <a href="/" class="docs-nav-logo" aria-label="ConfigTrace home">
+        <div class="docs-nav-logo-box" aria-hidden="true">CT</div>
+        ConfigTrace
+      </a>
+      <span class="docs-nav-sep" aria-hidden="true">/</span>
+      <span class="docs-nav-label">Docs</span>
+    </div>
+    <div class="docs-nav-links">
+      <a href="/">Home</a>
+      <a href="../docs.html#providers">Providers</a>
+      <a href="../demo.html">Demo</a>
+      <a href="data-access.html">Data Access</a>
+      <a href="troubleshooting.html">Troubleshooting</a>
+      <a href="https://app.configtrace.org" class="docs-nav-app" target="_blank" rel="noopener noreferrer">Open app →</a>
+    </div>
+  </div>
+</nav>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar" id="docsSidebar" aria-label="Documentation navigation">
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Overview</span>
+      <ul class="sidebar-nav">
+        <li><a href="../docs.html">Docs Home</a></li>
+        <li><a href="getting-started.html">Getting Started</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Provider Setup</span>
+      <ul class="sidebar-nav">
+        <li><a href="aws.html"><span class="sidebar-provider-dot" style="background:#f5a623"></span>AWS</a></li>
+        <li><a href="firebase.html"><span class="sidebar-provider-dot" style="background:#ffca28"></span>Firebase</a></li>
+        <li><a href="supabase.html"><span class="sidebar-provider-dot" style="background:#3ecf8e"></span>Supabase</a></li>
+        <li><a href="stripe.html"><span class="sidebar-provider-dot" style="background:#635bff"></span>Stripe</a></li>
+        <li><a href="github.html"><span class="sidebar-provider-dot" style="background:#8b90a0"></span>GitHub</a></li>
+        <li><a href="cloudflare.html"><span class="sidebar-provider-dot" style="background:#f48120"></span>Cloudflare</a></li>
+        <li><a href="vercel.html"><span class="sidebar-provider-dot" style="background:#b0b5c4"></span>Vercel</a></li>
+        <li><a href="shopify.html" class="active"><span class="sidebar-provider-dot" style="background:#96bf48"></span>Shopify</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-section-label">Reference</span>
+      <ul class="sidebar-nav">
+        <li><a href="data-access.html">Data Access &amp; Permissions</a></li>
+        <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-main" id="docsMain">
+    <div class="docs-content">
+
+      <nav class="docs-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">ConfigTrace</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <a href="../docs.html">Docs</a>
+        <span class="docs-breadcrumb-sep">›</span>
+        <span>Shopify</span>
+      </nav>
+
+      <div class="provider-badge">
+        <div class="provider-badge-icon" style="background:#96bf48;color:#1a1a1a">SH</div>
+        Shopify
+      </div>
+
+      <span class="docs-page-label">Provider Setup</span>
+      <h1 class="docs-page-title">Connect Shopify</h1>
+      <p class="docs-page-intro">
+        ConfigTrace connects to Shopify using Admin API credentials and monitors
+        configuration metadata related to store posture, webhook subscriptions,
+        store policies, and app permission scopes — metadata only, never customer
+        data, order contents, or payment details.
+      </p>
+
+      <div class="docs-toc">
+        <div class="docs-toc-title">On this page</div>
+        <ol class="docs-toc-list">
+          <li><a href="#prereqs">Prerequisites</a></li>
+          <li><a href="#api-access">Step 1 — Prepare Shopify Admin API access</a></li>
+          <li><a href="#read-only">Step 2 — Confirm required read-only access</a></li>
+          <li><a href="#connect">Step 3 — Connect Shopify in ConfigTrace</a></li>
+          <li><a href="#first-sync">Step 4 — Run your first sync</a></li>
+          <li><a href="#monitors">What ConfigTrace monitors</a></li>
+          <li><a href="#never-reads">What ConfigTrace never reads</a></li>
+          <li><a href="#troubleshooting">Troubleshooting</a></li>
+        </ol>
+      </div>
+
+      <h2 class="docs-h2" id="prereqs">Prerequisites</h2>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span>A Shopify store you own or administer</span></li>
+        <li><span class="docs-list-icon">→</span><span>Permission to create a custom app in Shopify Admin (store-owner or staff with the right scopes)</span></li>
+        <li><span class="docs-list-icon">→</span><span>A ConfigTrace workspace (owner or admin role)</span></li>
+      </ul>
+
+      <h2 class="docs-h2" id="api-access">Step 1 — Prepare Shopify Admin API access</h2>
+      <p class="docs-p">ConfigTrace recommends creating a dedicated <strong>custom app</strong> in Shopify Admin so the credentials are scoped to ConfigTrace and easy to rotate or revoke.</p>
+      <ol class="docs-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">Open the apps & sales channels page</div>
+            <div class="step-desc">In Shopify Admin, go to <strong>Settings → Apps and sales channels → Develop apps</strong>.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Create a custom app</div>
+            <div class="step-desc">Click <strong>Create an app</strong>. Name it something like <code>ConfigTrace (read-only)</code> so it's easy to find later.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Configure Admin API scopes</div>
+            <div class="step-desc">Open <strong>Configuration → Admin API integration → Configure</strong>. Select the read-only scopes listed in Step 2 below.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">4</span>
+          <div class="step-body">
+            <div class="step-title">Install the app and copy the Admin API access token</div>
+            <div class="step-desc">Click <strong>Install app</strong>, then copy the <strong>Admin API access token</strong>. Store it somewhere safe — Shopify only shows it once.</div>
+          </div>
+        </li>
+      </ol>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body">
+          The Admin API access token is the only secret ConfigTrace needs. You can revoke or rotate it at any time from <strong>Settings → Apps and sales channels → Develop apps → ConfigTrace</strong>.
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="read-only">Step 2 — Confirm required read-only access</h2>
+      <p class="docs-p">ConfigTrace only requests the minimum read-only Admin API scopes needed to monitor configuration metadata. Recommended scopes:</p>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span><code>read_shop</code> — shop metadata and operational settings</span></li>
+        <li><span class="docs-list-icon">→</span><span><code>read_webhooks</code> — webhook subscription metadata (URLs, topics, status)</span></li>
+        <li><span class="docs-list-icon">→</span><span><code>read_policies</code> — store policy presence and content-hash metadata</span></li>
+        <li><span class="docs-list-icon">→</span><span><code>read_apps</code> (where available) — installed-app permission-scope names and scope risk summary</span></li>
+      </ul>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body">
+          Do <strong>not</strong> grant <code>write_*</code>, <code>read_customers</code>, <code>read_orders</code>, <code>read_inventory</code>, or theme/source scopes. ConfigTrace does not need them and does not read those resources.
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="connect">Step 3 — Connect Shopify in ConfigTrace</h2>
+      <ol class="docs-steps">
+        <li>
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">Open Integrations</div>
+            <div class="step-desc">In the ConfigTrace sidebar, click <strong>Integrations</strong>, then click <strong>Connect</strong> on the Shopify card.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Enter your shop domain</div>
+            <div class="step-desc">Paste your <code>*.myshopify.com</code> domain (e.g. <code>acme-store.myshopify.com</code>).</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Paste the Admin API access token</div>
+            <div class="step-desc">Paste the token from Step 1. ConfigTrace encrypts the token before storage and never displays it again.</div>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">4</span>
+          <div class="step-body">
+            <div class="step-title">Save integration</div>
+            <div class="step-desc">Click <strong>Save integration</strong>. ConfigTrace performs a read-only validation call to confirm credentials work.</div>
+          </div>
+        </li>
+      </ol>
+
+      <h2 class="docs-h2" id="first-sync">Step 4 — Run your first sync</h2>
+      <p class="docs-p">Click <strong>Sync Now</strong>. The first sync captures your shop settings, webhook subscriptions, policy metadata, and installed-app scope summary as a baseline snapshot — this becomes the reference point for all future diffs.</p>
+      <p class="docs-p">After the first sync, ConfigTrace continues syncing on your plan's schedule. You can trigger a manual sync from the integration detail page at any time.</p>
+
+      <h2 class="docs-h2" id="monitors">What ConfigTrace monitors</h2>
+      <div class="perm-grid">
+        <div class="perm-panel reads">
+          <div class="perm-panel-hdr"><span>✓</span> Reads (configuration metadata)</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✓</span>Shop metadata and operational settings (timezone, currency, shop status)</li>
+              <li><span class="perm-icon">✓</span>Webhook subscription metadata: target URL, topic, status, format</li>
+              <li><span class="perm-icon">✓</span>Store policy presence and content-hash metadata (refund, privacy, terms of service)</li>
+              <li><span class="perm-icon">✓</span>Installed-app permission scope <em>names</em> and scope risk summary</li>
+            </ul>
+          </div>
+        </div>
+        <div class="perm-panel no-reads">
+          <div class="perm-panel-hdr"><span>✕</span> Never reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✕</span>Customer records or customer PII</li>
+              <li><span class="perm-icon">✕</span>Order contents or checkout payloads</li>
+              <li><span class="perm-icon">✕</span>Payment details</li>
+              <li><span class="perm-icon">✕</span>Inventory contents</li>
+              <li><span class="perm-icon">✕</span>Theme files or source code</li>
+              <li><span class="perm-icon">✕</span>Admin API secret key values</li>
+              <li><span class="perm-icon">✕</span>Gift card or payment transaction contents</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="docs-h2" id="never-reads">What ConfigTrace never reads</h2>
+      <div class="callout warning">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body">
+          ConfigTrace monitors <em>metadata only</em>: configuration, presence, scope names, and content-hash signatures. It does not read customer data, order contents, payment data, inventory, theme files, or any secret values. ConfigTrace also does <strong>not</strong> write to Shopify — it never modifies settings, webhooks, policies, or app scopes on your behalf.
+        </div>
+      </div>
+      <p class="docs-p">For a full breakdown across all providers, see the <a href="data-access.html">Data Access &amp; Permissions</a> reference.</p>
+
+      <h2 class="docs-h2" id="troubleshooting">Troubleshooting</h2>
+      <ul class="docs-list">
+        <li><span class="docs-list-icon">→</span><span><strong>"Invalid token" on save:</strong> Confirm you pasted the <em>Admin API access token</em>, not the API key or API secret. Tokens start with <code>shpat_</code>.</span></li>
+        <li><span class="docs-list-icon">→</span><span><strong>"Insufficient scopes" during sync:</strong> Open the custom app in Shopify Admin, add the missing read-only scope, click <strong>Save</strong>, then re-install the app and copy the new token into ConfigTrace.</span></li>
+        <li><span class="docs-list-icon">→</span><span><strong>Webhook section is empty after sync:</strong> The token may be missing <code>read_webhooks</code>. Add it, re-install, and re-sync.</span></li>
+        <li><span class="docs-list-icon">→</span><span><strong>To revoke access:</strong> In Shopify Admin, go to <strong>Settings → Apps and sales channels → Develop apps → ConfigTrace</strong> and click <strong>Uninstall</strong>. ConfigTrace stops reading immediately.</span></li>
+      </ul>
+      <p class="docs-p">For other issues, see the general <a href="troubleshooting.html">Troubleshooting</a> guide.</p>
+
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="docs-footer">
+    <div class="docs-footer-inner">
+      <span>ConfigTrace Docs</span>
+      <div>
+        <a href="/">Home</a>
+        <a href="../docs.html">Docs</a>
+        <a href="data-access.html">Data access</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+        <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var toggle  = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('docsSidebar');
+    var open    = false;
+    toggle.addEventListener('click', function () { open = !open; sidebar.classList.toggle('open', open); toggle.setAttribute('aria-expanded', open); });
+    sidebar.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { if (window.innerWidth < 900) { open = false; sidebar.classList.remove('open'); toggle.setAttribute('aria-expanded', false); } }); });
+  })();
+</script>
+</body>
+</html>

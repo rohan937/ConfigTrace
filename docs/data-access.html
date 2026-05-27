@@ -54,6 +54,7 @@
         <li><a href="github.html"><span class="sidebar-provider-dot" style="background:#8b90a0"></span>GitHub</a></li>
         <li><a href="cloudflare.html"><span class="sidebar-provider-dot" style="background:#f48120"></span>Cloudflare</a></li>
         <li><a href="vercel.html"><span class="sidebar-provider-dot" style="background:#b0b5c4"></span>Vercel</a></li>
+        <li><a href="shopify.html"><span class="sidebar-provider-dot" style="background:#96bf48"></span>Shopify</a></li>
       </ul>
     </div>
     <div class="sidebar-section">
@@ -95,6 +96,7 @@
           <li><a href="#github">GitHub</a></li>
           <li><a href="#cloudflare">Cloudflare</a></li>
           <li><a href="#vercel">Vercel</a></li>
+          <li><a href="#shopify">Shopify</a></li>
           <li><a href="#credential-storage">Credential storage and encryption</a></li>
         </ol>
       </div>
@@ -315,6 +317,37 @@
               <li><span class="perm-icon">✕</span>Serverless function code</li>
               <li><span class="perm-icon">✕</span>Edge config or edge middleware values</li>
               <li><span class="perm-icon">✕</span>Customer data</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <hr class="docs-divider">
+
+      <h2 class="docs-h2" id="shopify">Shopify</h2>
+      <div class="perm-grid">
+        <div class="perm-panel reads">
+          <div class="perm-panel-hdr"><span>✓</span> Reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✓</span>Shop metadata and operational settings</li>
+              <li><span class="perm-icon">✓</span>Webhook subscription metadata (target URL, topic, status)</li>
+              <li><span class="perm-icon">✓</span>Store policy presence and content-hash metadata</li>
+              <li><span class="perm-icon">✓</span>Installed-app permission scope names and scope risk summary</li>
+            </ul>
+          </div>
+        </div>
+        <div class="perm-panel no-reads">
+          <div class="perm-panel-hdr"><span>✕</span> Never reads</div>
+          <div class="perm-panel-body">
+            <ul class="perm-list">
+              <li><span class="perm-icon">✕</span>Customer records or customer PII</li>
+              <li><span class="perm-icon">✕</span>Order contents or checkout payloads</li>
+              <li><span class="perm-icon">✕</span>Payment details or transaction contents</li>
+              <li><span class="perm-icon">✕</span>Inventory contents</li>
+              <li><span class="perm-icon">✕</span>Theme files or source code</li>
+              <li><span class="perm-icon">✕</span>Admin API secret key values</li>
+              <li><span class="perm-icon">✕</span>Gift card or payment transaction contents</li>
             </ul>
           </div>
         </div>

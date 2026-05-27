@@ -67,8 +67,14 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://configtrace.org/docs/shopify.html</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://configtrace.org/docs/data-access.html</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
