@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ConfigTrace — Know what changed before it becomes an incident</title>
-  <meta name="description" content="ConfigTrace is configuration security monitoring for cloud and SaaS tools. A security timeline for risky configuration drift across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel — the production-critical settings that live outside Git.">
+  <title>ConfigTrace — Configuration Security Monitoring</title>
+  <meta name="description" content="ConfigTrace gives production-critical settings a security timeline across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, Vercel, and Shopify. Monitor risky configuration drift, alert your team, explain blast radius, and review or remediate changes safely.">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://configtrace.org/">
-  <meta property="og:title" content="ConfigTrace — Know what changed before it becomes an incident">
-  <meta property="og:description" content="ConfigTrace is the security timeline for risky configuration drift. Configuration security monitoring across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel — the production-critical settings that live outside Git.">
+  <meta property="og:title" content="ConfigTrace — Configuration Security Monitoring">
+  <meta property="og:description" content="A security timeline for the settings that can break production. ConfigTrace monitors risky configuration drift across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, Vercel, and Shopify.">
   <meta property="og:image" content="https://configtrace.org/og.png">
   <meta property="og:site_name" content="ConfigTrace">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ConfigTrace — Know what changed before it becomes an incident">
-  <meta name="twitter:description" content="ConfigTrace is the security timeline for risky configuration drift. Configuration security monitoring across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel — the production-critical settings that live outside Git.">
+  <meta name="twitter:title" content="ConfigTrace — Configuration Security Monitoring">
+  <meta name="twitter:description" content="A security timeline for the settings that can break production. 8 providers, one drift monitoring platform.">
   <meta name="twitter:image" content="https://configtrace.org/og.png">
 
   <link rel="canonical" href="https://configtrace.org/">
@@ -128,16 +128,16 @@
        TYPOGRAPHY
        ===================================================================== */
     h1 {
-      font-size: clamp(38px,6vw,72px);
+      font-size: clamp(38px,6vw,68px);
       font-weight: 800;
-      line-height: 1.04;
+      line-height: 1.05;
       letter-spacing: -2px;
     }
 
     h2 {
-      font-size: clamp(28px,4vw,46px);
+      font-size: clamp(28px,4vw,44px);
       font-weight: 700;
-      line-height: 1.1;
+      line-height: 1.12;
       letter-spacing: -1.2px;
       margin-bottom: 20px;
     }
@@ -159,7 +159,7 @@
       font-size: 17px;
       color: var(--text-2);
       font-weight: 300;
-      max-width: 58ch;
+      max-width: 60ch;
       margin-bottom: 52px;
       line-height: 1.68;
     }
@@ -263,7 +263,7 @@
     .nav-mobile a:last-child { border-bottom: none; }
     .nav-mobile a:hover { color: var(--text); }
 
-    @media (max-width: 780px) {
+    @media (max-width: 880px) {
       .nav-links { display: none; }
       .nav-toggle { display: block; }
     }
@@ -315,7 +315,7 @@
     /* =====================================================================
        HERO
        ===================================================================== */
-    .hero { padding: 104px 0 80px; }
+    .hero { padding: 96px 0 76px; }
 
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
@@ -323,7 +323,7 @@
       color: var(--green); background: var(--green-dim);
       border: 1px solid var(--green-bdr);
       padding: 6px 14px; border-radius: 100px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       animation: fadeUp .5s ease both;
     }
 
@@ -334,7 +334,7 @@
     }
 
     .hero h1 {
-      margin-bottom: 24px; max-width: 15ch;
+      margin-bottom: 24px; max-width: 18ch;
       animation: fadeUp .5s ease .07s both;
     }
 
@@ -342,8 +342,8 @@
 
     .hero-sub {
       font-size: clamp(17px,2.2vw,20px);
-      color: var(--text-2); max-width: 52ch;
-      margin-bottom: 36px; font-weight: 300; line-height: 1.68;
+      color: var(--text-2); max-width: 58ch;
+      margin-bottom: 32px; font-weight: 300; line-height: 1.68;
       animation: fadeUp .5s ease .14s both;
     }
 
@@ -351,11 +351,10 @@
 
     .hero-ctas {
       display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       animation: fadeUp .5s ease .21s both;
     }
 
-    /* 3-step mini breadcrumb */
     .hero-steps {
       display: flex; align-items: center; gap: 8px;
       font-family: var(--mono); font-size: 12px; color: var(--text-3);
@@ -368,6 +367,7 @@
 
     .hero-trust {
       font-family: var(--mono); font-size: 12.5px; color: var(--text-3);
+      max-width: 70ch;
       animation: fadeUp .5s ease .33s both;
     }
 
@@ -379,12 +379,12 @@
 
     /* ── Product mock ── */
     .hero-visual {
-      margin-top: 72px;
+      margin-top: 64px;
       animation: fadeUp .7s ease .42s both;
     }
 
     .product-mock {
-      max-width: 740px; margin: 0 auto;
+      max-width: 880px; margin: 0 auto;
       background: var(--bg-2);
       border: 1px solid var(--border-2);
       border-radius: 16px; overflow: hidden;
@@ -411,7 +411,6 @@
 
     .mock-tab.on { background: var(--blue-dim); color: var(--blue-2); }
 
-    /* Integration row */
     .mock-topbar {
       display: flex; align-items: center; justify-content: space-between;
       padding: 13px 18px; background: var(--bg-3);
@@ -419,29 +418,13 @@
       flex-wrap: wrap; gap: 8px;
     }
 
-    .mock-topbar-left { display: flex; align-items: center; gap: 10px; }
+    .mock-topbar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
-    .mock-provider-tag {
-      display: flex; align-items: center; gap: 8px;
-      font-family: var(--mono); font-size: 12px; color: var(--text); font-weight: 500;
+    .mock-zone {
+      font-family: var(--mono); font-size: 11px; color: var(--text-2);
     }
 
-    .mock-cf-icon {
-      width: 20px; height: 20px; background: #F38020; border-radius: 4px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 9px; font-weight: 700; color: #fff; flex-shrink: 0;
-    }
-
-    .mock-gh-icon {
-      width: 20px; height: 20px; background: #24292e; border-radius: 4px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 9px; font-weight: 700; color: #fff; flex-shrink: 0;
-      border: 1px solid rgba(255,255,255,.15);
-    }
-
-    .mock-sep { color: var(--border-2); font-size: 14px; }
-
-    .mock-zone { font-family: var(--mono); font-size: 11px; color: var(--text-3); }
+    .mock-zone-sep { color: var(--border-2); margin: 0 6px; }
 
     .mock-live-badge {
       display: flex; align-items: center; gap: 5px;
@@ -450,7 +433,6 @@
 
     .mock-live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
 
-    /* Alert bar */
     .mock-alert {
       display: flex; align-items: center; gap: 10px;
       padding: 11px 18px;
@@ -461,32 +443,47 @@
 
     .mock-alert-right { margin-left: auto; color: var(--text-3); font-size: 11px; }
 
-    .mock-body { padding: 18px; }
+    .mock-body { padding: 16px 18px; }
 
-    .mock-change-card {
-      background: var(--bg); border: 1px solid var(--border-2);
-      border-radius: 10px; overflow: hidden;
+    /* Timeline entries inside hero mock */
+    .mock-timeline { display: flex; flex-direction: column; gap: 7px; }
+
+    .mock-tl-entry {
+      padding: 11px 13px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--bg);
     }
 
-    .mock-change-header {
-      display: flex; align-items: center; gap: 10px;
-      padding: 13px 15px; border-bottom: 1px solid var(--border); flex-wrap: wrap;
+    .mock-tl-entry.tl-crit {
+      border-color: var(--red-bdr);
+      background: rgba(239,68,68,.045);
     }
 
-    .mock-rec-type {
-      font-family: var(--mono); font-size: 11px; font-weight: 700;
-      padding: 3px 8px; background: var(--blue-dim); color: var(--blue-2);
-      border-radius: 5px; letter-spacing: .5px; flex-shrink: 0;
+    .mock-tl-row {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
     }
 
-    .mock-rec-name {
-      font-family: var(--mono); font-size: 13px; color: var(--text);
-      flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    .mock-prov-icon-sm {
+      width: 18px; height: 18px; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 9px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+
+    .mock-prov-name-sm {
+      font-family: var(--mono); font-size: 11.5px; font-weight: 600; color: var(--text);
+    }
+
+    .mock-tl-detail {
+      font-family: var(--mono); font-size: 12px; color: var(--text-2);
+      flex: 1; min-width: 0;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
 
     .mock-risk-badge {
       font-family: var(--mono); font-size: 10px; font-weight: 700;
-      padding: 3px 9px; border-radius: 5px;
+      padding: 3px 8px; border-radius: 5px;
       letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0;
     }
 
@@ -494,25 +491,33 @@
       background: var(--red-dim); color: var(--red); border: 1px solid var(--red-bdr);
     }
 
-    .mock-diff { font-family: var(--mono); font-size: 12.5px; padding: 4px 0; }
-
-    .mock-diff-row { display: flex; gap: 10px; padding: 7px 15px; align-items: baseline; }
-    .mock-diff-row.del { background: rgba(239,68,68,.06); color: var(--red); }
-    .mock-diff-row.add { background: rgba(34,197,94,.06); color: var(--green); }
-
-    .mock-diff-sign { width: 12px; flex-shrink: 0; font-weight: 700; }
-    .mock-diff-key { font-size: 11.5px; min-width: 60px; flex-shrink: 0; }
-    .mock-diff-row.del .mock-diff-key { color: rgba(239,68,68,.65); }
-    .mock-diff-row.add .mock-diff-key { color: rgba(34,197,94,.65); }
-    .mock-diff-val { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-    .mock-risk-reason {
-      display: flex; gap: 9px;
-      padding: 11px 15px; border-top: 1px solid var(--border);
-      font-size: 12.5px; color: var(--text-2); line-height: 1.5;
+    .mock-risk-badge.high {
+      background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(249,115,22,.3);
     }
 
-    .mock-risk-icon { color: var(--red); flex-shrink: 0; margin-top: 1px; }
+    .mock-risk-badge.med {
+      background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,158,11,.3);
+    }
+
+    .mock-risk-badge.low {
+      background: rgba(74,82,104,.18); color: var(--text-2); border: 1px solid var(--border);
+    }
+
+    .mock-tl-diff {
+      font-family: var(--mono); font-size: 11.5px;
+      margin-top: 8px; padding-top: 8px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .mock-tl-del { color: var(--red); display: block; line-height: 1.7; }
+    .mock-tl-add { color: var(--green); display: block; line-height: 1.7; }
+
+    .mock-tl-reason {
+      font-size: 11.5px; color: var(--text-2);
+      margin-top: 7px;
+      font-family: var(--sans);
+      line-height: 1.45;
+    }
 
     .mock-footer {
       display: flex; align-items: center; justify-content: space-between;
@@ -522,6 +527,7 @@
 
     .mock-stats { font-family: var(--mono); font-size: 11px; color: var(--text-3); }
     .mock-stats .c { color: var(--red); }
+    .mock-stats .h { color: var(--orange); }
 
     .mock-actions { display: flex; gap: 8px; }
 
@@ -532,7 +538,7 @@
     }
 
     /* =====================================================================
-       IN 3 MINUTES  (compact alt section)
+       IN 3 MINUTES
        ===================================================================== */
     .three-min-section { padding: 52px 0 56px; }
 
@@ -572,11 +578,11 @@
     .three-min-desc  { font-size: 13px; color: var(--text-2); line-height: 1.55; font-weight: 300; }
 
     /* =====================================================================
-       PROBLEM
+       PROBLEM / WORLDVIEW
        ===================================================================== */
     .problem-grid {
       display: grid; grid-template-columns: 1fr 1fr;
-      gap: 80px; align-items: start;
+      gap: 64px; align-items: start;
     }
 
     @media (max-width: 820px) { .problem-grid { grid-template-columns: 1fr; gap: 44px; } }
@@ -593,7 +599,7 @@
 
     .blind-list li {
       display: flex; align-items: flex-start; gap: 14px;
-      padding: 13px 0; border-bottom: 1px solid var(--border);
+      padding: 11px 0; border-bottom: 1px solid var(--border);
       font-size: 14px; color: var(--text-2); line-height: 1.5;
     }
 
@@ -608,6 +614,66 @@
       display: block; color: var(--text); font-weight: 500;
       font-size: 14px; margin-bottom: 2px;
     }
+
+    /* =====================================================================
+       PRODUCT LOOP
+       ===================================================================== */
+    .loop-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+    }
+
+    @media (max-width: 820px) { .loop-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 520px) { .loop-grid { grid-template-columns: 1fr; } }
+
+    .loop-step {
+      background: var(--bg-2); padding: 28px 26px;
+      transition: background .2s;
+      display: flex; flex-direction: column;
+    }
+
+    .loop-step:hover { background: var(--bg-3); }
+
+    .loop-step-num {
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      color: var(--blue); letter-spacing: 1px; margin-bottom: 6px;
+    }
+
+    .loop-step-phase {
+      font-family: var(--sans); font-size: 19px; font-weight: 700;
+      color: var(--text); margin-bottom: 14px; letter-spacing: -0.4px;
+    }
+
+    .loop-step-features { list-style: none; display: flex; flex-direction: column; }
+
+    .loop-step-features li {
+      font-size: 13px; color: var(--text-2);
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex; gap: 9px;
+      line-height: 1.5;
+      align-items: flex-start;
+    }
+
+    .loop-step-features li:last-child { border-bottom: none; }
+
+    .loop-step-features li::before {
+      content: '→';
+      font-family: var(--mono); font-size: 11px;
+      flex-shrink: 0; color: var(--blue); margin-top: 2px;
+    }
+
+    .loop-arrow-row {
+      display: flex; justify-content: center;
+      gap: 8px; font-family: var(--mono); font-size: 11px;
+      color: var(--text-3);
+      margin: 24px 0 8px;
+      flex-wrap: wrap;
+    }
+
+    .loop-arrow-row span { color: var(--text-2); }
+    .loop-arrow-row .a { color: var(--blue); }
 
     /* =====================================================================
        BEFORE / AFTER
@@ -695,236 +761,508 @@
     .ba-after-icon { color: var(--green); flex-shrink: 0; }
 
     /* =====================================================================
-       DEMO
+       DEMO CTA SECTION
        ===================================================================== */
-    .demo-panels {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    .demo-cta-card {
+      background: linear-gradient(135deg, var(--blue-dim) 0%, rgba(75,124,246,.04) 100%);
+      border: 1px solid rgba(75,124,246,.28);
+      border-radius: 20px;
+      padding: 56px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
-    @media (max-width: 760px) { .demo-panels { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .demo-cta-card { padding: 40px 24px; } }
 
-    .demo-panel {
-      background: var(--bg-3); border: 1px solid var(--border);
+    .demo-cta-card::before {
+      content: '';
+      position: absolute;
+      top: -150px; left: 50%;
+      transform: translateX(-50%);
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(75,124,246,.1) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .demo-cta-label {
+      display: inline-block;
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 2px;
+      color: var(--blue); background: var(--blue-dim);
+      border: 1px solid rgba(75,124,246,.22);
+      border-radius: 4px; padding: 4px 10px;
+      margin-bottom: 18px;
+      position: relative; z-index: 1;
+    }
+
+    .demo-cta-card h2 {
+      position: relative; z-index: 1;
+      max-width: 24ch;
+      margin: 0 auto 16px;
+    }
+
+    .demo-cta-card-sub {
+      position: relative; z-index: 1;
+      font-size: 16px; color: var(--text-2);
+      max-width: 60ch; margin: 0 auto 32px;
+      font-weight: 300; line-height: 1.65;
+    }
+
+    .demo-cta-btns {
+      position: relative; z-index: 1;
+      display: flex; justify-content: center;
+      gap: 12px; flex-wrap: wrap;
+    }
+
+    .demo-cta-providers {
+      position: relative; z-index: 1;
+      margin-top: 28px;
+      font-family: var(--mono); font-size: 11.5px; color: var(--text-3);
+    }
+
+    /* =====================================================================
+       PROVIDER ICON CHIPS + GRID
+       ===================================================================== */
+    .providers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) { .providers-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .providers-grid { grid-template-columns: 1fr; } }
+
+    .provider-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border-2);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .provider-card-hdr {
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+
+    .provider-icon-box {
+      width: 32px; height: 32px; border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      color: #fff; flex-shrink: 0;
+    }
+
+    .provider-name-block { flex: 1; min-width: 0; }
+
+    .provider-name {
+      font-family: var(--mono); font-size: 14px; font-weight: 700;
+      color: var(--text); margin-bottom: 3px;
+    }
+
+    .provider-live-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-family: var(--mono); font-size: 10px; color: var(--green);
+      background: var(--green-dim); border: 1px solid var(--green-bdr);
+      border-radius: 4px; padding: 2px 7px;
+    }
+
+    .provider-live-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green); }
+
+    .provider-desc {
+      padding: 12px 18px;
+      font-size: 13px; color: var(--text-2); line-height: 1.6; font-weight: 300;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .provider-monitors { padding: 12px 18px; }
+
+    .provider-monitors-label {
+      font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--text-3); margin-bottom: 8px;
+    }
+
+    .provider-monitors-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+
+    .provider-monitors-list li {
+      display: flex; align-items: flex-start; gap: 7px;
+      font-size: 12.5px; color: var(--text-2); line-height: 1.45;
+    }
+
+    .provider-monitors-list li::before {
+      content: '→'; font-family: var(--mono); font-size: 11px;
+      flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* =====================================================================
+       ALERTS SECTION
+       ===================================================================== */
+    .alerts-layout {
+      display: grid; grid-template-columns: 5fr 4fr; gap: 32px;
+      align-items: start;
+    }
+
+    @media (max-width: 820px) { .alerts-layout { grid-template-columns: 1fr; } }
+
+    .slack-mock {
+      background: var(--bg-2);
+      border: 1px solid var(--border-2);
+      border-radius: 14px; overflow: hidden;
+    }
+
+    .slack-mock-hdr {
+      background: #3a0b3a;
+      padding: 11px 16px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .slack-hash { font-size: 15px; color: rgba(255,255,255,.5); }
+    .slack-channel-name { font-size: 13.5px; font-weight: 700; color: #fff; }
+
+    .slack-msg { padding: 16px; }
+
+    .slack-bot-row {
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .slack-bot-avatar {
+      width: 34px; height: 34px; background: var(--blue);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 0 12px var(--blue-glow);
+    }
+
+    .slack-bot-meta { flex: 1; min-width: 0; }
+
+    .slack-bot-name {
+      font-size: 13px; font-weight: 700; color: var(--text);
+      display: inline; margin-right: 6px;
+    }
+
+    .slack-bot-app-tag {
+      font-size: 9.5px; background: var(--blue-dim);
+      color: var(--blue-2);
+      border: 1px solid rgba(75,124,246,.3);
+      border-radius: 3px; padding: 1px 6px;
+      vertical-align: middle; font-family: var(--mono); font-weight: 700;
+      letter-spacing: .5px;
+    }
+
+    .slack-bot-time {
+      font-size: 11px; color: var(--text-3); margin-top: 2px;
+      font-family: var(--mono);
+    }
+
+    .slack-msg-body {
+      background: var(--bg-3);
+      border-left: 3px solid var(--red);
+      border-radius: 0 8px 8px 0;
+      padding: 13px 15px;
+      margin-bottom: 10px;
+    }
+
+    .slack-alert-title {
+      font-size: 13.5px; font-weight: 600; color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .slack-alert-fields {
+      font-family: var(--mono); font-size: 11.5px;
+      line-height: 1.8;
+    }
+
+    .slack-alert-key { color: var(--text-3); }
+    .slack-alert-val { color: var(--text-2); }
+    .slack-alert-del { color: var(--red); display: block; }
+    .slack-alert-add { color: var(--green); display: block; }
+
+    .slack-btns {
+      display: flex; flex-wrap: wrap; gap: 7px;
+    }
+
+    .slack-btn {
+      font-size: 12px; padding: 7px 12px;
+      border-radius: 5px;
+      border: 1px solid var(--border-2);
+      background: var(--bg);
+      color: var(--text-2);
+      font-weight: 500;
+      cursor: default; white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 5px;
+    }
+
+    .slack-btn.primary {
+      background: var(--blue-dim); border-color: rgba(75,124,246,.4); color: var(--blue-2);
+    }
+
+    .slack-btn.caution {
+      background: var(--amber-dim); border-color: rgba(245,158,11,.3); color: var(--amber);
+    }
+
+    .alerts-channels { display: flex; flex-direction: column; gap: 10px; }
+
+    .alerts-channel-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 17px 18px;
+    }
+
+    .alerts-channel-hdr {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 7px;
+    }
+
+    .alerts-channel-icon {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      font-family: var(--mono); font-weight: 700; color: var(--blue-2);
+    }
+
+    .alerts-channel-name { font-size: 14px; font-weight: 600; color: var(--text); }
+
+    .alerts-channel-desc {
+      font-size: 12.5px; color: var(--text-2);
+      line-height: 1.55; font-weight: 300;
+    }
+
+    .alerts-disclaimer {
+      margin-top: 24px;
+      font-family: var(--mono); font-size: 11.5px;
+      color: var(--text-3);
+      line-height: 1.55;
+      max-width: 70ch;
+    }
+
+    /* =====================================================================
+       REMEDIATION SECTION
+       ===================================================================== */
+    .remediation-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 48px; align-items: start;
+    }
+
+    @media (max-width: 820px) { .remediation-layout { grid-template-columns: 1fr; gap: 32px; } }
+
+    .remediation-steps {
+      display: flex; flex-direction: column; gap: 0;
+    }
+
+    .remediation-step {
+      display: flex; gap: 18px;
+      padding: 17px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .remediation-step:last-child { border-bottom: none; }
+
+    .remediation-step-num {
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      color: var(--blue);
+      flex-shrink: 0; padding-top: 3px;
+      width: 22px;
+    }
+
+    .remediation-step-title {
+      font-size: 14px; font-weight: 600;
+      color: var(--text); margin-bottom: 4px;
+    }
+
+    .remediation-step-desc {
+      font-size: 13px; color: var(--text-2);
+      line-height: 1.55; font-weight: 300;
+    }
+
+    .tf-mock {
+      background: var(--bg);
+      border: 1px solid var(--border-2);
       border-radius: 12px; overflow: hidden;
     }
 
-    .demo-panel-header {
-      display: flex; align-items: center; gap: 8px;
-      padding: 13px 16px; border-bottom: 1px solid var(--border);
-      background: var(--bg-2);
-    }
-
-    .demo-panel-title {
-      font-family: var(--mono); font-size: 11px; color: var(--text-2);
-      font-weight: 500; text-transform: uppercase; letter-spacing: 1.2px;
-    }
-
-    .demo-panel-body { padding: 14px 16px; }
-
-    /* Timeline */
-    .tl-entry {
-      display: flex; align-items: flex-start; gap: 14px;
-      padding: 12px 0; border-bottom: 1px solid var(--border);
-    }
-
-    .tl-entry:last-child { border-bottom: none; }
-
-    .tl-dot {
-      width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; margin-top: 2px;
-      border: 2px solid; display: flex; align-items: center; justify-content: center;
-    }
-
-    .tl-dot.ok   { border-color: var(--green); background: var(--green-dim); }
-    .tl-dot.warn { border-color: var(--amber); background: var(--amber-dim); }
-    .tl-dot.crit { border-color: var(--red);   background: var(--red-dim);   }
-
-    .tl-dot-inner { width: 6px; height: 6px; border-radius: 50%; }
-    .tl-dot.ok   .tl-dot-inner { background: var(--green); }
-    .tl-dot.warn .tl-dot-inner { background: var(--amber); }
-    .tl-dot.crit .tl-dot-inner { background: var(--red);   }
-
-    .tl-label { font-size: 13.5px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
-    .tl-meta  { font-family: var(--mono); font-size: 11px; color: var(--text-3); }
-
-    /* Diff lines */
-    .diff-block { font-family: var(--mono); font-size: 12.5px; line-height: 1.9; }
-    .dl { display: flex; gap: 8px; padding: 2px 6px; border-radius: 3px; }
-    .dl.del { background: rgba(239,68,68,.07); color: var(--red); }
-    .dl.add { background: rgba(34,197,94,.07); color: var(--green); }
-    .dl.ctx { color: var(--text-3); }
-    .dl .s  { width: 12px; flex-shrink: 0; font-weight: 700; }
-    .dl .k  { color: var(--text-2); }
-    .dl.del .k { color: rgba(239,68,68,.6); }
-    .dl.add .k { color: rgba(34,197,94,.6); }
-
-    /* =====================================================================
-       HOW IT WORKS
-       ===================================================================== */
-    .steps-grid {
-      display: grid; grid-template-columns: repeat(3,1fr);
-      gap: 1px; background: var(--border);
-      border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
-    }
-
-    @media (max-width: 820px) { .steps-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 520px) { .steps-grid { grid-template-columns: 1fr; } }
-
-    .step { background: var(--bg-2); padding: 28px 26px; transition: background .2s; }
-    .step:hover { background: var(--bg-3); }
-
-    .step-num {
-      font-family: var(--mono); font-size: 11px; color: var(--blue);
-      font-weight: 500; letter-spacing: 1px; margin-bottom: 14px;
-    }
-
-    .step h3 { font-size: 16px; margin-bottom: 8px; }
-    .step p  { font-size: 13.5px; color: var(--text-2); line-height: 1.65; font-weight: 300; }
-
-    /* =====================================================================
-       GIT vs CONFIG (new section)
-       ===================================================================== */
-    .git-contrast-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-    }
-
-    @media (max-width: 760px) { .git-contrast-grid { grid-template-columns: 1fr; } }
-
-    .git-contrast-panel {
-      border-radius: 14px; overflow: hidden; border: 1px solid;
-    }
-
-    .git-contrast-panel.git-side { border-color: var(--border-2); }
-    .git-contrast-panel.ct-side  { border-color: rgba(75,124,246,.35); }
-
-    .git-contrast-hdr {
-      padding: 13px 20px;
-      font-family: var(--mono); font-size: 10px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 1.8px;
-      display: flex; align-items: center; gap: 8px;
-    }
-
-    .git-contrast-panel.git-side .git-contrast-hdr {
-      background: var(--bg-3); border-bottom: 1px solid var(--border); color: var(--text-3);
-    }
-
-    .git-contrast-panel.ct-side .git-contrast-hdr {
-      background: var(--blue-dim); border-bottom: 1px solid rgba(75,124,246,.22); color: var(--blue-2);
-    }
-
-    .git-contrast-body { background: var(--bg-2); padding: 6px 20px 16px; }
-
-    .git-contrast-list { list-style: none; }
-
-    .git-contrast-list li {
-      display: flex; align-items: flex-start; gap: 12px;
-      padding: 11px 0; border-bottom: 1px solid var(--border);
-      font-size: 14px; color: var(--text-2); line-height: 1.4;
-    }
-
-    .git-contrast-list li:last-child { border-bottom: none; }
-
-    .git-contrast-icon {
-      font-family: var(--mono); font-size: 12px; flex-shrink: 0;
-      width: 14px; margin-top: 2px; font-weight: 700;
-    }
-
-    .git-contrast-panel.git-side .git-contrast-icon { color: var(--text-3); }
-    .git-contrast-panel.ct-side  .git-contrast-icon { color: var(--blue-2); }
-
-    /* =====================================================================
-       WHAT IT WATCHES
-       ===================================================================== */
-    .watches-layout {
-      display: grid; grid-template-columns: 1fr 2fr;
-      gap: 64px; align-items: start;
-    }
-
-    @media (max-width: 820px) { .watches-layout { grid-template-columns: 1fr; gap: 36px; } }
-
-    .watches-live-badge {
-      display: inline-flex; align-items: center; gap: 7px;
-      background: var(--green-dim); border: 1px solid var(--green-bdr);
-      color: var(--green); font-family: var(--mono); font-size: 12px;
-      padding: 7px 13px; border-radius: 8px; margin-bottom: 18px;
-    }
-
-    .watches-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
-    .watches-desc { font-size: 14px; color: var(--text-2); line-height: 1.72; font-weight: 300; }
-
-    .watches-providers {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-    }
-
-    @media (max-width: 860px) { .watches-providers { grid-template-columns: 1fr; } }
-
-    .watches-provider-card {
-      background: var(--bg-2); border: 1px solid var(--border-2);
-      border-radius: 14px; overflow: hidden;
-      display: flex; flex-direction: column;
-    }
-
-    .watches-provider-hdr {
-      padding: 14px 18px; background: var(--bg-3);
+    .tf-mock-hdr {
+      padding: 10px 16px;
+      background: var(--bg-3);
       border-bottom: 1px solid var(--border);
-      display: flex; flex-direction: column; gap: 10px;
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .watches-provider-name {
-      font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--text);
+    .tf-mock-file {
+      font-family: var(--mono); font-size: 11px; color: var(--text-2);
+      flex: 1; min-width: 0;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
 
-    .watches-provider-desc {
+    .tf-mock-badge {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      padding: 2px 7px; border-radius: 4px;
+      background: var(--blue-dim); color: var(--blue-2);
+      letter-spacing: .5px;
+    }
+
+    .tf-mock-body {
       padding: 14px 18px;
-      font-size: 13.5px; color: var(--text-2); line-height: 1.68;
-      font-weight: 300; border-bottom: 1px solid var(--border);
+      font-family: var(--mono); font-size: 12.5px;
+      line-height: 2;
     }
 
-    .watches-provider-fields { padding: 14px 18px; }
+    .tf-line { display: flex; gap: 8px; }
+    .tf-line.ctx { color: var(--text-3); }
+    .tf-line.del { color: var(--red); }
+    .tf-line.add { color: var(--green); }
+    .tf-line .s { width: 12px; flex-shrink: 0; font-weight: 700; }
 
-    .watches-provider-fields .record-grid {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 8px;
+    .tf-guard-note {
+      margin-top: 14px;
+      padding: 14px 16px;
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 12.5px; color: var(--text-2);
+      line-height: 1.6;
     }
 
-    .watches-provider-note {
-      padding: 11px 18px; border-top: 1px solid var(--border);
-      background: var(--bg); font-family: var(--mono);
-      font-size: 11.5px; color: var(--text-3); line-height: 1.55;
+    .tf-guard-note strong { color: var(--text); font-weight: 500; }
+
+    .pr-btn-mock {
+      margin-top: 12px;
+      display: flex; align-items: center; gap: 8px;
+      padding: 11px 14px;
+      background: var(--green-dim);
+      border: 1px solid var(--green-bdr);
+      border-radius: 8px;
+      font-family: var(--mono); font-size: 12px;
+      color: var(--green);
+      cursor: default;
     }
 
-    .record-grid {
-      display: grid; grid-template-columns: repeat(auto-fill,minmax(186px,1fr)); gap: 10px;
+    .pr-btn-mock .check { font-weight: 700; }
+    .pr-btn-mock .small {
+      margin-left: auto;
+      font-size: 10px; color: var(--text-3);
     }
-
-    .record-card {
-      background: var(--bg-3); border: 1px solid var(--border);
-      border-radius: 9px; padding: 14px 15px;
-    }
-
-    .record-name { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--blue-2); margin-bottom: 6px; }
-    .record-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.5; }
 
     /* =====================================================================
-       USE CASES
+       GOVERNANCE SECTION
        ===================================================================== */
-    .usecases-grid {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 16px;
+    .governance-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 14px;
     }
 
-    @media (max-width: 820px) { .usecases-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 520px) { .usecases-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 860px) { .governance-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 520px) { .governance-grid { grid-template-columns: 1fr; } }
 
-    .uc-card {
-      background: var(--bg-2); border: 1px solid var(--border);
-      border-radius: 12px; padding: 24px 22px;
+    .governance-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 20px;
       transition: border-color .2s, background .2s;
     }
 
-    .uc-card:hover { border-color: var(--border-2); background: var(--bg-3); }
+    .governance-card:hover {
+      border-color: var(--border-2);
+      background: var(--bg-3);
+    }
 
-    .uc-icon { font-size: 20px; margin-bottom: 14px; display: block; }
-    .uc-card h3 { font-size: 15px; margin-bottom: 8px; }
-    .uc-card p  { font-size: 13.5px; color: var(--text-2); line-height: 1.65; font-weight: 300; }
+    .governance-card-icon {
+      font-size: 18px; margin-bottom: 12px; display: block;
+    }
+
+    .governance-card h3 {
+      font-size: 14px; font-weight: 600;
+      color: var(--text); margin-bottom: 7px;
+    }
+
+    .governance-card p {
+      font-size: 13px; color: var(--text-2);
+      line-height: 1.6; font-weight: 300;
+    }
+
+    /* =====================================================================
+       TRUST CENTER / DATA BOUNDARIES
+       ===================================================================== */
+    .trust-features-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 48px; align-items: start;
+    }
+
+    @media (max-width: 820px) { .trust-features-layout { grid-template-columns: 1fr; gap: 36px; } }
+
+    .never-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border-2);
+      border-radius: 14px; overflow: hidden;
+    }
+
+    .never-card-hdr {
+      padding: 13px 18px;
+      background: var(--bg-3);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      color: var(--red);
+      text-transform: uppercase; letter-spacing: 1.5px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .never-card-body { padding: 6px 18px 14px; }
+
+    .never-list { list-style: none; }
+
+    .never-list li {
+      display: flex; align-items: flex-start; gap: 11px;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px; color: var(--text-2);
+      line-height: 1.45;
+    }
+
+    .never-list li:last-child { border-bottom: none; }
+
+    .never-x {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--red); font-weight: 700;
+      flex-shrink: 0; width: 14px; margin-top: 2px;
+    }
+
+    .trust-feature-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .trust-feature {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+
+    .trust-feature-hdr {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+    }
+
+    .trust-feature-check {
+      color: var(--green); font-family: var(--mono);
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+    }
+
+    .trust-feature-name {
+      font-size: 14px; font-weight: 600; color: var(--text);
+    }
+
+    .trust-feature p {
+      font-size: 13px; color: var(--text-2);
+      line-height: 1.5; font-weight: 300;
+      padding-left: 24px;
+    }
 
     /* =====================================================================
        RISK ENGINE
@@ -965,55 +1303,47 @@
     .risk-why     { font-size: 13px; color: var(--text-2); font-weight: 300; line-height: 1.55; }
 
     /* =====================================================================
-       LAUNCH STATUS
+       DIFFERENTIATION
        ===================================================================== */
-    .status-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    .diff-section-grid {
+      display: grid; grid-template-columns: repeat(2,1fr); gap: 14px;
     }
 
-    @media (max-width: 760px) { .status-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) { .diff-section-grid { grid-template-columns: 1fr; } }
 
-    .status-panel {
-      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    .diff-section-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 22px;
     }
 
-    .status-panel.live { border-color: var(--green-bdr); }
-
-    .status-panel-hdr {
-      padding: 13px 18px; border-bottom: 1px solid var(--border);
-      font-family: var(--mono); font-size: 11px; font-weight: 700;
+    .diff-section-vs {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
       text-transform: uppercase; letter-spacing: 1.5px;
-      display: flex; align-items: center; gap: 8px;
+      color: var(--text-3); margin-bottom: 10px;
     }
 
-    .status-panel.live .status-panel-hdr {
-      background: var(--green-dim); border-color: rgba(34,197,94,.2); color: var(--green);
+    .diff-section-them {
+      font-size: 14px; color: var(--text-2);
+      margin-bottom: 14px; padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.6;
     }
 
-    .status-panel.next .status-panel-hdr {
-      background: var(--bg-3); color: var(--text-3);
+    .diff-section-us {
+      font-size: 14px; color: var(--text);
+      line-height: 1.55; font-weight: 500;
+      display: flex; gap: 9px;
     }
 
-    .status-item {
-      display: flex; align-items: flex-start; gap: 12px;
-      padding: 14px 18px; border-bottom: 1px solid var(--border);
+    .diff-section-us-arrow {
+      color: var(--blue); font-family: var(--mono);
+      font-size: 13px; flex-shrink: 0; font-weight: 700; margin-top: 2px;
     }
-
-    .status-item:last-child { border-bottom: none; }
-
-    .status-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      flex-shrink: 0; margin-top: 6px;
-    }
-
-    .status-panel.live .status-dot { background: var(--green); }
-    .status-panel.next .status-dot { background: var(--text-3); }
-
-    .status-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
-    .status-desc { font-size: 12.5px; color: var(--text-2); font-weight: 300; line-height: 1.4; }
 
     /* =====================================================================
-       PAYOFF SECTION
+       PAYOFF
        ===================================================================== */
     .payoff-grid {
       display: grid; grid-template-columns: repeat(3,1fr); gap: 14px;
@@ -1054,7 +1384,6 @@
       font-size: 14.5px; color: var(--text-2); line-height: 1.7; font-weight: 300;
     }
 
-    /* Mini change entry inside the "With ConfigTrace" card */
     .payoff-entry {
       font-family: var(--mono); font-size: 12px;
       background: var(--bg); border: 1px solid var(--border-2);
@@ -1072,7 +1401,6 @@
       background: var(--red-dim); color: var(--red); border: 1px solid var(--red-bdr);
     }
 
-    /* Outcome bullets in the "Result" card */
     .payoff-outcomes {
       list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 0;
     }
@@ -1138,12 +1466,16 @@
       border-top: 1px solid var(--border);
     }
 
-    .final-cta h2 { max-width: 22ch; margin: 0 auto 18px; }
+    .final-cta h2 { max-width: 24ch; margin: 0 auto 18px; }
     .final-cta .section-sub { margin: 0 auto 38px; text-align: center; }
     .final-cta .section-label { text-align: center; }
 
+    .final-cta-btns {
+      display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+    }
+
     .cta-sub-text {
-      margin-top: 18px;
+      margin-top: 22px;
       font-family: var(--mono); font-size: 12px; color: var(--text-3); line-height: 1.6;
     }
 
@@ -1172,7 +1504,7 @@
       font-size: 9px; font-weight: 700; color: #fff;
     }
 
-    .footer-tagline { font-size: 13px; color: var(--text-3); max-width: 28ch; line-height: 1.55; }
+    .footer-tagline { font-size: 13px; color: var(--text-3); max-width: 30ch; line-height: 1.6; }
 
     .footer-col { display: flex; flex-direction: column; gap: 6px; }
 
@@ -1200,141 +1532,11 @@
       .three-min-section { padding: 40px 0 44px; }
       h1 { letter-spacing: -1.5px; }
       .hero-ctas .btn { width: 100%; justify-content: center; }
+      .demo-cta-btns .btn,
+      .final-cta-btns .btn { width: 100%; justify-content: center; }
       .product-mock { border-radius: 12px; }
       .mock-alert-right { display: none; }
       .mock-appnav-tabs { display: none; }
-    }
-
-    /* =====================================================================
-       PROVIDER ICON CHIPS (mock)
-       ===================================================================== */
-    .mock-providers-row {
-      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-    }
-
-    .mock-prov-chip {
-      display: flex; align-items: center; gap: 5px;
-      font-family: var(--mono); font-size: 11px; color: var(--text);
-      font-weight: 500;
-    }
-
-    .mock-prov-icon {
-      width: 18px; height: 18px; border-radius: 3px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 8px; font-weight: 700; color: #fff; flex-shrink: 0;
-    }
-
-    /* =====================================================================
-       7-PROVIDER GRID
-       ===================================================================== */
-    .providers-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    @media (max-width: 900px) { .providers-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 560px) { .providers-grid { grid-template-columns: 1fr; } }
-
-    .provider-card {
-      background: var(--bg-2);
-      border: 1px solid var(--border-2);
-      border-radius: 12px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .provider-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    }
-
-    .provider-card-hdr {
-      padding: 16px 18px 14px;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: flex-start; gap: 12px;
-    }
-
-    .provider-icon-box {
-      width: 32px; height: 32px; border-radius: 7px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--mono); font-size: 11px; font-weight: 700;
-      color: #fff; flex-shrink: 0;
-    }
-
-    .provider-name-block { flex: 1; min-width: 0; }
-
-    .provider-name {
-      font-family: var(--mono); font-size: 14px; font-weight: 700;
-      color: var(--text); margin-bottom: 3px;
-    }
-
-    .provider-live-tag {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-family: var(--mono); font-size: 10px; color: var(--green);
-      background: var(--green-dim); border: 1px solid var(--green-bdr);
-      border-radius: 4px; padding: 2px 7px;
-    }
-
-    .provider-live-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green); }
-
-    .provider-desc {
-      padding: 12px 18px;
-      font-size: 13px; color: var(--text-2); line-height: 1.6; font-weight: 300;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .provider-monitors { padding: 12px 18px; }
-
-    .provider-monitors-label {
-      font-family: var(--mono); font-size: 10px; text-transform: uppercase;
-      letter-spacing: 1.5px; color: var(--text-3); margin-bottom: 8px;
-    }
-
-    .provider-monitors-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
-
-    .provider-monitors-list li {
-      display: flex; align-items: flex-start; gap: 7px;
-      font-size: 12.5px; color: var(--text-2); line-height: 1.45;
-    }
-
-    .provider-monitors-list li::before {
-      content: '→'; font-family: var(--mono); font-size: 11px;
-      flex-shrink: 0; margin-top: 1px;
-    }
-
-    /* =====================================================================
-       TRUST SECTION
-       ===================================================================== */
-    .trust-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 12px;
-    }
-
-    .trust-card {
-      background: var(--bg-3); border: 1px solid var(--border);
-      border-radius: 10px; padding: 18px 18px;
-    }
-
-    .trust-provider-name {
-      font-family: var(--mono); font-size: 12px; font-weight: 700;
-      color: var(--text); margin-bottom: 8px;
-      display: flex; align-items: center; gap: 7px;
-    }
-
-    .trust-dot {
-      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
-    }
-
-    .trust-not-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
-
-    .trust-not-list li {
-      display: flex; align-items: flex-start; gap: 7px;
-      font-size: 12px; color: var(--text-3); line-height: 1.45;
-    }
-
-    .trust-not-x {
-      font-family: var(--mono); font-size: 10px; color: var(--red);
-      font-weight: 700; flex-shrink: 0; margin-top: 2px;
     }
   </style>
 </head>
@@ -1351,15 +1553,16 @@
     </a>
 
     <div class="nav-links">
-      <a href="#problem">Problem</a>
-      <a href="#watches">Providers</a>
-      <a href="#how">How it works</a>
-      <a href="#status">Status</a>
-      <a href="docs.html">Docs</a>
+      <a href="#worldview">Worldview</a>
+      <a href="#platform">Platform</a>
+      <a href="#providers">Providers</a>
+      <a href="#alerts">Alerts</a>
+      <a href="#remediation">Remediation</a>
       <a href="demo.html">Demo</a>
-      <a href="#about">About</a>
+      <a href="docs.html">Docs</a>
+      <a href="#trust">Trust</a>
       <a href="https://app.configtrace.org" class="nav-open-app"
-         target="_blank" rel="noopener noreferrer">Open app →</a>
+         target="_blank" rel="noopener noreferrer">Start monitoring →</a>
     </div>
 
     <button class="nav-toggle" id="navToggle" aria-label="Open navigation" aria-expanded="false">
@@ -1368,14 +1571,16 @@
   </div>
 
   <div class="nav-mobile" id="navMobile" aria-hidden="true">
-    <a href="#problem">Problem</a>
-    <a href="#watches">Providers</a>
-    <a href="#how">How it works</a>
-    <a href="#status">Status</a>
+    <a href="#worldview">Worldview</a>
+    <a href="#platform">Platform</a>
+    <a href="#providers">Providers</a>
+    <a href="#alerts">Alerts</a>
+    <a href="#remediation">Remediation</a>
+    <a href="demo.html">Public demo</a>
     <a href="docs.html">Docs</a>
-    <a href="demo.html">Demo</a>
+    <a href="#trust">Trust</a>
     <a href="#about">About</a>
-    <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app →</a>
+    <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Start monitoring →</a>
   </div>
 </nav>
 
@@ -1388,31 +1593,30 @@
 
     <div class="hero-badge">
       <span class="badge-dot"></span>
-      7 providers live · AWS · Firebase · Supabase · Stripe · GitHub · Cloudflare · Vercel
+      Configuration security monitoring · 8 providers
     </div>
 
     <h1>
-      Know what changed<br>
-      before it becomes<br>
-      <span class="accent">an incident.</span>
+      A security timeline for the<br>
+      settings that can break<br>
+      <span class="accent">production.</span>
     </h1>
 
     <p class="hero-sub">
-      Your code has Git history. <strong>Your production settings do not.</strong>
-      Security groups, Firestore rules, Stripe webhooks, DNS records — they change in
-      dashboards with no diff, no review, and no trail.
-      ConfigTrace gives every risky configuration change a security timeline:
-      field-level diffs, risk classification, and a clear next step —
-      across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel.
+      <strong>Your code has Git history. Your production settings do not.</strong>
+      ConfigTrace monitors risky configuration drift across cloud and SaaS tools,
+      alerts your team, explains blast radius, and helps you review or remediate
+      changes safely — across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare,
+      Vercel, and Shopify.
     </p>
 
     <div class="hero-ctas">
-      <a href="https://app.configtrace.org" class="btn btn-primary btn-lg"
-         target="_blank" rel="noopener noreferrer">
-        Start monitoring →
+      <a href="demo.html" class="btn btn-primary btn-lg">
+        View public demo →
       </a>
-      <a href="#watches" class="btn btn-ghost btn-lg">
-        See what it covers
+      <a href="https://app.configtrace.org" class="btn btn-ghost btn-lg"
+         target="_blank" rel="noopener noreferrer">
+        Start monitoring
       </a>
     </div>
 
@@ -1423,107 +1627,118 @@
       <span class="hero-step-sep">→</span>
       <span class="hero-step">Detect drift</span>
       <span class="hero-step-sep">→</span>
-      <span class="hero-step">Review risk</span>
+      <span class="hero-step">Alert team</span>
+      <span class="hero-step-sep">→</span>
+      <span class="hero-step">Review &amp; remediate</span>
     </div>
 
     <p class="hero-trust">
       <span class="live-dot" aria-hidden="true"></span>
-      All 7 providers live. Reads configuration metadata only — never customer data, secret values, or database contents.
+      Metadata-only monitoring. No customer data, source code, secret values, payment details, or database rows.
     </p>
 
-    <!-- Product mock -->
+    <!-- Hero visual: multi-provider security timeline -->
     <div class="hero-visual" aria-hidden="true">
       <div class="product-mock">
 
-        <!-- App-level nav -->
         <div class="mock-appnav">
           <span class="mock-appnav-brand">ConfigTrace</span>
           <div class="mock-appnav-tabs">
             <span class="mock-tab on">Timeline</span>
-            <span class="mock-tab">Syncs</span>
+            <span class="mock-tab">Resources</span>
+            <span class="mock-tab">Needs Review</span>
             <span class="mock-tab">Settings</span>
           </div>
         </div>
 
-        <!-- Integration row -->
         <div class="mock-topbar">
           <div class="mock-topbar-left">
-            <div class="mock-providers-row">
-              <div class="mock-prov-chip">
-                <div class="mock-prov-icon" style="background:#f48120">CF</div>
-                Cloudflare
-              </div>
-              <span class="mock-sep">·</span>
-              <div class="mock-prov-chip">
-                <div class="mock-prov-icon" style="background:#24292e;border:1px solid rgba(255,255,255,.2)">GH</div>
-                GitHub
-              </div>
-              <span class="mock-sep">·</span>
-              <div class="mock-prov-chip">
-                <div class="mock-prov-icon" style="background:#635bff">ST</div>
-                Stripe
-              </div>
-              <span class="mock-sep">·</span>
-              <div class="mock-prov-chip">
-                <div class="mock-prov-icon" style="background:#f5a623">AW</div>
-                AWS
-              </div>
-              <span class="mock-sep">·</span>
-              <div class="mock-prov-chip">
-                <div class="mock-prov-icon" style="background:#3ecf8e">SB</div>
-                Supabase
-              </div>
-            </div>
+            <span class="mock-zone">Security Timeline</span>
+            <span class="mock-zone-sep">·</span>
+            <span class="mock-zone">All providers</span>
+            <span class="mock-zone-sep">·</span>
+            <span class="mock-zone">Sync #184 · 09:42 UTC</span>
           </div>
           <div class="mock-live-badge">
             <span class="mock-live-dot"></span>
-            7 providers · sync active
+            8 providers · sync active
           </div>
         </div>
 
-        <!-- Alert -->
         <div class="mock-alert">
           <span>⚠</span>
-          <span>1 critical change detected — Sync #47</span>
-          <span class="mock-alert-right">Dec 14, 2024 · 14:32 UTC</span>
+          <span>1 critical · 2 high · 2 medium · 1 low — Sync #184</span>
+          <span class="mock-alert-right">May 27, 2026 · last sync 4 min ago</span>
         </div>
 
-        <!-- Change card -->
         <div class="mock-body">
-          <div class="mock-change-card">
+          <div class="mock-timeline">
 
-            <div class="mock-change-header">
-              <span class="mock-rec-type">CNAME</span>
-              <span class="mock-rec-name">api.example.com</span>
-              <span class="mock-risk-badge crit">Critical</span>
-            </div>
-
-            <div class="mock-diff">
-              <div class="mock-diff-row del">
-                <span class="mock-diff-sign">−</span>
-                <span class="mock-diff-key">content</span>
-                <span class="mock-diff-val">"prod.vercel.app"</span>
+            <!-- CRITICAL: AWS SSH exposed -->
+            <div class="mock-tl-entry tl-crit">
+              <div class="mock-tl-row">
+                <span class="mock-risk-badge crit">Critical</span>
+                <div class="mock-prov-icon-sm" style="background:#f5a623">AW</div>
+                <span class="mock-prov-name-sm">AWS</span>
+                <span class="mock-tl-detail">SecurityGroup sg-prod-web · ingress 22/tcp</span>
               </div>
-              <div class="mock-diff-row add">
-                <span class="mock-diff-sign">+</span>
-                <span class="mock-diff-key">content</span>
-                <span class="mock-diff-val">"staging.vercel.app"</span>
+              <div class="mock-tl-diff">
+                <span class="mock-tl-del">−  ip_ranges: ["10.0.0.0/8"]</span>
+                <span class="mock-tl-add">+  ip_ranges: ["0.0.0.0/0"]</span>
               </div>
-              <div class="mock-diff-row del">
-                <span class="mock-diff-sign">−</span>
-                <span class="mock-diff-key">ttl</span>
-                <span class="mock-diff-val">3600</span>
-              </div>
-              <div class="mock-diff-row add">
-                <span class="mock-diff-sign">+</span>
-                <span class="mock-diff-key">ttl</span>
-                <span class="mock-diff-val">60</span>
+              <div class="mock-tl-reason">
+                SSH port may now be reachable from the public internet. Potential blast radius: every EC2 instance attached to this group.
               </div>
             </div>
 
-            <div class="mock-risk-reason">
-              <span class="mock-risk-icon">⚡</span>
-              Production API traffic is being routed to a staging endpoint. Live users may be affected immediately.
+            <!-- HIGH: Supabase RLS disabled -->
+            <div class="mock-tl-entry">
+              <div class="mock-tl-row">
+                <span class="mock-risk-badge high">High</span>
+                <div class="mock-prov-icon-sm" style="background:#3ecf8e;color:#1a1a1a">SB</div>
+                <span class="mock-prov-name-sm">Supabase</span>
+                <span class="mock-tl-detail">RLS policy on public.user_files · removed</span>
+              </div>
+            </div>
+
+            <!-- HIGH: Stripe webhook changed -->
+            <div class="mock-tl-entry">
+              <div class="mock-tl-row">
+                <span class="mock-risk-badge high">High</span>
+                <div class="mock-prov-icon-sm" style="background:#635bff">ST</div>
+                <span class="mock-prov-name-sm">Stripe</span>
+                <span class="mock-tl-detail">Webhook payment-events · URL changed</span>
+              </div>
+            </div>
+
+            <!-- MEDIUM: GitHub environment protection weakened -->
+            <div class="mock-tl-entry">
+              <div class="mock-tl-row">
+                <span class="mock-risk-badge med">Medium</span>
+                <div class="mock-prov-icon-sm" style="background:#24292e;border:1px solid rgba(255,255,255,.2)">GH</div>
+                <span class="mock-prov-name-sm">GitHub</span>
+                <span class="mock-tl-detail">Environment "production" · required reviewers removed</span>
+              </div>
+            </div>
+
+            <!-- MEDIUM: Cloudflare WAF reduced -->
+            <div class="mock-tl-entry">
+              <div class="mock-tl-row">
+                <span class="mock-risk-badge med">Medium</span>
+                <div class="mock-prov-icon-sm" style="background:#f48120">CF</div>
+                <span class="mock-prov-name-sm">Cloudflare</span>
+                <span class="mock-tl-detail">WAF rule "Bot Fight Mode" · disabled</span>
+              </div>
+            </div>
+
+            <!-- LOW: Vercel deploy hook -->
+            <div class="mock-tl-entry">
+              <div class="mock-tl-row">
+                <span class="mock-risk-badge low">Low</span>
+                <div class="mock-prov-icon-sm" style="background:#1a1a1a;border:1px solid rgba(255,255,255,.25)">VC</div>
+                <span class="mock-prov-name-sm">Vercel</span>
+                <span class="mock-tl-detail">Deploy hook "preview-trigger" · created</span>
+              </div>
             </div>
 
           </div>
@@ -1531,11 +1746,12 @@
 
         <div class="mock-footer">
           <span class="mock-stats">
-            2 records changed · <span class="c">1 critical</span> · 1 high
+            6 changes · <span class="c">1 critical</span> · <span class="h">2 high</span> · 2 medium · 1 low
           </span>
           <div class="mock-actions">
-            <span class="mock-btn">View timeline</span>
+            <span class="mock-btn">Filter</span>
             <span class="mock-btn">Sync now</span>
+            <span class="mock-btn">Export</span>
           </div>
         </div>
 
@@ -1559,38 +1775,42 @@
         <span class="three-min-check" aria-hidden="true">✓</span>
         <div class="three-min-title">A baseline snapshot</div>
         <div class="three-min-desc">
-          Capture your current configuration across any supported provider — AWS, Firebase,
-          Supabase, Stripe, GitHub, Cloudflare, or Vercel — as your known-good state.
+          Capture your current configuration across AWS, Firebase, Supabase,
+          Stripe, GitHub, Cloudflare, Vercel, or Shopify as your known-good
+          starting point.
         </div>
       </div>
 
       <div class="three-min-item">
         <span class="three-min-num">02</span>
         <span class="three-min-check" aria-hidden="true">✓</span>
-        <div class="three-min-title">Automatic syncs</div>
+        <div class="three-min-title">Scheduled drift detection</div>
         <div class="three-min-desc">
-          ConfigTrace re-syncs connected providers on a schedule and diffs against the last known state.
-          Manual Sync Now is always available.
+          ConfigTrace re-syncs connected providers on a schedule and diffs
+          field-by-field against the previous state. Sync Now is always
+          available on demand.
         </div>
       </div>
 
       <div class="three-min-item">
         <span class="three-min-num">03</span>
         <span class="three-min-check" aria-hidden="true">✓</span>
-        <div class="three-min-title">A timeline of every change</div>
+        <div class="three-min-title">A risk-classified timeline</div>
         <div class="three-min-desc">
-          Added, removed, and modified configuration across all providers — each surfaced with
-          old value, new value, and timestamp.
+          Every change is labelled low, medium, high, or critical based on
+          blast radius — not just whether something moved. Triage at a glance,
+          not after the incident.
         </div>
       </div>
 
       <div class="three-min-item">
         <span class="three-min-num">04</span>
         <span class="three-min-check" aria-hidden="true">✓</span>
-        <div class="three-min-title">Risk labels on every change</div>
+        <div class="three-min-title">Alerts, review, and remediation</div>
         <div class="three-min-desc">
-          Low, medium, high, or critical based on blast radius — not just whether
-          something changed. Triage at a glance, not after the fact.
+          Slack, email, webhook, and browser push alerts. A Needs Review
+          queue, change rooms, fix plan previews, and admin-gated GitHub
+          draft PRs.
         </div>
       </div>
 
@@ -1600,25 +1820,26 @@
 
 
 <!-- ──────────────────────────────────────────────────────────────────────
-     PROBLEM
+     WORLDVIEW / PROBLEM
      ────────────────────────────────────────────────────────────────────── -->
-<section id="problem">
+<section id="worldview">
   <div class="container">
     <div class="problem-grid">
 
       <div>
-        <span class="section-label">The blind spot</span>
-        <div class="problem-statement">Production incidents don't start in Git.</div>
+        <span class="section-label">The worldview</span>
+        <div class="problem-statement">Your code has Git history. Your settings do not.</div>
         <p class="problem-body">
-          Code changes go through pull requests, code review, and CI/CD.
-          But <strong>configuration changes bypass all of that.</strong>
-          They happen in dashboards, CLIs, and vendor portals — with no history,
-          no diff, and no way to trace them after the fact.
+          Production does not only break because code changes.
+          It breaks because <strong>someone changed a setting outside Git</strong> —
+          in a cloud console, a vendor dashboard, a CLI, or a misconfigured Terraform run.
+          Code reviews don't see it. CI/CD doesn't catch it. Logs only show the symptom.
         </p>
         <br>
         <p class="problem-body">
-          Your code has a reviewable history. <strong>Production settings do not.</strong>
-          When something breaks, the answer is almost never in Git.
+          ConfigTrace gives those changes a timeline,
+          a risk engine, a review workflow, and a remediation path —
+          the same discipline Git gives source code.
         </p>
       </div>
 
@@ -1627,50 +1848,57 @@
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>AWS security group opened to 0.0.0.0/0</strong>
+              <strong>AWS security group opened to the internet</strong>
               An inbound rule widened in the console. No ticket, no review, no trail.
             </div>
           </li>
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>Firebase Firestore rules weakened</strong>
-              A rule change made a collection publicly readable. Discovered days later.
+              <strong>Stripe webhook URL silently changed</strong>
+              Payment events start routing elsewhere. Reconciliation breaks days later.
             </div>
           </li>
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>Stripe webhook endpoint silently dropped</strong>
-              Payment events stopped delivering. No one knew the endpoint had been deleted.
+              <strong>GitHub branch protection weakened</strong>
+              Required reviewers removed on the production environment. Direct pushes go undetected.
             </div>
           </li>
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>Cloudflare DNS record rerouted</strong>
-              Production API traffic pointed at staging. Users started hitting errors.
+              <strong>Supabase RLS policy disabled</strong>
+              A row-level security policy is dropped. Data exposure found during audit.
             </div>
           </li>
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>GitHub branch protection disabled</strong>
-              Direct pushes to main went undetected for weeks until the next incident review.
+              <strong>Cloudflare WAF rule removed</strong>
+              A bot-fight or rate-limit rule gets disabled. Attack surface widens with no signal.
             </div>
           </li>
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>Supabase RLS policy removed</strong>
-              A row-level security policy was dropped. Data exposure found during audit.
+              <strong>Firebase Firestore rules loosened</strong>
+              A rule change makes a collection publicly readable. Discovered days later.
             </div>
           </li>
           <li>
             <span class="blind-x">×</span>
             <div>
-              <strong>Vercel environment variable changed</strong>
-              A production variable was overwritten in the dashboard. Build failures followed.
+              <strong>Vercel production branch changed</strong>
+              A project's production source branch silently flips. Deployments stop matching main.
+            </div>
+          </li>
+          <li>
+            <span class="blind-x">×</span>
+            <div>
+              <strong>Shopify checkout webhook dropped</strong>
+              An order-notification endpoint stops delivering. Order pipelines go quietly stale.
             </div>
           </li>
         </ul>
@@ -1682,57 +1910,163 @@
 
 
 <!-- ──────────────────────────────────────────────────────────────────────
+     PRODUCT LOOP
+     ────────────────────────────────────────────────────────────────────── -->
+<section class="alt" id="platform">
+  <div class="container">
+    <span class="section-label">The platform</span>
+    <h2>Detect. Explain. Alert. Review. Remediate. Prove trust.</h2>
+    <p class="section-sub">
+      ConfigTrace is a closed loop across the lifecycle of a risky configuration
+      change — from the moment it happens, to the moment it's reviewed, fixed,
+      and explained back to your team and customers.
+    </p>
+
+    <div class="loop-grid">
+
+      <!-- 1: Detect -->
+      <div class="loop-step">
+        <span class="loop-step-num">01 · DETECT</span>
+        <div class="loop-step-phase">Detect drift</div>
+        <ul class="loop-step-features">
+          <li>8 provider integrations</li>
+          <li>Scheduled background sync</li>
+          <li>Baseline snapshots per provider</li>
+          <li>Field-level diff vs. last known state</li>
+          <li>Resources inventory across providers</li>
+        </ul>
+      </div>
+
+      <!-- 2: Explain -->
+      <div class="loop-step">
+        <span class="loop-step-num">02 · EXPLAIN</span>
+        <div class="loop-step-phase">Explain impact</div>
+        <ul class="loop-step-features">
+          <li>Risk classification (low → critical)</li>
+          <li>Blast radius view</li>
+          <li>Change correlation &amp; risk clusters</li>
+          <li>Controlled Ask ConfigTrace assistant</li>
+          <li>Plain-English "why this matters"</li>
+        </ul>
+      </div>
+
+      <!-- 3: Alert -->
+      <div class="loop-step">
+        <span class="loop-step-num">03 · ALERT</span>
+        <div class="loop-step-phase">Alert the team</div>
+        <ul class="loop-step-features">
+          <li>Email digests of high &amp; critical drift</li>
+          <li>Slack App with interactive buttons</li>
+          <li>Generic webhooks for any system</li>
+          <li>Browser / PWA push notifications</li>
+          <li>Routing per workspace and severity</li>
+        </ul>
+      </div>
+
+      <!-- 4: Review -->
+      <div class="loop-step">
+        <span class="loop-step-num">04 · REVIEW</span>
+        <div class="loop-step-phase">Review safely</div>
+        <ul class="loop-step-features">
+          <li>Needs Review queue</li>
+          <li>Acknowledge, snooze, or escalate</li>
+          <li>Incident-style change rooms</li>
+          <li>Notes &amp; activity log per change</li>
+          <li>Expected change windows for noise control</li>
+        </ul>
+      </div>
+
+      <!-- 5: Remediate -->
+      <div class="loop-step">
+        <span class="loop-step-num">05 · REMEDIATE</span>
+        <div class="loop-step-phase">Remediate with review</div>
+        <ul class="loop-step-features">
+          <li>Plain-English remediation guidance</li>
+          <li>Fix plan preview</li>
+          <li>Dry-run remediation preview</li>
+          <li>Terraform fix suggestion preview (IaC mapping)</li>
+          <li>Admin-gated, review-first GitHub draft PRs</li>
+        </ul>
+      </div>
+
+      <!-- 6: Prove trust -->
+      <div class="loop-step">
+        <span class="loop-step-num">06 · PROVE TRUST</span>
+        <div class="loop-step-phase">Prove trust</div>
+        <ul class="loop-step-features">
+          <li>Provider Trust Center per workspace</li>
+          <li>Security packet export</li>
+          <li>Weekly security digest</li>
+          <li>Drift Control Score</li>
+          <li>Policy engine &amp; approval workflows</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="loop-arrow-row" aria-hidden="true">
+      <span>Detect</span><span class="a">→</span>
+      <span>Explain</span><span class="a">→</span>
+      <span>Alert</span><span class="a">→</span>
+      <span>Review</span><span class="a">→</span>
+      <span>Remediate</span><span class="a">→</span>
+      <span>Prove trust</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
      BEFORE / AFTER
      ────────────────────────────────────────────────────────────────────── -->
-<section class="alt" id="beforeafter">
+<section id="beforeafter">
   <div class="container">
     <span class="section-label">The difference</span>
     <h2>From "something changed" to exactly what.</h2>
     <p class="section-sub">
-      Without ConfigTrace, a production incident starts with a question nobody
-      can answer. With it, the answer is already there.
+      Without a security timeline, a production incident starts with a question
+      nobody can answer. With one, the answer is already there.
     </p>
 
     <div class="ba-grid">
 
-      <!-- BEFORE -->
       <div class="ba-panel before">
         <div class="ba-header">
           <span aria-hidden="true">✕</span> Before · Without ConfigTrace
         </div>
         <div class="ba-body">
           <p class="ba-before-text">
-            "Prod is down. Did code change?
-            Did DNS change? Did someone
-            touch Cloudflare? Who has
-            access? When did it happen?"
+            "Prod is degraded. Did code ship?
+            Did DNS change? Did someone touch
+            Cloudflare or Stripe? Was a
+            webhook moved? Who has access?
+            When did it happen?"
           </p>
           <div class="ba-before-status">
             <span class="ba-status-dot"></span>
-            Incident open · time to root cause unknown
+            Incident open · root cause unknown · multiple consoles to check
           </div>
         </div>
       </div>
 
-      <!-- AFTER -->
       <div class="ba-panel after">
         <div class="ba-header">
           <span aria-hidden="true">✓</span> After · With ConfigTrace
         </div>
         <div class="ba-body">
-          <div class="ba-after-time">Dec 14, 2024 · 14:32:04 UTC — Sync #47</div>
+          <div class="ba-after-time">May 27, 2026 · 09:42 UTC — Sync #184</div>
           <div class="ba-after-record">
-            <span class="ba-rec-type">CNAME</span>
-            <span class="ba-rec-name">api.example.com</span>
+            <span class="ba-rec-type">AWS</span>
+            <span class="ba-rec-name">SecurityGroup sg-prod-web · ingress 22/tcp</span>
             <span class="ba-crit">Critical</span>
           </div>
           <div class="ba-diff">
-            <span class="ba-del">− "prod.vercel.app"</span>
-            <span class="ba-add">+ "staging.vercel.app"</span>
+            <span class="ba-del">−  ip_ranges: ["10.0.0.0/8"]</span>
+            <span class="ba-add">+  ip_ranges: ["0.0.0.0/0"]</span>
           </div>
           <div class="ba-after-reason">
             <span class="ba-after-icon">✓</span>
-            Production API rerouted to staging. Detected automatically. No manual triage required.
+            SSH widened to the public internet. Detected, classified, routed to Slack and email, queued for review.
           </div>
         </div>
       </div>
@@ -1743,212 +2077,22 @@
 
 
 <!-- ──────────────────────────────────────────────────────────────────────
-     DEMO
+     PROVIDER COVERAGE
      ────────────────────────────────────────────────────────────────────── -->
-<section id="demo">
-  <div class="container">
-    <span class="section-label">See it in action</span>
-    <h2>The full picture, at a glance.</h2>
-    <p class="section-sub">
-      ConfigTrace surfaces exactly what changed, when it changed, and what risk
-      it carries — so your team has a clear record to work from, not just a
-      feeling that something must have moved.
-    </p>
-
-    <div class="demo-panels">
-
-      <!-- Timeline -->
-      <div class="demo-panel">
-        <div class="demo-panel-header">
-          <span class="demo-panel-title">Sync timeline · example.com</span>
-        </div>
-        <div class="demo-panel-body">
-          <div class="tl-entry">
-            <div class="tl-dot ok"><span class="tl-dot-inner"></span></div>
-            <div>
-              <div class="tl-label">Baseline created</div>
-              <div class="tl-meta">Sync #1 · 87 records snapshotted · Dec 12, 09:00</div>
-            </div>
-          </div>
-          <div class="tl-entry">
-            <div class="tl-dot ok"><span class="tl-dot-inner"></span></div>
-            <div>
-              <div class="tl-label">No changes detected</div>
-              <div class="tl-meta">Sync #44 · 87 records · Dec 14, 10:00</div>
-            </div>
-          </div>
-          <div class="tl-entry">
-            <div class="tl-dot ok"><span class="tl-dot-inner"></span></div>
-            <div>
-              <div class="tl-label">No changes detected</div>
-              <div class="tl-meta">Sync #45 · 87 records · Dec 14, 11:00</div>
-            </div>
-          </div>
-          <div class="tl-entry">
-            <div class="tl-dot warn"><span class="tl-dot-inner"></span></div>
-            <div>
-              <div class="tl-label">1 medium change</div>
-              <div class="tl-meta">Sync #46 · TXT record added · Dec 14, 12:00</div>
-            </div>
-          </div>
-          <div class="tl-entry">
-            <div class="tl-dot crit"><span class="tl-dot-inner"></span></div>
-            <div>
-              <div class="tl-label">1 critical — CNAME rerouted</div>
-              <div class="tl-meta">Sync #47 · api.example.com · Dec 14, 14:32</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Diff panel -->
-      <div class="demo-panel">
-        <div class="demo-panel-header">
-          <span class="demo-panel-title">Field-level diff · Sync #47</span>
-        </div>
-        <div class="demo-panel-body">
-          <div class="diff-block">
-            <div class="dl ctx"><span class="s">&nbsp;</span><span>CNAME&nbsp; api.example.com</span></div>
-            <div class="dl del"><span class="s">−</span><span>&nbsp;&nbsp;<span class="k">content</span>&nbsp; "prod.vercel.app"</span></div>
-            <div class="dl add"><span class="s">+</span><span>&nbsp;&nbsp;<span class="k">content</span>&nbsp; "staging.vercel.app"</span></div>
-            <div class="dl del"><span class="s">−</span><span>&nbsp;&nbsp;<span class="k">ttl</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3600</span></div>
-            <div class="dl add"><span class="s">+</span><span>&nbsp;&nbsp;<span class="k">ttl</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 60</span></div>
-            <div class="dl ctx"><span class="s">&nbsp;</span><span></span></div>
-            <div class="dl ctx"><span class="s">&nbsp;</span><span>TXT&nbsp;&nbsp;&nbsp; _dmarc.example.com</span></div>
-            <div class="dl add"><span class="s">+</span><span>&nbsp;&nbsp;<span class="k">content</span>&nbsp; "v=DMARC1; p=none; rua=..."</span></div>
-            <div class="dl ctx"><span class="s">&nbsp;</span><span></span></div>
-            <div class="dl ctx" style="color:var(--text-3)">
-              <span class="s">&nbsp;</span>
-              <span>→ 2 changes · 1 critical · 1 medium</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ──────────────────────────────────────────────────────────────────────
-     HOW IT WORKS
-     ────────────────────────────────────────────────────────────────────── -->
-<section class="alt" id="how">
-  <div class="container">
-    <span class="section-label">The full flow</span>
-    <h2>Snapshot. Diff. Risk-assess. Repeat.</h2>
-    <p class="section-sub">
-      ConfigTrace treats your live infrastructure like a repository.
-      Every sync is a commit. Every change is reviewable.
-      Manual Sync Now is always available alongside the hourly schedule.
-    </p>
-
-    <div class="steps-grid">
-      <div class="step">
-        <div class="step-num">01 · CONNECT</div>
-        <h3>Connect a provider</h3>
-        <p>Add credentials for any supported provider — AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, or Vercel. Credentials are encrypted before storage and never shown again.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">02 · BASELINE</div>
-        <h3>Create a baseline</h3>
-        <p>The first sync snapshots your current configuration — every DNS record, security rule, webhook, and policy — as your known-good baseline.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">03 · SYNC</div>
-        <h3>Sync on a schedule or manually</h3>
-        <p>ConfigTrace syncs your connected providers on your plan's schedule. Hit Sync Now anytime to check for changes on demand, without waiting.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">04 · DIFF</div>
-        <h3>Detect field-level changes</h3>
-        <p>Every sync is diffed against the previous state. Exactly what changed surfaces: the old value, the new value, and when.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">05 · CLASSIFY</div>
-        <h3>Classify change risk</h3>
-        <p>Each change is scored low to critical based on blast radius. A changed TXT comment is not the same as an opened security group or a removed Firestore rule.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">06 · REVIEW</div>
-        <h3>Review the timeline</h3>
-        <p>A clear change timeline shows what happened, when, and what it affected — so "what changed?" gets answered in seconds, across every provider.</p>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ──────────────────────────────────────────────────────────────────────
-     GIT TRACKS CODE — ConfigTrace tracks the rest
-     ────────────────────────────────────────────────────────────────────── -->
-<section id="git-config">
-  <div class="container">
-    <span class="section-label">The coverage gap</span>
-    <h2>Git tracks code. ConfigTrace tracks the rest.</h2>
-    <p class="section-sub">
-      Your repo already has commit history, pull request reviews, and branch diffs.
-      But production also depends on DNS records, branch protection rules, webhook URLs,
-      repository variables, secrets metadata, and deployment settings —
-      <strong>none of which live in a file.</strong>
-      ConfigTrace gives those changes the same discipline Git gives code: baseline, diff, risk label, timeline.
-    </p>
-
-    <div class="git-contrast-grid">
-
-      <div class="git-contrast-panel git-side">
-        <div class="git-contrast-hdr">
-          <span aria-hidden="true">✓</span> Already tracked by Git
-        </div>
-        <div class="git-contrast-body">
-          <ul class="git-contrast-list">
-            <li><span class="git-contrast-icon">·</span> Commits and file changes</li>
-            <li><span class="git-contrast-icon">·</span> Pull requests and code reviews</li>
-            <li><span class="git-contrast-icon">·</span> Branch merges and release tags</li>
-            <li><span class="git-contrast-icon">·</span> Source code history</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="git-contrast-panel ct-side">
-        <div class="git-contrast-hdr">
-          <span aria-hidden="true">✓</span> Now tracked by ConfigTrace
-        </div>
-        <div class="git-contrast-body">
-          <ul class="git-contrast-list">
-            <li><span class="git-contrast-icon">→</span> DNS records and routing rules (Cloudflare)</li>
-            <li><span class="git-contrast-icon">→</span> Branch protection and webhook settings (GitHub)</li>
-            <li><span class="git-contrast-icon">→</span> Security group rules and IAM policies (AWS)</li>
-            <li><span class="git-contrast-icon">→</span> Firestore, Storage, and Realtime DB security rules (Firebase)</li>
-            <li><span class="git-contrast-icon">→</span> Row-level security policies and auth config (Supabase)</li>
-            <li><span class="git-contrast-icon">→</span> Webhook endpoints and product settings (Stripe)</li>
-            <li><span class="git-contrast-icon">→</span> Environment variables and deployment config (Vercel)</li>
-          </ul>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ──────────────────────────────────────────────────────────────────────
-     WHAT IT WATCHES
-     ────────────────────────────────────────────────────────────────────── -->
-<section class="alt" id="watches">
+<section class="alt" id="providers">
   <div class="container">
     <span class="section-label">Coverage</span>
-    <h2>7 providers. Every field tracked.</h2>
+    <h2>8 providers. The settings that actually break production.</h2>
     <p class="section-sub">
-      All 7 providers are live. Every sync is diffed field-by-field against the last known state —
+      Every sync is diffed field-by-field against the last known state —
       so you see exactly what changed, not just that something did.
+      ConfigTrace reads configuration metadata only.
     </p>
 
     <div class="providers-grid">
 
       <!-- AWS -->
-      <div class="provider-card" style="--prov-color:#f5a623">
+      <div class="provider-card">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#f5a623"></div>
         <div class="provider-card-hdr">
           <div class="provider-icon-box" style="background:#f5a623">AW</div>
@@ -1958,13 +2102,14 @@
           </div>
         </div>
         <div class="provider-desc">
-          Connect with an IAM user or role scoped to read-only access. ConfigTrace monitors
-          security configuration that controls who can reach your infrastructure.
+          Connect with an IAM user or role scoped to read-only access.
+          ConfigTrace monitors the security configuration that controls who can
+          reach your infrastructure.
         </div>
         <div class="provider-monitors">
           <div class="provider-monitors-label">Monitors</div>
           <ul class="provider-monitors-list">
-            <li>EC2 security group inbound/outbound rules</li>
+            <li>EC2 security group inbound / outbound rules</li>
             <li>IAM policy documents and attached policies</li>
             <li>Route 53 DNS record sets</li>
             <li>S3 bucket policies and public access settings</li>
@@ -1983,8 +2128,9 @@
           </div>
         </div>
         <div class="provider-desc">
-          Connect a Firebase project with a service account. ConfigTrace tracks the security
-          rules that control who can read and write your data.
+          Connect a Firebase project with a service account. ConfigTrace tracks
+          the security rules and project settings that control who can read and
+          write your data.
         </div>
         <div class="provider-monitors">
           <div class="provider-monitors-label">Monitors</div>
@@ -2008,8 +2154,8 @@
           </div>
         </div>
         <div class="provider-desc">
-          Connect with your Supabase management API key. ConfigTrace tracks the policies
-          that control database access and authentication behavior.
+          Connect with your Supabase management API key. ConfigTrace tracks
+          the policies that control database access and authentication behavior.
         </div>
         <div class="provider-monitors">
           <div class="provider-monitors-label">Monitors</div>
@@ -2033,8 +2179,8 @@
           </div>
         </div>
         <div class="provider-desc">
-          Connect with a restricted API key. ConfigTrace monitors the webhook endpoints
-          and product settings your payment flow depends on.
+          Connect with a restricted API key. ConfigTrace monitors the webhook
+          endpoints and product settings your payment flow depends on.
         </div>
         <div class="provider-monitors">
           <div class="provider-monitors-label">Monitors</div>
@@ -2058,15 +2204,16 @@
           </div>
         </div>
         <div class="provider-desc">
-          Connect a repository with a personal access token. ConfigTrace monitors settings
-          that are invisible to Git — not code, but the rules that govern your repo.
+          Connect a repository with a personal access token or GitHub App.
+          ConfigTrace monitors settings that are invisible to Git —
+          not code, but the rules that govern your repo.
         </div>
         <div class="provider-monitors">
           <div class="provider-monitors-label">Monitors</div>
           <ul class="provider-monitors-list">
             <li>Branch protection rules and required checks</li>
-            <li>Repo visibility and settings</li>
-            <li>Webhooks, secrets metadata, and variables</li>
+            <li>Environment protection rules and reviewers</li>
+            <li>Webhooks, secret names, and variables</li>
             <li>Deploy keys and Actions permissions</li>
           </ul>
         </div>
@@ -2083,14 +2230,16 @@
           </div>
         </div>
         <div class="provider-desc">
-          Connect a zone with a scoped API token. ConfigTrace monitors every DNS record —
-          any reroute, deletion, or TTL change is detected and risk-classified immediately.
+          Connect a zone with a scoped API token. ConfigTrace monitors every
+          DNS record and WAF rule — any reroute, deletion, or weakened rule
+          is detected and risk-classified.
         </div>
         <div class="provider-monitors">
           <div class="provider-monitors-label">Monitors</div>
           <ul class="provider-monitors-list">
             <li>A, AAAA, CNAME, MX, TXT, NS records</li>
             <li>TTL and Cloudflare proxy status per record</li>
+            <li>WAF rules and firewall settings</li>
             <li>SRV, CAA, and other record types</li>
           </ul>
         </div>
@@ -2107,16 +2256,41 @@
           </div>
         </div>
         <div class="provider-desc">
-          Connect with a Vercel API token. ConfigTrace monitors the project settings and
-          environment configuration your deployments depend on.
+          Connect with a Vercel API token. ConfigTrace monitors the project
+          settings and deployment configuration your production builds depend on.
         </div>
         <div class="provider-monitors">
           <div class="provider-monitors-label">Monitors</div>
           <ul class="provider-monitors-list">
             <li>Environment variable names and targets</li>
+            <li>Deploy hooks and production branch</li>
             <li>Project settings and framework config</li>
-            <li>Custom domains and redirects</li>
-            <li>Deployment protection and team settings</li>
+            <li>Custom domains and deployment protection</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Shopify -->
+      <div class="provider-card">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#96bf48"></div>
+        <div class="provider-card-hdr">
+          <div class="provider-icon-box" style="background:#96bf48;color:#1a1a1a">SH</div>
+          <div class="provider-name-block">
+            <div class="provider-name">Shopify</div>
+            <span class="provider-live-tag"><span class="provider-live-dot"></span>Live</span>
+          </div>
+        </div>
+        <div class="provider-desc">
+          Connect with a Shopify API access token. ConfigTrace monitors the
+          webhook configuration and shop settings your order and payment flows
+          depend on.
+        </div>
+        <div class="provider-monitors">
+          <div class="provider-monitors-label">Monitors</div>
+          <ul class="provider-monitors-list">
+            <li>Webhook endpoints and subscribed topics</li>
+            <li>Checkout and shop settings</li>
+            <li>Payment gateway configuration metadata</li>
           </ul>
         </div>
       </div>
@@ -2127,102 +2301,148 @@
 
 
 <!-- ──────────────────────────────────────────────────────────────────────
-     TRUST / DATA MINIMIZATION
+     PUBLIC DEMO CTA
      ────────────────────────────────────────────────────────────────────── -->
-<section id="trust">
+<section id="demo">
   <div class="container">
-    <span class="section-label">Data minimization</span>
-    <h2>Built for metadata, not customer data.</h2>
+    <div class="demo-cta-card">
+      <span class="demo-cta-label">Public demo · no signup</span>
+      <h2>Try the public demo risk timeline.</h2>
+      <p class="demo-cta-card-sub">
+        A synthetic timeline showing risky drift across AWS, Firebase, Supabase,
+        Stripe, GitHub, Cloudflare, Vercel, and Shopify — exactly as it appears
+        inside ConfigTrace. Field-level diffs, risk classification, and a clear
+        next step.
+      </p>
+      <div class="demo-cta-btns">
+        <a href="demo.html" class="btn btn-primary btn-lg">
+          View public demo →
+        </a>
+        <a href="https://app.configtrace.org" class="btn btn-ghost btn-lg"
+           target="_blank" rel="noopener noreferrer">
+          Start monitoring
+        </a>
+      </div>
+      <div class="demo-cta-providers">
+        8 providers · synthetic data · no account required
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     ALERTS &amp; WORKFLOW
+     ────────────────────────────────────────────────────────────────────── -->
+<section class="alt" id="alerts">
+  <div class="container">
+    <span class="section-label">Alerts &amp; workflow</span>
+    <h2>Get the change in the room where decisions happen.</h2>
     <p class="section-sub">
-      ConfigTrace reads only configuration metadata — the rules, settings, and policies
-      that control your infrastructure. It never reads customer records, secret values,
-      database contents, or application data.
+      ConfigTrace routes risky drift to the channels your team already uses —
+      Slack, email, webhooks, and browser push — with the context needed to
+      triage and review. Buttons trigger review actions, not provider mutations.
     </p>
 
-    <div class="trust-grid">
+    <div class="alerts-layout">
 
-      <div class="trust-card">
-        <div class="trust-provider-name">
-          <span class="trust-dot" style="background:#f5a623"></span>AWS
+      <!-- Slack mock -->
+      <div>
+        <div class="slack-mock">
+          <div class="slack-mock-hdr">
+            <span class="slack-hash">#</span>
+            <span class="slack-channel-name">infra-alerts</span>
+          </div>
+          <div class="slack-msg">
+
+            <div class="slack-bot-row">
+              <div class="slack-bot-avatar">CT</div>
+              <div class="slack-bot-meta">
+                <span class="slack-bot-name">ConfigTrace</span>
+                <span class="slack-bot-app-tag">APP</span>
+                <div class="slack-bot-time">09:43 UTC · Sync #184</div>
+              </div>
+            </div>
+
+            <div class="slack-msg-body">
+              <div class="slack-alert-title">
+                ⚠ Critical · AWS · SecurityGroup sg-prod-web
+              </div>
+              <div class="slack-alert-fields">
+                <span><span class="slack-alert-key">resource</span>  ingress 22/tcp</span><br>
+                <span class="slack-alert-del">−  ip_ranges: ["10.0.0.0/8"]</span>
+                <span class="slack-alert-add">+  ip_ranges: ["0.0.0.0/0"]</span>
+                <span><span class="slack-alert-key">blast radius</span>  every EC2 instance attached to this group</span>
+              </div>
+            </div>
+
+            <div class="slack-btns">
+              <span class="slack-btn primary">Open change</span>
+              <span class="slack-btn">Acknowledge</span>
+              <span class="slack-btn caution">Snooze 24h</span>
+              <span class="slack-btn">View remediation</span>
+            </div>
+          </div>
         </div>
-        <ul class="trust-not-list">
-          <li><span class="trust-not-x">✕</span> S3 object contents or bucket data</li>
-          <li><span class="trust-not-x">✕</span> RDS or DynamoDB records</li>
-          <li><span class="trust-not-x">✕</span> Application logs or CloudWatch data</li>
-          <li><span class="trust-not-x">✕</span> IAM user passwords or access keys</li>
-        </ul>
+
+        <p class="alerts-disclaimer">
+          Slack buttons drive review actions inside ConfigTrace — open change,
+          acknowledge, snooze, view remediation. They do not mutate provider
+          resources or apply infrastructure changes.
+        </p>
       </div>
 
-      <div class="trust-card">
-        <div class="trust-provider-name">
-          <span class="trust-dot" style="background:#ffca28"></span>Firebase
-        </div>
-        <ul class="trust-not-list">
-          <li><span class="trust-not-x">✕</span> Firestore document contents</li>
-          <li><span class="trust-not-x">✕</span> Realtime Database data</li>
-          <li><span class="trust-not-x">✕</span> Firebase Storage file contents</li>
-          <li><span class="trust-not-x">✕</span> User authentication records</li>
-        </ul>
-      </div>
+      <!-- Channels -->
+      <div class="alerts-channels">
 
-      <div class="trust-card">
-        <div class="trust-provider-name">
-          <span class="trust-dot" style="background:#3ecf8e"></span>Supabase
+        <div class="alerts-channel-card">
+          <div class="alerts-channel-hdr">
+            <div class="alerts-channel-icon">SL</div>
+            <span class="alerts-channel-name">Slack App</span>
+          </div>
+          <div class="alerts-channel-desc">
+            Install the ConfigTrace Slack App. High and critical drift posts
+            with field-level context and interactive buttons for Open Change,
+            Acknowledge, Snooze 24h, and View Remediation.
+          </div>
         </div>
-        <ul class="trust-not-list">
-          <li><span class="trust-not-x">✕</span> Database row data</li>
-          <li><span class="trust-not-x">✕</span> User records or auth tokens</li>
-          <li><span class="trust-not-x">✕</span> Query history or logs</li>
-          <li><span class="trust-not-x">✕</span> Storage bucket contents</li>
-        </ul>
-      </div>
 
-      <div class="trust-card">
-        <div class="trust-provider-name">
-          <span class="trust-dot" style="background:#635bff"></span>Stripe
+        <div class="alerts-channel-card">
+          <div class="alerts-channel-hdr">
+            <div class="alerts-channel-icon">EM</div>
+            <span class="alerts-channel-name">Email digests</span>
+          </div>
+          <div class="alerts-channel-desc">
+            A per-sync digest of high and critical changes lands in the inbox
+            of every workspace member — with links to the timeline and Needs
+            Review queue.
+          </div>
         </div>
-        <ul class="trust-not-list">
-          <li><span class="trust-not-x">✕</span> Payment data or card information</li>
-          <li><span class="trust-not-x">✕</span> Customer records or transactions</li>
-          <li><span class="trust-not-x">✕</span> Subscription billing history</li>
-          <li><span class="trust-not-x">✕</span> API key values (presence only)</li>
-        </ul>
-      </div>
 
-      <div class="trust-card">
-        <div class="trust-provider-name">
-          <span class="trust-dot" style="background:#8b90a0"></span>GitHub
+        <div class="alerts-channel-card">
+          <div class="alerts-channel-hdr">
+            <div class="alerts-channel-icon">WH</div>
+            <span class="alerts-channel-name">Webhooks</span>
+          </div>
+          <div class="alerts-channel-desc">
+            Subscribe a generic webhook to receive signed JSON payloads for
+            every detected change. Forward into your own runbooks, ticketing
+            systems, or SIEM.
+          </div>
         </div>
-        <ul class="trust-not-list">
-          <li><span class="trust-not-x">✕</span> Source code or file contents</li>
-          <li><span class="trust-not-x">✕</span> Commit history or pull requests</li>
-          <li><span class="trust-not-x">✕</span> Secret values (names/presence only)</li>
-          <li><span class="trust-not-x">✕</span> Issue or discussion content</li>
-        </ul>
-      </div>
 
-      <div class="trust-card">
-        <div class="trust-provider-name">
-          <span class="trust-dot" style="background:#f48120"></span>Cloudflare
+        <div class="alerts-channel-card">
+          <div class="alerts-channel-hdr">
+            <div class="alerts-channel-icon">PN</div>
+            <span class="alerts-channel-name">Browser / PWA push</span>
+          </div>
+          <div class="alerts-channel-desc">
+            Opt-in browser push notifications via the ConfigTrace PWA — for
+            on-call engineers who want a fast desktop signal alongside Slack
+            and email.
+          </div>
         </div>
-        <ul class="trust-not-list">
-          <li><span class="trust-not-x">✕</span> Website traffic or request logs</li>
-          <li><span class="trust-not-x">✕</span> Cached content or responses</li>
-          <li><span class="trust-not-x">✕</span> Worker script code</li>
-          <li><span class="trust-not-x">✕</span> Analytics or visitor data</li>
-        </ul>
-      </div>
 
-      <div class="trust-card">
-        <div class="trust-provider-name">
-          <span class="trust-dot" style="background:#b0b5c4"></span>Vercel
-        </div>
-        <ul class="trust-not-list">
-          <li><span class="trust-not-x">✕</span> Deployment code or build output</li>
-          <li><span class="trust-not-x">✕</span> Build logs or runtime logs</li>
-          <li><span class="trust-not-x">✕</span> Environment variable values</li>
-          <li><span class="trust-not-x">✕</span> Serverless function code</li>
-        </ul>
       </div>
 
     </div>
@@ -2231,51 +2451,197 @@
 
 
 <!-- ──────────────────────────────────────────────────────────────────────
-     USE CASES
+     REMEDIATION
      ────────────────────────────────────────────────────────────────────── -->
-<section id="usecases">
+<section id="remediation">
   <div class="container">
-    <span class="section-label">Use cases</span>
-    <h2>Built for teams that care about production.</h2>
+    <span class="section-label">Remediation</span>
+    <h2>From risky drift to reviewed fix.</h2>
     <p class="section-sub">
-      Whether you're debugging an incident, reviewing a risky change, or building
-      visibility into settings that live outside the codebase, ConfigTrace gives
-      you a clear record to work from.
+      Every risky change comes with a remediation path — guidance, a fix plan,
+      a dry-run preview, and where Terraform mappings exist, a draft GitHub
+      pull request. Every mutation is review-first and admin-gated.
     </p>
 
-    <div class="usecases-grid">
-      <div class="uc-card">
-        <span class="uc-icon" aria-hidden="true">🔍</span>
-        <h3>Debug outages faster</h3>
-        <p>When production breaks, check ConfigTrace before spending hours in logs. Find the DNS record flip, branch protection change, or webhook URL that caused the incident in seconds.</p>
-      </div>
-      <div class="uc-card">
-        <span class="uc-icon" aria-hidden="true">⚡</span>
-        <h3>Catch risky configuration changes</h3>
-        <p>Not all configuration changes are equal. ConfigTrace classifies each change by risk so you know which ones — a rerouted CNAME, a removed branch protection rule — deserve immediate attention.</p>
-      </div>
-      <div class="uc-card">
-        <span class="uc-icon" aria-hidden="true">📜</span>
-        <h3>Build a config history</h3>
-        <p>Track the settings that live outside your codebase. See exactly what changed, when it changed, and what it looked like before.</p>
-      </div>
-      <div class="uc-card">
-        <span class="uc-icon" aria-hidden="true">🔒</span>
-        <h3>Track repo safety controls</h3>
-        <p>Know when branch protection rules are weakened, required status checks removed, or repo visibility changed — before those changes cause a problem.</p>
-      </div>
-      <div class="uc-card">
-        <span class="uc-icon" aria-hidden="true">👁</span>
-        <h3>Review dashboard changes</h3>
-        <p>Config changes made in AWS, Firebase, Stripe, Cloudflare, GitHub, Supabase, or Vercel dashboards are invisible to Git. ConfigTrace makes them visible.</p>
-      </div>
-      <div class="uc-card">
-        <span class="uc-icon" aria-hidden="true">📋</span>
-        <h3>Build an audit trail</h3>
-        <p>Maintain a timestamped record of every change to your production configuration — useful for incident reviews and change management.</p>
-      </div>
-    </div>
+    <div class="remediation-layout">
 
+      <div class="remediation-steps">
+
+        <div class="remediation-step">
+          <span class="remediation-step-num">01</span>
+          <div>
+            <div class="remediation-step-title">Suggested remediation</div>
+            <p class="remediation-step-desc">
+              Each high or critical change ships with plain-English guidance on
+              how to bring it back to a safe state — written for the on-call
+              engineer, not just the cloud expert.
+            </p>
+          </div>
+        </div>
+
+        <div class="remediation-step">
+          <span class="remediation-step-num">02</span>
+          <div>
+            <div class="remediation-step-title">Fix plan preview</div>
+            <p class="remediation-step-desc">
+              A structured plan of the exact steps that would restore the
+              previous configuration — shown before anything runs, so a
+              reviewer can sanity-check the intent.
+            </p>
+          </div>
+        </div>
+
+        <div class="remediation-step">
+          <span class="remediation-step-num">03</span>
+          <div>
+            <div class="remediation-step-title">Dry-run remediation preview</div>
+            <p class="remediation-step-desc">
+              A read-only preview of what the fix would change, formatted as a
+              diff against the current live state — no API mutations, no
+              writes against provider resources.
+            </p>
+          </div>
+        </div>
+
+        <div class="remediation-step">
+          <span class="remediation-step-num">04</span>
+          <div>
+            <div class="remediation-step-title">Terraform fix suggestion preview</div>
+            <p class="remediation-step-desc">
+              Where ConfigTrace can map a drifted resource to your IaC repo,
+              you'll see the proposed HCL diff inline — surfaced as a
+              suggestion, not an applied change.
+            </p>
+          </div>
+        </div>
+
+        <div class="remediation-step">
+          <span class="remediation-step-num">05</span>
+          <div>
+            <div class="remediation-step-title">Guarded GitHub draft PR</div>
+            <p class="remediation-step-desc">
+              An admin can open a GitHub draft PR with the fix proposal as a
+              patch file — explicit confirmation required, admin-gated, low-
+              confidence mappings blocked, review-first by design.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <div>
+        <div class="tf-mock">
+          <div class="tf-mock-hdr">
+            <span class="tf-mock-badge">PREVIEW</span>
+            <span class="tf-mock-file">aws/security_groups.tf · suggested fix</span>
+          </div>
+          <div class="tf-mock-body">
+            <div class="tf-line ctx"><span class="s">&nbsp;</span><span>resource "aws_security_group_rule" "ssh" {</span></div>
+            <div class="tf-line ctx"><span class="s">&nbsp;</span><span>&nbsp;&nbsp;type        = "ingress"</span></div>
+            <div class="tf-line ctx"><span class="s">&nbsp;</span><span>&nbsp;&nbsp;from_port   = 22</span></div>
+            <div class="tf-line ctx"><span class="s">&nbsp;</span><span>&nbsp;&nbsp;to_port     = 22</span></div>
+            <div class="tf-line ctx"><span class="s">&nbsp;</span><span>&nbsp;&nbsp;protocol    = "tcp"</span></div>
+            <div class="tf-line del"><span class="s">−</span><span>&nbsp;&nbsp;cidr_blocks = ["0.0.0.0/0"]</span></div>
+            <div class="tf-line add"><span class="s">+</span><span>&nbsp;&nbsp;cidr_blocks = ["10.0.0.0/8"]</span></div>
+            <div class="tf-line ctx"><span class="s">&nbsp;</span><span>}</span></div>
+          </div>
+        </div>
+
+        <div class="tf-guard-note">
+          <strong>ConfigTrace never runs Terraform and never mutates provider
+          resources.</strong> Draft PRs are opened only when an admin explicitly
+          confirms, the IaC mapping is high-confidence, and the change is
+          review-first by design.
+        </div>
+
+        <div class="pr-btn-mock">
+          <span class="check">✓</span>
+          <span>Open GitHub draft PR · admin-gated · review-first</span>
+          <span class="small">requires explicit confirmation</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     GOVERNANCE
+     ────────────────────────────────────────────────────────────────────── -->
+<section class="alt" id="governance">
+  <div class="container">
+    <span class="section-label">Governance</span>
+    <h2>Turn noisy drift into governed review.</h2>
+    <p class="section-sub">
+      Drift detection alone isn't a workflow. ConfigTrace adds the structure
+      around it — policies, windows, scoring, digests, and change rooms —
+      so security work doesn't drown in alert fatigue.
+    </p>
+
+    <div class="governance-grid">
+
+      <div class="governance-card">
+        <span class="governance-card-icon" aria-hidden="true">📐</span>
+        <h3>Policy engine</h3>
+        <p>
+          Define rules for what counts as risky in your workspace — by provider,
+          resource type, or field. Treat the same change differently in staging
+          versus production.
+        </p>
+      </div>
+
+      <div class="governance-card">
+        <span class="governance-card-icon" aria-hidden="true">🕒</span>
+        <h3>Expected change windows</h3>
+        <p>
+          Mark planned maintenance windows so expected drift during a deploy
+          or migration is suppressed from the alert path while still being
+          recorded in the timeline.
+        </p>
+      </div>
+
+      <div class="governance-card">
+        <span class="governance-card-icon" aria-hidden="true">📊</span>
+        <h3>Drift Control Score</h3>
+        <p>
+          A single workspace-level score that tracks how much risky drift goes
+          unreviewed and how fast critical changes get triaged. A signal you can
+          show leadership and customers.
+        </p>
+      </div>
+
+      <div class="governance-card">
+        <span class="governance-card-icon" aria-hidden="true">📬</span>
+        <h3>Weekly security digest</h3>
+        <p>
+          A per-workspace weekly summary of drift, reviewed changes,
+          outstanding critical items, and Drift Control Score trend — for the
+          whole team and for security stakeholders.
+        </p>
+      </div>
+
+      <div class="governance-card">
+        <span class="governance-card-icon" aria-hidden="true">🛡</span>
+        <h3>Incident-style change rooms</h3>
+        <p>
+          For high-impact drift, ConfigTrace opens a change room — a dedicated
+          page with the diff, blast radius, remediation path, notes, and full
+          activity log for the whole team.
+        </p>
+      </div>
+
+      <div class="governance-card">
+        <span class="governance-card-icon" aria-hidden="true">✅</span>
+        <h3>Needs Review queue</h3>
+        <p>
+          High and critical changes land in a single Needs Review queue with
+          acknowledge, snooze, and escalate actions — and an audit trail of who
+          reviewed what, when.
+        </p>
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -2283,7 +2649,7 @@
 <!-- ──────────────────────────────────────────────────────────────────────
      RISK ENGINE
      ────────────────────────────────────────────────────────────────────── -->
-<section class="alt" id="risk">
+<section id="risk">
   <div class="container">
     <span class="section-label">Risk classification</span>
     <h2>Not all changes are equal.</h2>
@@ -2296,7 +2662,7 @@
     <div class="risk-grid">
       <div class="risk-card low">
         <div class="risk-level">Low</div>
-        <div class="risk-example">Domain verification TXT added<br>Vercel project variable added<br>Stripe product description updated</div>
+        <div class="risk-example">Domain verification TXT added<br>Vercel preview variable added<br>Stripe product description updated</div>
         <div class="risk-why">Hardening, ownership proof, or non-sensitive addition. No routing or security impact expected.</div>
       </div>
       <div class="risk-card medium">
@@ -2306,152 +2672,116 @@
       </div>
       <div class="risk-card high">
         <div class="risk-level">High</div>
-        <div class="risk-example">Stripe webhook endpoint changed<br>Supabase RLS policy modified<br>GitHub branch protection weakened</div>
-        <div class="risk-why">Production traffic, data access, or security controls may be affected. Needs prompt review.</div>
+        <div class="risk-example">Stripe webhook endpoint changed<br>Supabase RLS policy modified<br>GitHub environment protection weakened</div>
+        <div class="risk-why">Production traffic, data access, or release controls may be affected. Needs prompt review.</div>
       </div>
       <div class="risk-card critical">
         <div class="risk-level">Critical</div>
         <div class="risk-example">AWS security group opened to 0.0.0.0/0<br>Firestore rules allow all reads<br>Root DNS record deleted</div>
-        <div class="risk-why">Infrastructure exposed, data potentially public, or the site may be offline. Act immediately.</div>
+        <div class="risk-why">Infrastructure may be exposed, data potentially public, or the site may be offline. Act immediately.</div>
       </div>
     </div>
-
   </div>
 </section>
 
 
 <!-- ──────────────────────────────────────────────────────────────────────
-     LAUNCH STATUS
+     TRUST CENTER / DATA BOUNDARIES
      ────────────────────────────────────────────────────────────────────── -->
-<section id="status">
+<section class="alt" id="trust">
   <div class="container">
-    <span class="section-label">Product status</span>
-    <h2>What's live. What's next.</h2>
+    <span class="section-label">Trust Center</span>
+    <h2>Built for security review.</h2>
     <p class="section-sub">
-      ConfigTrace is an early-stage product. Here's an honest view of exactly
-      what's available today and what's being built next.
+      ConfigTrace is designed to support security review — both internal and
+      with your customers. Configuration metadata in. No customer data, secret
+      values, source code, payment details, or database rows out.
     </p>
 
-    <div class="status-grid">
+    <div class="trust-features-layout">
 
-      <!-- Live now -->
-      <div class="status-panel live">
-        <div class="status-panel-hdr">
-          <span aria-hidden="true">●</span> Live now
+      <div class="never-card">
+        <div class="never-card-hdr">
+          <span aria-hidden="true">✕</span> ConfigTrace never reads
         </div>
-
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">7 provider integrations</div>
-            <div class="status-desc">AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, and Vercel — all live and actively monitored.</div>
-          </div>
+        <div class="never-card-body">
+          <ul class="never-list">
+            <li><span class="never-x">×</span> Customer data of any kind</li>
+            <li><span class="never-x">×</span> Secret values (only their names / presence)</li>
+            <li><span class="never-x">×</span> Source code or commit contents</li>
+            <li><span class="never-x">×</span> Payment details, charges, or transactions</li>
+            <li><span class="never-x">×</span> Database rows or query results</li>
+            <li><span class="never-x">×</span> Order contents or checkout payloads</li>
+            <li><span class="never-x">×</span> Logs, traces, or runtime telemetry</li>
+            <li><span class="never-x">×</span> File contents in object storage</li>
+          </ul>
         </div>
-
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">Baseline snapshots</div>
-            <div class="status-desc">First sync captures every record, rule, and setting as your known-good starting point.</div>
-          </div>
-        </div>
-
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">Automatic syncs + Manual Sync Now</div>
-            <div class="status-desc">Connected providers sync on a schedule. Trigger an on-demand sync anytime without waiting.</div>
-          </div>
-        </div>
-
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">Field-level diffs</div>
-            <div class="status-desc">Added, removed, and modified fields all surfaced — with exact old and new values.</div>
-          </div>
-        </div>
-
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">Timeline and risk classification</div>
-            <div class="status-desc">Every change gets a risk label — low, medium, high, or critical — based on blast radius across all providers.</div>
-          </div>
-        </div>
-
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">High-risk and critical email alerts</div>
-            <div class="status-desc">High and critical changes trigger an email digest after each sync. Low and medium changes appear in the timeline.</div>
-          </div>
-        </div>
-
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">Workspace audit log</div>
-            <div class="status-desc">Full history of team and admin actions — members, integrations, billing — for compliance and accountability.</div>
-          </div>
-        </div>
-
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">Team workspaces</div>
-            <div class="status-desc">Invite team members, assign roles (owner, admin, member), and share a unified view of all integrations.</div>
-          </div>
-        </div>
-
       </div>
 
-      <!-- Coming next -->
-      <div class="status-panel next">
-        <div class="status-panel-hdr">
-          <span aria-hidden="true">◌</span> Coming next
-        </div>
+      <div>
+        <div class="trust-feature-list">
 
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">GitHub App installation flow</div>
-            <div class="status-desc">Upgrade from PAT-based repo monitoring to an installable GitHub App with permission-scoped access across multiple repos.</div>
+          <div class="trust-feature">
+            <div class="trust-feature-hdr">
+              <span class="trust-feature-check">✓</span>
+              <span class="trust-feature-name">Encrypted credentials</span>
+            </div>
+            <p>
+              Provider credentials are encrypted before storage and never shown
+              again after creation. Read-only or least-privilege scopes are
+              recommended for every integration.
+            </p>
           </div>
-        </div>
 
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">Slack and webhook notifications</div>
-            <div class="status-desc">Route high and critical change alerts directly to a Slack channel or webhook endpoint of your choice.</div>
+          <div class="trust-feature">
+            <div class="trust-feature-hdr">
+              <span class="trust-feature-check">✓</span>
+              <span class="trust-feature-name">Revoke anytime</span>
+            </div>
+            <p>
+              Disconnect a provider from inside ConfigTrace in one click, or
+              rotate / revoke the credential from the provider side. ConfigTrace
+              stops reading immediately.
+            </p>
           </div>
-        </div>
 
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">Change acknowledgment and snooze</div>
-            <div class="status-desc">Mark expected changes as reviewed and suppress known-safe drift from future alerts.</div>
+          <div class="trust-feature">
+            <div class="trust-feature-hdr">
+              <span class="trust-feature-check">✓</span>
+              <span class="trust-feature-name">Provider Trust Center</span>
+            </div>
+            <p>
+              A per-workspace Trust Center page lists every connected provider,
+              the exact scopes used, what ConfigTrace reads, and what it never
+              reads — built to show to a reviewer.
+            </p>
           </div>
-        </div>
 
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">Shopify</div>
-            <div class="status-desc">Webhook settings, store configuration, and checkout settings.</div>
+          <div class="trust-feature">
+            <div class="trust-feature-hdr">
+              <span class="trust-feature-check">✓</span>
+              <span class="trust-feature-name">Security packet export</span>
+            </div>
+            <p>
+              Export a security packet describing data access boundaries,
+              encryption posture, and audit history. Use it for internal review
+              or customer trust conversations.
+            </p>
           </div>
-        </div>
 
-        <div class="status-item">
-          <span class="status-dot"></span>
-          <div>
-            <div class="status-name">Additional provider depth</div>
-            <div class="status-desc">More monitored surfaces per provider — AWS CloudFront, Firebase Remote Config, Stripe billing portal settings, and more.</div>
+          <div class="trust-feature">
+            <div class="trust-feature-hdr">
+              <span class="trust-feature-check">✓</span>
+              <span class="trust-feature-name">Workspace audit log</span>
+            </div>
+            <p>
+              Every team action — invites, role changes, integrations,
+              acknowledgements, draft PR creation — is recorded with actor,
+              timestamp, and target.
+            </p>
           </div>
-        </div>
 
+        </div>
       </div>
 
     </div>
@@ -2460,53 +2790,129 @@
 
 
 <!-- ──────────────────────────────────────────────────────────────────────
-     WHAT IT DOESN'T DO
+     DIFFERENTIATION
      ────────────────────────────────────────────────────────────────────── -->
-<section id="payoff">
+<section id="vs">
+  <div class="container">
+    <span class="section-label">Not another dashboard</span>
+    <h2>What ConfigTrace is — and isn't.</h2>
+    <p class="section-sub">
+      Production drift sits in a gap between existing tools. ConfigTrace fills
+      that gap — without trying to replace the systems your team already uses.
+    </p>
+
+    <div class="diff-section-grid">
+
+      <div class="diff-section-card">
+        <div class="diff-section-vs">vs. Cloud provider logs</div>
+        <div class="diff-section-them">
+          CloudTrail, Cloudflare Audit Logs, GitHub audit logs — each shows
+          events <em>within one provider</em>, in vendor-specific schemas, with
+          no cross-tool view.
+        </div>
+        <div class="diff-section-us">
+          <span class="diff-section-us-arrow">→</span>
+          ConfigTrace unifies drift across AWS, Firebase, Supabase, Stripe,
+          GitHub, Cloudflare, Vercel, and Shopify in one risk-classified
+          timeline.
+        </div>
+      </div>
+
+      <div class="diff-section-card">
+        <div class="diff-section-vs">vs. Git</div>
+        <div class="diff-section-them">
+          Git tracks the code in your repository. It has no idea who flipped a
+          Stripe webhook, removed an RLS policy, or opened an AWS security group
+          in a console.
+        </div>
+        <div class="diff-section-us">
+          <span class="diff-section-us-arrow">→</span>
+          ConfigTrace tracks the risky settings that live outside Git, with the
+          same review discipline pull requests give to code.
+        </div>
+      </div>
+
+      <div class="diff-section-card">
+        <div class="diff-section-vs">vs. Uptime &amp; APM monitoring</div>
+        <div class="diff-section-them">
+          Uptime checks and APM tools tell you something is broken or slow.
+          They don't tell you what changed in your configuration that caused it.
+        </div>
+        <div class="diff-section-us">
+          <span class="diff-section-us-arrow">→</span>
+          ConfigTrace explains <em>why</em> production may have broken —
+          which setting moved, when, by whom-shaped events, and what the blast
+          radius looks like.
+        </div>
+      </div>
+
+      <div class="diff-section-card">
+        <div class="diff-section-vs">vs. CSPM tools</div>
+        <div class="diff-section-them">
+          Cloud security posture management focuses on cloud infrastructure
+          posture. It typically doesn't cover SaaS tools like Stripe, GitHub,
+          Vercel, or Shopify.
+        </div>
+        <div class="diff-section-us">
+          <span class="diff-section-us-arrow">→</span>
+          ConfigTrace covers configuration drift across cloud <em>and</em>
+          SaaS, in the workflow surfaces engineers actually use — Slack,
+          email, PR drafts.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     PAYOFF
+     ────────────────────────────────────────────────────────────────────── -->
+<section class="alt" id="payoff">
   <div class="container">
     <span class="section-label">Why it matters</span>
     <h2>The moment ConfigTrace pays for itself.</h2>
     <p class="section-sub">
-      It is not when everything is working. It is when production breaks and your
-      team needs the answer to one question: <strong>what changed?</strong>
+      It is not when everything is working. It is when production breaks and
+      your team needs the answer to one question: <strong>what changed?</strong>
     </p>
 
     <div class="payoff-grid">
 
-      <!-- Card 1: Chaos -->
       <div class="payoff-card chaos">
         <div class="payoff-card-label">Without ConfigTrace</div>
-        <h3>Without ConfigTrace</h3>
+        <h3>Three consoles. Three engineers. Zero answers.</h3>
         <p>
-          Three engineers checking AWS, Cloudflare, Stripe, GitHub, and Slack —
-          trying to reconstruct whether it was a security group, a DNS change,
-          a deleted webhook, or a weakened Firestore rule.
+          On-call digs through AWS, Cloudflare, Stripe, GitHub, Vercel, and
+          Slack — trying to reconstruct whether it was a security group,
+          a DNS reroute, a deleted webhook, or a weakened Firestore rule.
+          The clock keeps running.
         </p>
       </div>
 
-      <!-- Card 2: Answer -->
       <div class="payoff-card answer">
         <div class="payoff-card-label">With ConfigTrace</div>
-        <h3>With ConfigTrace</h3>
+        <h3>A timestamped record. Already in Slack.</h3>
         <p>
-          A timestamped record shows the exact change — record, old value,
-          new value, and risk level.
+          The exact change — record, old value, new value, risk label —
+          arrives in Slack and email within minutes of the next sync.
         </p>
         <div class="payoff-entry" aria-hidden="true">
-          <span class="payoff-entry-time">Dec 14, 2024 · 14:32 UTC — Sync #47</span>
-          CNAME api.example.com
-          <span class="payoff-entry-del">− "prod.vercel.app"</span>
-          <span class="payoff-entry-add">+ "staging.vercel.app"</span>
+          <span class="payoff-entry-time">May 27, 2026 · 09:42 UTC — Sync #184</span>
+          AWS SG sg-prod-web · ingress 22/tcp
+          <span class="payoff-entry-del">−  ip_ranges: ["10.0.0.0/8"]</span>
+          <span class="payoff-entry-add">+  ip_ranges: ["0.0.0.0/0"]</span>
           <span class="payoff-entry-risk">Critical</span>
         </div>
       </div>
 
-      <!-- Card 3: Result -->
       <div class="payoff-card result">
         <div class="payoff-card-label">The result</div>
-        <h3>The result</h3>
+        <h3>Less guessing. Cleaner reviews.</h3>
         <p>
-          Less guessing. Faster root cause. Cleaner incident review.
+          Faster root cause. A clear record for the next incident review.
+          A trail your customers and security reviewers can see.
         </p>
         <ul class="payoff-outcomes">
           <li><span class="payoff-check">✓</span> Root cause in seconds, not hours</li>
@@ -2523,7 +2929,7 @@
 <!-- ──────────────────────────────────────────────────────────────────────
      ABOUT / FOUNDER
      ────────────────────────────────────────────────────────────────────── -->
-<section class="alt" id="about">
+<section id="about">
   <div class="container">
     <span class="section-label">About</span>
     <h2>Why I'm building ConfigTrace.</h2>
@@ -2536,26 +2942,27 @@
       </div>
       <div class="founder-card-body">
         <p class="founder-quote">
-          "I'm building ConfigTrace because <strong>production systems now depend on dozens of
-          dashboards, not just code.</strong> GitHub tells you what changed in the repo. It does
-          not tell you who changed a DNS record, webhook URL, branch protection rule, OAuth
-          callback, or cloud permission.
+          "I'm building ConfigTrace because <strong>production systems now depend
+          on dozens of dashboards, not just code.</strong> GitHub tells you what
+          changed in the repo. It does not tell you who changed a DNS record,
+          webhook URL, branch protection rule, OAuth callback, RLS policy, or
+          cloud permission.
           <br><br>
           Your code has Git history. <strong>Your production settings do not.</strong>
-          ConfigTrace is my attempt to give those settings the same discipline code gets from Git —
-          a security timeline with diffs, risk classification, and a clear answer
-          when something breaks."
+          ConfigTrace is my attempt to give those settings the same discipline
+          code gets from Git — a security timeline with diffs, risk
+          classification, a review workflow, and a remediation path that stays
+          review-first."
         </p>
         <div class="founder-sig">
           <div class="founder-avatar" aria-label="Rohan Shah">RS</div>
           <div>
             <div class="founder-name">Rohan Shah</div>
-            <div class="founder-role">Founder, ConfigTrace · UMass Amherst</div>
+            <div class="founder-role">Built by Rohan Shah at UMass Amherst</div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -2566,18 +2973,23 @@
 <section class="final-cta" id="start">
   <div class="container">
     <span class="section-label">Get started</span>
-    <h2>Create your first baseline before the next incident.</h2>
+    <h2>Give your production settings a security timeline.</h2>
     <p class="section-sub">
-      Connect any of 7 supported providers — AWS, Firebase, Supabase, Stripe, GitHub,
-      Cloudflare, or Vercel — run your first sync, and get a timestamped record of every
-      risky configuration change from that moment forward.
+      View the public demo to see ConfigTrace in action with synthetic data
+      across all 8 providers, or connect your first provider and capture a
+      baseline before the next risky change happens.
     </p>
-    <a href="https://app.configtrace.org" class="btn btn-primary btn-lg"
-       target="_blank" rel="noopener noreferrer">
-      Start monitoring →
-    </a>
+    <div class="final-cta-btns">
+      <a href="demo.html" class="btn btn-primary btn-lg">
+        View public demo →
+      </a>
+      <a href="https://app.configtrace.org" class="btn btn-ghost btn-lg"
+         target="_blank" rel="noopener noreferrer">
+        Start monitoring
+      </a>
+    </div>
     <p class="cta-sub-text">
-      7 providers live · Reads configuration metadata only · Free plan available
+      8 providers · metadata-only monitoring · admin-gated remediation
     </p>
   </div>
 </section>
@@ -2594,38 +3006,38 @@
           <div class="footer-logo-box" aria-hidden="true">CT</div>
           ConfigTrace
         </a>
-        <p class="footer-tagline">Configuration drift detection across 7 providers. Know what changed before it becomes an incident.</p>
+        <p class="footer-tagline">A security timeline for the settings that can break production. 8 providers, one drift monitoring platform.</p>
       </div>
 
       <div class="footer-col">
         <div class="footer-col-label">Product</div>
-        <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app</a>
-        <a href="#how">How it works</a>
-        <a href="demo.html">Demo</a>
-        <a href="#status">Product status</a>
+        <a href="#platform">Platform</a>
+        <a href="#alerts">Alerts</a>
+        <a href="#remediation">Remediation</a>
+        <a href="#governance">Governance</a>
         <a href="#risk">Risk classification</a>
       </div>
 
       <div class="footer-col">
-        <div class="footer-col-label">Docs</div>
-        <a href="docs.html">Documentation</a>
-        <a href="docs/getting-started.html">Getting started</a>
+        <div class="footer-col-label">Trust</div>
+        <a href="#trust">Trust Center</a>
         <a href="docs/data-access.html">Data access</a>
-        <a href="docs/troubleshooting.html">Troubleshooting</a>
+        <a href="#vs">What it isn't</a>
+        <a href="#about">About</a>
       </div>
 
       <div class="footer-col">
-        <div class="footer-col-label">Info</div>
-        <a href="#problem">The problem</a>
-        <a href="#watches">7 providers</a>
-        <a href="#trust">Data minimization</a>
-        <a href="#about">About</a>
+        <div class="footer-col-label">Resources</div>
+        <a href="demo.html">Public demo</a>
+        <a href="docs.html">Documentation</a>
+        <a href="docs/getting-started.html">Getting started</a>
+        <a href="https://app.configtrace.org" target="_blank" rel="noopener noreferrer">Open app</a>
       </div>
     </div>
 
     <div class="footer-bottom">
       <span>ConfigTrace · Built by Rohan Shah at UMass Amherst</span>
-      <span>7 providers live · AWS · Firebase · Supabase · Stripe · GitHub · Cloudflare · Vercel</span>
+      <span>8 providers · AWS · Firebase · Supabase · Stripe · GitHub · Cloudflare · Vercel · Shopify</span>
     </div>
   </div>
 </footer>
