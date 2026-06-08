@@ -4,20 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ConfigTrace | Built by Rohan Shah at UMass Amherst</title>
-  <meta name="description" content="ConfigTrace is configuration security monitoring for production-critical settings across cloud and SaaS tools. Built by Rohan Shah, a UMass Amherst Computer Science student.">
+  <meta name="description" content="ConfigTrace is configuration security monitoring for production-critical settings: track cloud/SaaS configuration drift and surface security exposure — risky current states — across GitHub, AWS, Cloudflare, Stripe, Firebase, Supabase, Vercel, and Shopify. Built by Rohan Shah, a UMass Amherst Computer Science student.">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://configtrace.org/">
   <meta property="og:title" content="ConfigTrace | Built by Rohan Shah at UMass Amherst">
-  <meta property="og:description" content="Configuration security monitoring for production-critical settings across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, Vercel, and Shopify. Built by Rohan Shah, a UMass Amherst Computer Science student.">
+  <meta property="og:description" content="Configuration security monitoring for production settings: cloud/SaaS configuration drift plus security exposure across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare, Vercel, and Shopify. Know what changed. Know what is exposed. Built by Rohan Shah, a UMass Amherst Computer Science student.">
   <meta property="og:image" content="https://configtrace.org/og.png">
   <meta property="og:site_name" content="ConfigTrace">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ConfigTrace | Built by Rohan Shah at UMass Amherst">
-  <meta name="twitter:description" content="Configuration security monitoring for production-critical settings across cloud and SaaS tools. Built by Rohan Shah, a UMass Amherst Computer Science student.">
+  <meta name="twitter:description" content="Configuration security monitoring for production settings: cloud/SaaS configuration drift plus security exposure. Know what changed. Know what is exposed. Built by Rohan Shah, a UMass Amherst Computer Science student.">
   <meta name="twitter:image" content="https://configtrace.org/og.png">
 
   <link rel="canonical" href="https://configtrace.org/">
@@ -1554,6 +1554,115 @@
     }
 
     /* =====================================================================
+       VIDEO / WATCH SECTION
+       ===================================================================== */
+    .watch-section { padding: 56px 0 64px; }
+
+    .video-frame {
+      max-width: 940px; margin: 0 auto;
+      background: var(--bg-2);
+      border: 1px solid var(--border-2);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.025), 0 0 60px var(--blue-glow);
+    }
+
+    .video-frame-bar {
+      display: flex; align-items: center; gap: 7px;
+      padding: 11px 16px; background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .video-frame-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+    .video-frame-label {
+      margin-left: 10px; font-family: var(--mono); font-size: 11px; color: var(--text-3);
+    }
+
+    .video-frame video { display: block; width: 100%; height: auto; background: #080B10; }
+
+    .watch-head { text-align: center; margin-bottom: 36px; }
+    .watch-head h2 { margin-bottom: 14px; }
+    .watch-head .section-sub { margin: 0 auto; text-align: center; }
+
+    /* =====================================================================
+       TWO-MODE SECTION (Drift Detection / Security Exposure)
+       ===================================================================== */
+    .modes-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+
+    @media (max-width: 820px) { .modes-grid { grid-template-columns: 1fr; } }
+
+    .mode-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border-2);
+      border-radius: 16px;
+      padding: 28px 26px;
+      position: relative; overflow: hidden;
+    }
+
+    .mode-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+
+    .mode-card.drift::before    { background: var(--blue); }
+    .mode-card.exposure::before { background: var(--blue-2); }
+
+    .mode-card-label {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.8px; margin-bottom: 12px;
+    }
+
+    .mode-card.drift .mode-card-label    { color: var(--blue); }
+    .mode-card.exposure .mode-card-label { color: var(--blue-2); }
+
+    .mode-card h3 {
+      font-size: 21px; font-weight: 700; letter-spacing: -0.5px;
+      color: var(--text); margin-bottom: 12px;
+    }
+
+    .mode-card-copy {
+      font-size: 14.5px; color: var(--text-2); line-height: 1.65;
+      font-weight: 300; margin-bottom: 18px;
+    }
+
+    .mode-examples { list-style: none; display: flex; flex-direction: column; }
+
+    .mode-examples li {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 9px 0; border-bottom: 1px solid var(--border);
+      font-family: var(--mono); font-size: 12.5px; color: var(--text-2); line-height: 1.5;
+    }
+
+    .mode-examples li:last-child { border-bottom: none; }
+
+    .mode-examples li::before {
+      content: '→'; color: var(--blue); flex-shrink: 0; margin-top: 1px;
+    }
+
+    .sx-feature-strip {
+      display: flex; flex-wrap: wrap; gap: 9px;
+      margin-top: 36px; justify-content: center;
+    }
+
+    .sx-chip {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-family: var(--mono); font-size: 12px; color: var(--text-2);
+      background: var(--bg-2); border: 1px solid var(--border-2);
+      border-radius: 100px; padding: 8px 15px;
+    }
+
+    .sx-chip::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--blue-2); flex-shrink: 0;
+    }
+
+    .modes-note {
+      margin-top: 30px; text-align: center;
+      font-family: var(--mono); font-size: 12px; color: var(--text-3);
+      line-height: 1.6; max-width: 76ch; margin-left: auto; margin-right: auto;
+    }
+
+    /* =====================================================================
        MOBILE OVERRIDES
        ===================================================================== */
     @media (max-width: 640px) {
@@ -1583,6 +1692,7 @@
     </a>
 
     <div class="nav-links">
+      <a href="#watch">Watch</a>
       <a href="#worldview">Worldview</a>
       <a href="#platform">Platform</a>
       <a href="#providers">Providers</a>
@@ -1602,6 +1712,7 @@
   </div>
 
   <div class="nav-mobile" id="navMobile" aria-hidden="true">
+    <a href="#watch">Watch</a>
     <a href="#worldview">Worldview</a>
     <a href="#platform">Platform</a>
     <a href="#providers">Providers</a>
@@ -1629,17 +1740,15 @@
     </div>
 
     <h1>
-      A security timeline for the<br>
-      settings that can break<br>
-      <span class="accent">production.</span>
+      Know what changed.<br>
+      <span class="accent">Know what is exposed.</span>
     </h1>
 
     <p class="hero-sub">
       <strong>Your code has Git history. Your production settings do not.</strong>
-      ConfigTrace monitors risky configuration drift across cloud and SaaS tools,
-      alerts your team, explains blast radius, and helps you review or remediate
-      changes safely — across AWS, Firebase, Supabase, Stripe, GitHub, Cloudflare,
-      Vercel, and Shopify.
+      ConfigTrace gives production-critical settings a timeline and surfaces
+      risky current states across cloud and SaaS tools like GitHub, AWS,
+      Cloudflare, Stripe, Firebase, Supabase, Vercel, and Shopify.
     </p>
 
     <div class="hero-ctas">
@@ -1790,6 +1899,103 @@
       </div>
     </div>
 
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     WATCH (product video)
+     ────────────────────────────────────────────────────────────────────── -->
+<section class="watch-section" id="watch">
+  <div class="container">
+    <div class="watch-head">
+      <span class="section-label" style="text-align:center;">Product walkthrough</span>
+      <h2>Watch ConfigTrace in 70 seconds</h2>
+      <p class="section-sub">
+        See how ConfigTrace tracks configuration drift and surfaces risky current
+        states across production settings.
+      </p>
+    </div>
+
+    <div class="video-frame">
+      <div class="video-frame-bar" aria-hidden="true">
+        <span class="video-frame-dot" style="background:#FF5F57"></span>
+        <span class="video-frame-dot" style="background:#FEBC2E"></span>
+        <span class="video-frame-dot" style="background:#28C840"></span>
+        <span class="video-frame-label">configtrace.org · product walkthrough</span>
+      </div>
+      <video controls muted playsinline preload="metadata"
+             aria-label="ConfigTrace product walkthrough video">
+        <source src="/videos/configtrace-security-exposure-walkthrough.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</section>
+
+
+<!-- ──────────────────────────────────────────────────────────────────────
+     TWO MODES (Drift Detection + Security Exposure)
+     ────────────────────────────────────────────────────────────────────── -->
+<section class="alt" id="modes">
+  <div class="container">
+    <span class="section-label">Two modes, one control plane</span>
+    <h2>Track what changed. See what is exposed.</h2>
+    <p class="section-sub">
+      Production-critical settings need both a <strong>history of changes</strong> and a view of
+      <strong>risky current states</strong>. ConfigTrace gives you both, from the same connected providers.
+    </p>
+
+    <div class="modes-grid">
+
+      <div class="mode-card drift">
+        <span class="mode-card-label">Mode 01</span>
+        <h3>Drift Detection</h3>
+        <p class="mode-card-copy">
+          Track production-critical setting changes across cloud and SaaS tools.
+          See what changed, when it changed, and why it matters.
+        </p>
+        <ul class="mode-examples">
+          <li>Stripe webhook URL changed</li>
+          <li>GitHub branch protection changed</li>
+          <li>Cloudflare DNS / WAF changed</li>
+          <li>Firebase / Supabase rules changed</li>
+        </ul>
+      </div>
+
+      <div class="mode-card exposure">
+        <span class="mode-card-label">Mode 02</span>
+        <h3>Security Exposure</h3>
+        <p class="mode-card-copy">
+          Find risky current states from provider configuration metadata before
+          they become operational or security review problems.
+        </p>
+        <ul class="mode-examples">
+          <li>AWS database port open to the internet</li>
+          <li>Firebase public write rule</li>
+          <li>GitHub webhook using HTTP</li>
+          <li>Cloudflare weak SSL mode</li>
+          <li>Shopify webhook not using HTTPS</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="sx-feature-strip" aria-label="Security Exposure capabilities">
+      <span class="sx-chip">Active Exposures</span>
+      <span class="sx-chip">Exposure detail with confidence &amp; safeguards</span>
+      <span class="sx-chip">Affected Assets</span>
+      <span class="sx-chip">Provider Coverage Diagnostics</span>
+      <span class="sx-chip">Security Rules</span>
+      <span class="sx-chip">Metadata-only Reports</span>
+      <span class="sx-chip">Alerts routed to the right teams</span>
+    </div>
+
+    <p class="modes-note">
+      ConfigTrace evaluates provider configuration metadata. It does not inspect
+      payloads, secrets, or customer data, and it does not claim breach detection
+      or formal compliance certification.
+    </p>
   </div>
 </section>
 
